@@ -6,17 +6,25 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/14 12:50:19 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:18:04 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server()
-{}
+bool Server::sig = false; // static bool init
 
-Server::~Server()
-{}
+void Server::clear(int fd) {
+	auto it_fds = std::remove_if
+}
+
+Server::Server()
+{
+	fd = -1;
+}
+
+// Server::~Server()
+// {}
 
 Server::Server(const Server &other)
 {
@@ -27,6 +35,15 @@ Server &Server::operator=(const Server &other)
 {
 	(void)other;
 	return (*this);
+}
+
+void Server::fdCloser()
+{
+	for (int i = 0; i < clients.size(); i++)
+	{
+		std::cout << "Client " << clients[i].getFd() << " disconnected" << std::endl;
+		close(fd[i]);
+	}
 }
 
 void Server::start()
