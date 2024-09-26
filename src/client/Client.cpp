@@ -6,11 +6,11 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/23 15:19:38 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:15:28 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#include "../../include/Client.hpp"
 
 Client::Client()
 {}

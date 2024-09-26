@@ -6,11 +6,11 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/26 21:03:27 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:14:59 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
+#include "../../include/Server.hpp"
 
 void Server::clear(int fd) {
 	auto it_fds = std::remove_if
