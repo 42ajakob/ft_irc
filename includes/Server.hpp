@@ -6,7 +6,7 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/25 16:16:56 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:03:35 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ private:
 	int sSocketFd;
 	static bool sig;
 	std::vector<Client> clients;
+	std::vector<int> fd;
 public:
 	Server();
-	// ~Server();
+	~Server();
 	Server(const Server &other);
 	Server &operator=(const Server &other);
 	

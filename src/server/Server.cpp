@@ -6,13 +6,11 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/25 16:18:04 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:03:27 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-bool Server::sig = false; // static bool init
 
 void Server::clear(int fd) {
 	auto it_fds = std::remove_if
@@ -23,13 +21,15 @@ Server::Server()
 	fd = -1;
 }
 
-// Server::~Server()
-// {}
+Server::~Server()
+{}
 
 Server::Server(const Server &other)
 {
 	(void)other;
 }
+
+bool Server::sig = false;
 
 Server &Server::operator=(const Server &other)
 {
@@ -43,6 +43,17 @@ void Server::fdCloser()
 	{
 		std::cout << "Client " << clients[i].getFd() << " disconnected" << std::endl;
 		close(fd[i]);
+	}
+}
+
+void Server::init()
+{
+	this->port = 4224;
+	// create server socket WIP;
+	std::cout << "Server initialized" << std::endl;
+	while (server::sig == false)
+	{
+		// accept client connections WIP;
 	}
 }
 
