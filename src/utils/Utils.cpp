@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:11:06 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/12 17:18:37 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:54:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Utils.hpp"
+#include "Utils.hpp"
 
 Utils::Utils()
 {}

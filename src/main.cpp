@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:15:50 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/26 20:12:13 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:55:03 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "client/Client.hpp"
-#include "server/Server.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
 
 int main()
 {

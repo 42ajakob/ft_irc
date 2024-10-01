@@ -3,52 +3,59 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+         #
+#    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/09/12 17:26:15 by apeposhi         ###   ########.fr        #
+#    Updated: 2024/10/01 15:59:30 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Metadata
-AUTHORS = apeposhi & jfikents
-NAME = ircserv
-// WIP
-SERVER = src/server
-CLIENT = src/client
-
-# Directories
-SRC_DIR = src
-OBJ_DIR = obj
+AUTHORS		= apeposhi & jfikents & ajakob
+NAME		= ircserv
 
 # Files
-SRC = main.cpp client/Client.cpp server/Server.cpp utils/Utils.cpp
-OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
+_INCLUDE_FLAGS	= includes
+INCLUDE_FLAGS	= $(addprefix -I, $(_INCLUDE_FLAGS))
+
+_CLIENT_SRC	= Client.cpp
+CLIENT_SRC	= $(addprefix client/, $(_CLIENT_SRC))
+
+_SERVER_SRC	= Server.cpp
+SERVER_SRC	= $(addprefix server/, $(_SERVER_SRC))
+
+_UTILS_SRC	= Utils.cpp
+UTILS_SRC	= $(addprefix utils/, $(_UTILS_SRC))
+
+_SRC		= main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(UTILS_SRC)
+SRC			= $(addprefix src/, $(_SRC))
+OBJ			= $(SRC:src/%.cpp=bin/%.o)
 
 # Compiler and Flags
-CXX       := c++
-CXXFLAGS  := -Wall -Wextra -Werror -std=c++17
-EXE_FLAG  := -o
-EXEC_C      := $(CLIENT)
-EXEC_S	  := $(SERVER)
-
-# Suffix Rules
-.cpp.o:
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+CXX			:= c++
+CXXFLAGS	:= -Wall -Wextra -Werror -std=c++17 -MMD -MP
 
 # Targets
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) $(EXE_FLAG) $(EXEC_C) $(EXEC_S)
+bin:
+	@mkdir -p $@
+
+bin/%.o: src/%.cpp | bin
+	$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
+
+$(NAME): $(OBJ)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	rm -rf $(OBJS)
+	@rm -rf $(OBJ)
 
 fclean: clean
-	rm -rf $(EXEC_S) $(EXEC_C)
+	@rm -rf $(NAME)
 
-re:	fclean all
+re:	fclean $(NAME)
 
 # Phony Targets
 .PHONY:	all clean fclean re
+
+-include $(OBJ:.o=.d)

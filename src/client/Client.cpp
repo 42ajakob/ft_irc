@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/12 17:15:28 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:54:31 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Client.hpp"
+#include "Client.hpp"
 
 Client::Client()
 {}
