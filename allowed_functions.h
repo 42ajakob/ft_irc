@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:31:19 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/08 18:04:37 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/08 20:38:31 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -590,6 +590,13 @@ int				fstat(int fd, struct stat *buf);
  *	accordingly.
  */
 int				fcntl(int fd, int cmd, ...);
+
+struct pollfd
+{
+	int		fd;			/* file descriptor */
+	short	events;		/* requested events */
+	short	revents;	/* returned events */
+};
 
 /*
 	@brief
