@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 13:54:03 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:06:23 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <bitset>
 
 class Client;
+class Server;
 
 class Channel
 {
@@ -26,7 +27,7 @@ class Channel
 		Channel()									= delete;
 		Channel(const Channel &other)				= delete;
 		Channel &operator=(const Channel &other)	= delete;
-		Channel(std::string name,const Client &creator);
+		Channel(std::string name, const Client &creator, const Server &server);
 		~Channel();
 
 		void join(Client &client);
@@ -49,12 +50,13 @@ class Channel
 		static std::vector<std::string>	_usedNames;
 
 		std::bitset<static_cast<size_t>(Mode::Count)>	_mode;
-		std::string			_name;
-		std::vector<Client>	_members;
-		std::vector<Client>	_operators;
-		std::string			_topic;
-		std::string			_password;
-		uint16_t			_userLimit;
+		std::string					_name;
+		std::vector<const Client*>	_members;
+		std::vector<const Client*>	_operators;
+		std::string					_topic;
+		std::string					_password;
+		uint16_t					_userLimit;
+		const Server				*_server;
 
 		bool	isNameAvailable(std::string name);
 };

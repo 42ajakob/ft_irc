@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 13:47:31 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:06:44 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ Server::~Server()
 
 void Server::init()
 {
+	const int	True = 1;
 	_socketFd = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socketFd == -1 || fcntl(_socketFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error creating the server socket");
 	std::cout << "Server initialized" << std::endl;
-	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) == -1)
+	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int)) == -1)
 		throw std::runtime_error("Error setting the socket options");
 	_serverAddr.sin_family = AF_INET;
 	_serverAddr.sin_port = htons(_port);
@@ -49,10 +50,10 @@ void Server::init()
 
 void Server::fdCloser()
 {
-	for (int i = 0; i < _clients.size(); i++)
+	for (auto it = _clients.begin(); it != _clients.end(); it++)
 	{
-		std::cout << "Client " << clients[i].getFd() << " disconnected" << std::endl;
-		close(fd[i]);
+		std::cout << "Client " << it->first << " disconnected" << std::endl;
+		close(it->first);
 	}
 }
 

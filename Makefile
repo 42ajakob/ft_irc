@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/01 15:59:30 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/17 14:26:31 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,16 +18,20 @@ NAME		= ircserv
 _INCLUDE_FLAGS	= includes
 INCLUDE_FLAGS	= $(addprefix -I, $(_INCLUDE_FLAGS))
 
+_CHANNEL_SRC	= Channel.cpp
+CHANNEL_SRC		= $(addprefix channel/, $(_CHANNEL_SRC))
+
 _CLIENT_SRC	= Client.cpp
 CLIENT_SRC	= $(addprefix client/, $(_CLIENT_SRC))
 
-_SERVER_SRC	= Server.cpp
+_SERVER_SRC	=	Server.cpp\
+				serverStaticMethods.cpp
 SERVER_SRC	= $(addprefix server/, $(_SERVER_SRC))
 
 _UTILS_SRC	= Utils.cpp
 UTILS_SRC	= $(addprefix utils/, $(_UTILS_SRC))
 
-_SRC		= main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(UTILS_SRC)
+_SRC		= main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(UTILS_SRC) $(CHANNEL_SRC)
 SRC			= $(addprefix src/, $(_SRC))
 OBJ			= $(SRC:src/%.cpp=bin/%.o)
 
@@ -39,7 +43,7 @@ CXXFLAGS	:= -Wall -Wextra -Werror -std=c++17 -MMD -MP
 all: $(NAME)
 
 bin:
-	@mkdir -p $@
+	@mkdir -p bin/client bin/server bin/utils bin/commands bin/channel
 
 bin/%.o: src/%.cpp | bin
 	$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
