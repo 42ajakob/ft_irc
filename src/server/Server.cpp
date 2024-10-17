@@ -3,63 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/12 17:14:59 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:42:04 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Server.hpp"
+#include "Server.hpp"
 
-void Server::clear(int fd) {
-	auto it_fds = std::remove_if
-}
+bool Server::_sig = false;
 
-Server::Server()
+Server::Server(std::string port, std::string password)
+	: _password(password)
 {
-	fd = -1;
+	try{
+		this->_port = std::stoi(port);
+	}
+	catch (std::exception &e){
+		std::cerr << e.what() << std::endl;
+		exit(1);
+	}
+	std::cout << "Server created" << std::endl;
 }
 
 Server::~Server()
 {}
 
-Server::Server(const Server &other)
+void Server::init()
 {
-	(void)other;
-}
-
-bool Server::sig = false;
-
-Server &Server::operator=(const Server &other)
-{
-	(void)other;
-	return (*this);
+	const int	True = 1;
+	_socketFd = socket(AF_INET, SOCK_STREAM, 0);
+	if (_socketFd == -1 || fcntl(_socketFd, F_SETFL, O_NONBLOCK) == -1)
+		throw std::runtime_error("Error creating the server socket");
+	std::cout << "Server initialized" << std::endl;
+	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int)) == -1)
+		throw std::runtime_error("Error setting the socket options");
+	_serverAddr.sin_family = AF_INET;
+	_serverAddr.sin_port = htons(_port);
+	_serverAddr.sin_addr.s_addr = INADDR_ANY;
+	if (bind(_socketFd, (struct sockaddr *)&_serverAddr, sizeof(_serverAddr)) == -1)
+		throw std::runtime_error("Error binding the server socket");
+	if (listen(_socketFd, BACKLOG_SIZE) == -1)
+		throw std::runtime_error("Error listening on the server socket");
 }
 
 void Server::fdCloser()
 {
-	for (int i = 0; i < clients.size(); i++)
+	for (auto it = _clients.begin(); it != _clients.end(); it++)
 	{
-		std::cout << "Client " << clients[i].getFd() << " disconnected" << std::endl;
-		close(fd[i]);
+		std::cout << "Client " << it->first << " disconnected" << std::endl;
+		close(it->first);
 	}
-}
-
-void Server::init()
-{
-	this->port = 4224;
-	// create server socket WIP;
-	std::cout << "Server initialized" << std::endl;
-	while (server::sig == false)
-	{
-		// accept client connections WIP;
-	}
-}
-
-void Server::start()
-{
-	std::cout << "Server started" << std::endl;
 }
 
 void Server::stop()

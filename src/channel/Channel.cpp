@@ -3,56 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/09/26 22:05:10 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:20:28 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
+#include "Server.hpp"
 
-Channel::Channel()
+std::vector<std::string> Channel::_usedNames;
+
+bool Channel::isNameAvailable(std::string name)
 {
+	const auto it = std::find(_usedNames.begin(), _usedNames.end(), name);
+
+	return (it == _usedNames.end());
+}
+
+Channel::Channel(std::string name, const Client &creator, const Server &server)
+	: _name(name), _userLimit(BACKLOG_SIZE), _server(&server)
+{
+	if (name.empty())
+		throw std::invalid_argument("Channel name cannot be empty");
+	if (isNameAvailable(name) == false)
+		throw std::invalid_argument("Channel name already in use");
+	_members.push_back(&creator);
+	_operators.push_back(&creator);
+	_usedNames.push_back(name);
 }
 
 Channel::~Channel()
 {
 }
 
-Channel::Channel(const Channel &other)
-{
-	(void)other;
-}
-
-Channel &Channel::operator=(const Channel &other)
-{
-	(void)other;
-	return (*this);
-}
-
 void Channel::join(Client &client)
 {
-	clients.push_back(client);
+	if (_mode.test(static_cast<size_t>(Mode::UserLimit)) &&
+		_members.size() >= _userLimit)
+		throw std::invalid_argument("Channel is full");
+	_members.push_back(&client);
 }
 
-void Channel::kick(Client &client)
+void Channel::kick(const std::string &nickname)
 {
-	auto it = std::find(clients.begin(), clients.end(), client);
-	if (it != clients.end())
-		clients.erase(it);
+	const Client &client = _server->getClientByNickname(nickname);
+	const auto it = std::find(_members.begin(), _members.end(), &client);
+
+	if (it != _members.end())
+		_members.erase(it);
 }
 
-void Channel::invite(Client &client)
+void Channel::invite(const std::string &nickname)
 {
-	clients.push_back(client);
+	const Client &client = _server->getClientByNickname(nickname);
+	_members.push_back(&client);
 }
 
 void Channel::leave(Client &client)
 {
-	auto it = std::find(clients.begin(), clients.end(), client);
-	if (it != clients.end())
-		clients.erase(it);
+	auto it = std::find(_members.begin(), _members.end(), &client);
+	if (it != _members.end())
+		_members.erase(it);
 }
 
 void Channel::mode(Client &client)
@@ -60,21 +73,7 @@ void Channel::mode(Client &client)
 	(void)client;
 }
 
-void Channel::send(Client &client, std::string message)
-{
-	(void)client;
-	std::cout << message << std::endl;
-}
-
-void Channel::sendAll(std::string message)
-{
-	for (int i = 0; i < clients.size(); i++)
-	{
-		std::cout << message << std::endl;
-	}
-}
-
 void Channel::clear()
 {
-	clients.clear();
+	_members.clear();
 }
