@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 15:42:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 20:35:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void Server::init()
 	_serverAddr.sin_family = AF_INET;
 	_serverAddr.sin_port = htons(_port);
 	_serverAddr.sin_addr.s_addr = INADDR_ANY;
+	_serverAddr.sin_len = sizeof(_serverAddr);
 	if (bind(_socketFd, (struct sockaddr *)&_serverAddr, sizeof(_serverAddr)) == -1)
 		throw std::runtime_error("Error binding the server socket");
 	if (listen(_socketFd, BACKLOG_SIZE) == -1)
