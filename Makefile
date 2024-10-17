@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/17 16:56:13 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/17 20:28:57 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,11 @@ OBJ			= $(SRC:src/%.cpp=bin/%.o)
 # Compiler and Flags
 CXX			:= c++
 CXXFLAGS	:= -Wall -Wextra -Werror -std=c++17 -MMD -MP
+
+ifdef DEBUG
+CXXFLAGS += -g3
+all: fclean $(NAME)
+endif
 
 # Targets
 all: $(NAME)
