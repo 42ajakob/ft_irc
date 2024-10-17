@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:31:19 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/08 20:38:31 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:14:32 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ void			freeaddrinfo(struct addrinfo *res);
  *	bind(), it will be done automatically by connect())
 	@param addr
  *	A pointer to a sockaddr that is a generic structure for socket addresses,
- *	which is cast to a specific structure depending on the domai. To create
+ *	which is cast to a specific structure depending on the domain. To create
  *	the sockaddr structure, you need to create a structure of the specific
  *	domain (e.g. sockaddr_in for IPv4, sockaddr_in6 for IPv6) and cast it to
  *	sockaddr. (There is some Pointer Trickery involved)
