@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/17 17:26:12 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 20:13:21 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ void Server::acceptClient()
 	std::cout << "Client " << clientFd << " connected" << std::endl;
 }
 
+void Server::disconnectClient(int clientFd)
+{
+	std::cout << "Client " << clientFd << " disconnected" << std::endl;
+	close(clientFd);
+	_clients.erase(clientFd);
+}
+
 void Server::start()
 {
 	static std::array<pollfd, BACKLOG_SIZE + 1>	pollFDs;
@@ -47,8 +54,8 @@ void Server::start()
 		{
 			// if (pollFDs[i].revents & POLLIN)
 			// 	receiveMessage(pollFDs[i].fd);
-			// if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
-			// 	disconnectClient(pollFDs[i].fd);
+			if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
+				disconnectClient(pollFDs[i].fd);
 			// if (pollFDs[i].revents & POLLOUT)
 			// 	sendMessage(pollFDs[i].fd);
 		}
