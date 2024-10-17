@@ -6,54 +6,53 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/01 15:54:49 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 13:47:31 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::clear(int fd) {
-	auto it_fds = std::remove_if
-}
+bool Server::_sig = false;
 
-Server::Server()
+Server::Server(std::string port, std::string password)
+	: _password(password)
 {
-	fd = -1;
+	try{
+		this->_port = std::stoi(port);
+	}
+	catch (std::exception &e){
+		std::cerr << e.what() << std::endl;
+		exit(1);
+	}
+	std::cout << "Server created" << std::endl;
 }
 
 Server::~Server()
 {}
 
-Server::Server(const Server &other)
+void Server::init()
 {
-	(void)other;
-}
-
-bool Server::sig = false;
-
-Server &Server::operator=(const Server &other)
-{
-	(void)other;
-	return (*this);
+	_socketFd = socket(AF_INET, SOCK_STREAM, 0);
+	if (_socketFd == -1 || fcntl(_socketFd, F_SETFL, O_NONBLOCK) == -1)
+		throw std::runtime_error("Error creating the server socket");
+	std::cout << "Server initialized" << std::endl;
+	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) == -1)
+		throw std::runtime_error("Error setting the socket options");
+	_serverAddr.sin_family = AF_INET;
+	_serverAddr.sin_port = htons(_port);
+	_serverAddr.sin_addr.s_addr = INADDR_ANY;
+	if (bind(_socketFd, (struct sockaddr *)&_serverAddr, sizeof(_serverAddr)) == -1)
+		throw std::runtime_error("Error binding the server socket");
+	if (listen(_socketFd, BACKLOG_SIZE) == -1)
+		throw std::runtime_error("Error listening on the server socket");
 }
 
 void Server::fdCloser()
 {
-	for (int i = 0; i < clients.size(); i++)
+	for (int i = 0; i < _clients.size(); i++)
 	{
 		std::cout << "Client " << clients[i].getFd() << " disconnected" << std::endl;
 		close(fd[i]);
-	}
-}
-
-void Server::init()
-{
-	this->port = 4224;
-	// create server socket WIP;
-	std::cout << "Server initialized" << std::endl;
-	while (server::sig == false)
-	{
-		// accept client connections WIP;
 	}
 }
 
