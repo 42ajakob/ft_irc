@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 15:16:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:00:55 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@ private:
 	bool	isNicknameAvailable(std::string nickname);
 
 public:
+	Client(const Client &other)				= delete;
+	Client &operator=(const Client &other)	= delete;
 	Client();
 	~Client();
-	Client(const Client &other) = delete;
-	Client &operator=(const Client &other) = delete;
-	int	getFd() const;
-	void setFd(int fd_value);
-	void setNickname(std::string nickname);
-	void setUserName(std::string username);
-	const std::string &getNickname() const;
+
+	void				setFd(int fd_value);
+	void				setNickname(std::string nickname);
+	void				setUserName(std::string username);
+	int					getFd() const;
+	const std::string	&getNickname() const;
 
 	bool operator ==(const Client &other) const;
 };

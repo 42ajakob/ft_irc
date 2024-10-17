@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 14:06:44 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:42:04 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,6 @@ void Server::fdCloser()
 		std::cout << "Client " << it->first << " disconnected" << std::endl;
 		close(it->first);
 	}
-}
-
-void Server::start()
-{
-	std::cout << "Server started" << std::endl;
 }
 
 void Server::stop()

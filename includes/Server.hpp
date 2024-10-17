@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 14:51:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:57:44 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ class Server
 		std::vector<Channel>	_channels;
 		std::string				_password;
 		sockaddr_in				_serverAddr;
+
+		void acceptClient();
+		void receiveMessage(int fd);
+		void disconnectClient(int fd);
+		void sendMessage(int fd);
 
 	public:
 		const Client &getClientByNickname(const std::string &nickname) const;

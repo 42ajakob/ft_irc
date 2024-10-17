@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:15:50 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 14:03:34 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:48:09 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int main(int argc, char **argv)
 		// SIGINT
 		// SIGQUIT
 		server.init();
+		std::cout << "Starting server" << std::endl;
 		server.start();
 	}
 	catch (std::exception &e) {
