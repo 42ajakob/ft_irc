@@ -3,3 +3,4 @@ en.subject.pdf
 *.o
 *.d
 .normignore
+.DS_Store
