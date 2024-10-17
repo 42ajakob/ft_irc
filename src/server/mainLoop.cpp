@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/17 16:58:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:26:12 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void Server::acceptClient()
 
 void Server::start()
 {
-	static pollfd	pollFDs[BACKLOG_SIZE];
+	static std::array<pollfd, BACKLOG_SIZE + 1>	pollFDs;
 
 	pollFDs[0].fd = _socketFd;
 	pollFDs[0].events = POLLIN;
@@ -39,7 +39,7 @@ void Server::start()
 
 	while (!_sig)
 	{
-		if (poll(pollFDs, _clients.size() + 1, -1) == -1)
+		if (poll(pollFDs.data(), _clients.size() + 1, -1) == -1)
 			throw std::runtime_error("Error polling the server socket");
 		if (pollFDs[0].revents & POLLIN)
 			acceptClient();
