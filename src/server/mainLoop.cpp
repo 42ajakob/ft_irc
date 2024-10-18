@@ -6,13 +6,26 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/18 12:50:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:38:46 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include <poll.h>
 #include <array>
+
+static void	debug_print_revents(short revents)
+{
+	if (revents & POLLOUT)
+		std::cout << "POLLOUT ";
+	if (revents & POLLIN)
+		std::cout << "POLLIN ";
+	if (revents & POLLHUP)
+		std::cout << "POLLHUP ";
+	if (revents & POLLERR)
+		std::cout << "POLLERR ";
+	std::cout << std::endl;
+}
 
 void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 {
@@ -34,6 +47,7 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 
 void Server::disconnectClient(pollfd &pollFD)
 {
+	debug_print_revents(pollFD.revents);
 	std::cout << "Client " << pollFD.fd << " disconnected" << std::endl;
 	close(pollFD.fd);
 	_clients.erase(pollFD.fd);
@@ -68,8 +82,8 @@ void Server::start()
 			acceptClient(pollFDs);
 		for (size_t i = 1; i <= _clients.size(); i++)
 		{
-			// if (pollFDs[i].revents & POLLIN)
-			// 	receiveMessage(pollFDs[i].fd);
+			if (pollFDs[i].revents & POLLIN)
+				receiveMessage(pollFDs[i]);
 			if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
 				disconnectClient(pollFDs[i]);
 			// if (pollFDs[i].revents & POLLOUT)

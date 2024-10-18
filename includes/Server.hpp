@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/18 12:38:34 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:12:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class Server
 		sockaddr_in				_serverAddr;
 
 		void acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs);
-		void receiveMessage(int fd);
+		void receiveMessage(pollfd &pollFD);
 		void disconnectClient(pollfd &pollFD);
 		void sendMessage(int fd);
 

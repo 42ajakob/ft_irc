@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/17 20:28:57 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/18 16:39:41 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,9 @@ _CLIENT_SRC	= Client.cpp
 CLIENT_SRC	= $(addprefix client/, $(_CLIENT_SRC))
 
 _SERVER_SRC	=	Server.cpp\
-				serverStaticMethods.cpp\
-				mainLoop.cpp
+				mainLoop.cpp\
+				receiveMessage.cpp\
+				serverStaticMethods.cpp
 SERVER_SRC	= $(addprefix server/, $(_SERVER_SRC))
 
 _UTILS_SRC	= Utils.cpp
@@ -42,7 +43,6 @@ CXXFLAGS	:= -Wall -Wextra -Werror -std=c++17 -MMD -MP
 
 ifdef DEBUG
 CXXFLAGS += -g3
-all: fclean $(NAME)
 endif
 
 # Targets
