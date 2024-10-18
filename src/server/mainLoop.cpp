@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/18 16:38:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:40:14 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void Server::disconnectClient(pollfd &pollFD)
 	close(pollFD.fd);
 	_clients.erase(pollFD.fd);
 	pollFD.fd = -1;
+	pollFD.revents = 0;
 }
 
 static void	init_pollFDs(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs,
