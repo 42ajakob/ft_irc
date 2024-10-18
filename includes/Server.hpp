@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 16:57:44 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:15:14 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <fcntl.h>
 # include <poll.h>
 # include <unistd.h>
+# include <array>
 
 # define BACKLOG_SIZE 512
 
@@ -41,7 +42,7 @@ class Server
 		std::string				_password;
 		sockaddr_in				_serverAddr;
 
-		void acceptClient();
+		void acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs);
 		void receiveMessage(int fd);
 		void disconnectClient(int fd);
 		void sendMessage(int fd);
