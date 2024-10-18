@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/18 12:26:35 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:50:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,34 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 	std::cout << "Client " << clientFd << " connected" << std::endl;
 }
 
-void Server::disconnectClient(int clientFd)
+void Server::disconnectClient(pollfd &pollFD)
 {
-	std::cout << "Client " << clientFd << " disconnected" << std::endl;
-	close(clientFd);
-	_clients.erase(clientFd);
+	std::cout << "Client " << pollFD.fd << " disconnected" << std::endl;
+	close(pollFD.fd);
+	_clients.erase(pollFD.fd);
+	pollFD.fd = -1;
+}
+
+static void	init_pollFDs(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs,
+	int socketFd)
+{
+	pollFDs[0].fd = socketFd;
+	pollFDs[0].events = POLLIN;
+	pollFDs[0].revents = 0;
+	for (size_t i = 1; i < pollFDs.size(); i++)
+	{
+		pollFDs[i].fd = -1;
+		pollFDs[i].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
+		pollFDs[i].revents = 0;
+	}
 }
 
 void Server::start()
 {
 	static std::array<pollfd, BACKLOG_SIZE + 1>	pollFDs;
 
-	pollFDs[0].fd = _socketFd;
-	pollFDs[0].events = POLLIN;
-	pollFDs[0].revents = 0;
-
+	if (pollFDs[0].fd != _socketFd)
+		init_pollFDs(pollFDs, _socketFd);
 	while (!_sig)
 	{
 		if (poll(pollFDs.data(), _clients.size() + 1, -1) == -1 && errno != EINTR)
@@ -58,9 +71,11 @@ void Server::start()
 			// if (pollFDs[i].revents & POLLIN)
 			// 	receiveMessage(pollFDs[i].fd);
 			if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
-				disconnectClient(pollFDs[i].fd);
+				disconnectClient(pollFDs[i]);
 			// if (pollFDs[i].revents & POLLOUT)
 			// 	sendMessage(pollFDs[i].fd);
+			pollFDs[i].revents = 0;
 		}
+		pollFDs[0].revents = 0;
 	}
 }
