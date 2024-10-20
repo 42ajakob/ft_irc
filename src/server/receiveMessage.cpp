@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 17:39:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 19:02:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ eCommand	checkForCommand(const std::string &line)
 	return (eCommand::UNKNOWN);
 }
 
+void	debugBypass(std::string &line)
+{
+	line += "\r\n";
+	try{
+		write(std::stoi(line.c_str() + 7), &line[9], line.size() - 8);
+		std::cout << "Message sent to client " << std::stoi(line.c_str() + 7) << ": " << &line[8] << std::flush;
+	} catch (const std::exception &e) {
+		std::cerr << "Error bypassing :" << e.what() << std::endl;
+	}
+}
+
 void	executeCommand(eCommand command, std::string &line, pollfd &pollFD)
 {
 	switch (command)
@@ -70,9 +81,7 @@ void	executeCommand(eCommand command, std::string &line, pollfd &pollFD)
 			// Server::doCapNegotiation(pollFD.fd, line);
 			break;
 		case eCommand::DEBUG_BYPASS:
-			line += "\r\n";
-			write(std::stoi(line.c_str() + 7), &line[9], line.size() - 8);
-			std::cout << "Message sent to client " << std::stoi(line.c_str() + 7) << ": " << &line[8] << std::flush;
+			debugBypass(line);
 		default:
 			break;
 	}
@@ -100,7 +109,7 @@ void	Server::receiveMessage(pollfd &pollFD)
 		command = checkForCommand(line);
 		if (command != eCommand::UNKNOWN)
 			executeCommand(command, line, pollFD);
-		else
+		if (command != eCommand::DEBUG_BYPASS)
 			std::cout << "Received message from client " << pollFD.fd << ": " << line << std::endl;
 		std::getline(ss, line, '\n');
 	}
