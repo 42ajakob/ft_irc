@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/18 13:12:01 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:39:13 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ class Server
 
 	public:
 		const Client &getClientByNickname(const std::string &nickname) const;
+		static void doCapNegotiation(int fd, std::string &line);
 
 		Server()								= delete;
 		Server(const Server &other)				= delete;

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 17:31:07 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:39:04 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ eCommand	checkForCommand(const std::string &line)
 	if (std::strncmp(line.c_str(), "JOIN", 4) == 0 && (line.size() == 4
 		|| line[4] == ' '))
 		return (eCommand::JOIN);
+	if (std::strncmp(line.c_str(), "NICK", 4) == 0 && (line.size() == 4
+		|| line[4] == ' '))
+		return (eCommand::NICK);
+	if (std::strncmp(line.c_str(), "USER", 4) == 0 && (line.size() == 4
+		|| line[4] == ' '))
+		return (eCommand::USER);
+	if (std::strncmp(line.c_str(), "QUIT", 4) == 0 && (line.size() == 4
+		|| line[4] == ' '))
+		return (eCommand::QUIT);
+	if (std::strncmp(line.c_str(), "PASS", 4) == 0 && (line.size() == 4
+		|| line[4] == ' '))
+		return (eCommand::PASS);
+	if (std::strncmp(line.c_str(), "CAP", 3) == 0 && (line.size() == 3
+		|| line[3] == ' '))
+		return (eCommand::CAP);
 	if (std::strncmp(line.c_str(), ":bypass", 7) == 0)
 		return (eCommand::DEBUG_BYPASS);
 	return (eCommand::UNKNOWN);
@@ -50,6 +65,9 @@ void	executeCommand(eCommand command, std::string &line, pollfd &pollFD)
 		case eCommand::QUIT:
 			break;
 		case eCommand::PASS:
+			break;
+		case eCommand::CAP:
+			// Server::doCapNegotiation(pollFD.fd, line);
 			break;
 		case eCommand::DEBUG_BYPASS:
 			line += "\r\n";

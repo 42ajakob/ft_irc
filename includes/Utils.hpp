@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/20 16:00:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:35:19 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ enum class eCommand
 	USER,
 	QUIT,
 	PASS,
+	CAP,
 	DEBUG_BYPASS
 };
 
