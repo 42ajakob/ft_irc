@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 16:26:21 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:31:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	executeCommand(eCommand command, std::string &line, pollfd &pollFD)
 		case eCommand::DEBUG_BYPASS:
 			line += "\r\n";
 			write(std::stoi(line.c_str() + 7), &line[9], line.size() - 8);
-			std::cout << "Message sent to client " << std::stoi(line.c_str() + 7) << ": " << &line[8] << std::endl;
+			std::cout << "Message sent to client " << std::stoi(line.c_str() + 7) << ": " << &line[8] << std::flush;
 		default:
 			break;
 	}
