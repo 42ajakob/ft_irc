@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/18 19:33:52 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/10/20 19:00:50 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ class Client
 {
 private:
 	static std::vector<std::string>	_usedNicknames;
-	int			_fd;
-	std::string	_nickName;
-	std::string	_ipAddr;
-	std::string	_userName;
-	std::string _lastMsg;
+	int								_fd;
+	std::string						_nickName;
+	std::string						_userName;
+	std::string						_ipAddr;
+	std::string 					_sendbuffer;
+	std::string 					_recvBuffer;
 
-	bool	isNicknameAvailable(std::string nickname);
+	bool							isNicknameAvailable(std::string nickname);
 
 public:
 	Client(const Client &other)				= delete;
@@ -36,16 +37,21 @@ public:
 
 	void				setFd(int fd_value);
 	void				setNickName(std::string nickname);
-	void				setIpAddr(std::string ipAddr);
 	void				setUserName(std::string username);
-	void				setLastMsg(std::string buffer);
+	void				setIpAddr(std::string ipAddr);
+	void				setSendBuffer(std::string buffer);
+	void				setRecvBuffer(std::string buffer);
 
-	int					getFd() const;
+	const int			&getFd() const;
 	const std::string	&getNickname() const;
+	const std::string	&setUserName() const;
 	const std::string	&getIpAddr() const;
-	const std::string	&getLastMsg() const;
+	const std::string	&getSendBuffer() const;
+	const std::string	&getRecvBuffer() const;
 
-	bool operator==(const Client &other) const;
+	void				clearSendBuffer();
+	void				clearRecvBuffer();
+	bool				operator==(const Client &other) const;
 };
 
 #endif
