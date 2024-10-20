@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/20 19:00:50 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/10/20 20:39:39 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 # define CLIENT_HPP
 
 # include <iostream>
-# include <vector>
+# include <unordered_set>
 
 class Client
 {
 private:
-	static std::vector<std::string>	_usedNicknames;
-	int								_fd;
-	std::string						_nickName;
-	std::string						_userName;
-	std::string						_ipAddr;
-	std::string 					_sendbuffer;
-	std::string 					_recvBuffer;
+	static std::unordered_set<std::string>	_usedNicknames;
+	int										_fd = -1;
+	std::string								_Nickname;
+	std::string								_Username;
+	std::string								_ipAddr;
+	std::string 							_sendbuffer;
+	std::string 							_recvBuffer;
 
-	bool							isNicknameAvailable(std::string nickname);
+	bool									isNicknameAvailable(std::string nickname);
 
 public:
 	Client(const Client &other)				= delete;
@@ -36,15 +36,15 @@ public:
 	~Client();
 
 	void				setFd(int fd_value);
-	void				setNickName(std::string nickname);
-	void				setUserName(std::string username);
+	void				setNickname(std::string nickname);
+	void				setUsername(std::string username);
 	void				setIpAddr(std::string ipAddr);
 	void				setSendBuffer(std::string buffer);
 	void				setRecvBuffer(std::string buffer);
 
 	const int			&getFd() const;
 	const std::string	&getNickname() const;
-	const std::string	&setUserName() const;
+	const std::string	&setUsername() const;
 	const std::string	&getIpAddr() const;
 	const std::string	&getSendBuffer() const;
 	const std::string	&getRecvBuffer() const;
