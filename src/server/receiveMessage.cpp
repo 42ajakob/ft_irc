@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 19:52:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 23:25:22 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sstream>
 #include <iostream>
 
-eCommand	checkForCommand(const std::string &line)
+static eCommand	checkForCommand(const std::string &line)
 {
 	if (std::strncmp(line.c_str(), "PING", 4) == 0 && (line.size() == 4
 		|| line[4] == ' '))
@@ -47,24 +47,29 @@ eCommand	checkForCommand(const std::string &line)
 	return (eCommand::UNKNOWN);
 }
 
-void	debugBypass(std::string &line)
+void	Server::debugBypass(std::string &line)
 {
 	line += "\r\n";
 	try{
-		write(std::stoi(line.c_str() + 7), &line[9], line.size() - 8);
+		_clients[std::stoi(line.c_str() + 7)].addToSendBuffer(&line[9]);
 		std::cout << "Message sent to client " << std::stoi(line.c_str() + 7) << ": " << &line[9] << std::flush;
 	} catch (const std::exception &e) {
 		std::cerr << "Error bypassing :" << e.what() << std::endl;
 	}
 }
 
-void	executeCommand(eCommand command, std::string &line, pollfd &pollFD)
+void	Server::Pong(int fd, std::string &line)
+{
+	line = "PONG" + line.substr(4) + "\n";
+	_clients[fd].addToSendBuffer(line);
+}
+
+void	Server::executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD)
 {
 	switch (command)
 	{
 		case eCommand::PING:
-			send(pollFD.fd, "PONG\n", 5, 0);
-			std::cout << "PONG sent to client " << pollFD.fd << std::endl;
+			Pong(pollFD.fd, line);
 			break;
 		case eCommand::PRIVMSG:
 			break;
@@ -88,22 +93,14 @@ void	executeCommand(eCommand command, std::string &line, pollfd &pollFD)
 	}
 }
 
-void	Server::receiveMessage(pollfd &pollFD)
+void	Server::parseMessage(const pollfd &pollFD)
 {
-	static char			buffer[512];
-	ssize_t				bytesRead;
-	std::stringstream	ss;
 	eCommand			command;
+	std::stringstream	ss;
 	std::string			line;
 
-	bytesRead = recv(pollFD.fd, buffer + std::strlen(buffer), sizeof(buffer) - std::strlen(buffer), 0);
-	if (bytesRead == -1)
-		throw std::runtime_error("Error receiving message from client");
-	if (bytesRead == 0)
-		return (disconnectClient(pollFD));
-	if (std::find(buffer, buffer + sizeof(buffer), '\n') == buffer + sizeof(buffer))
-		return ;
-	ss << buffer;
+	ss << _clients[pollFD.fd].getRecvBuffer();
+	_clients[pollFD.fd].clearRecvBuffer();
 	std::getline(ss, line, '\n');
 	while (line.size() > 0)
 	{
@@ -114,5 +111,21 @@ void	Server::receiveMessage(pollfd &pollFD)
 			executeCommand(command, line, pollFD);
 		std::getline(ss, line, '\n');
 	}
+}
+
+void	Server::receiveMessage(pollfd &pollFD)
+{
+	char			buffer[512];
+	ssize_t				bytesRead;
+
 	std::memset(buffer, 0, sizeof(buffer));
+	bytesRead = recv(pollFD.fd, buffer, sizeof(buffer), 0);
+	if (bytesRead == -1)
+		throw std::runtime_error("Error receiving message from client");
+	if (bytesRead == 0)
+		return (disconnectClient(pollFD));
+	_clients[pollFD.fd].addToRecvBuffer(std::string(buffer, bytesRead));
+	if (_clients[pollFD.fd].getRecvBuffer().find("\n") == std::string::npos)
+		return ;
+	parseMessage(pollFD);
 }

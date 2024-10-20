@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/20 17:39:13 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 22:47:40 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iostream>
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Utils.hpp"
 # include <vector>
 # include <map>
 # include <sys/socket.h>
@@ -46,6 +47,10 @@ class Server
 		void receiveMessage(pollfd &pollFD);
 		void disconnectClient(pollfd &pollFD);
 		void sendMessage(int fd);
+		void parseMessage(const pollfd &pollFD);
+		void executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD);
+		void debugBypass(std::string &line);
+		void Pong(int fd, std::string &line);
 
 	public:
 		const Client &getClientByNickname(const std::string &nickname) const;

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/18 19:40:14 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 22:51:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void Server::start()
 				receiveMessage(pollFDs[i]);
 			if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
 				disconnectClient(pollFDs[i]);
-			// if (pollFDs[i].revents & POLLOUT)
-			// 	sendMessage(pollFDs[i].fd);
+			if (pollFDs[i].revents & POLLOUT)
+				sendMessage(pollFDs[i].fd);
 			pollFDs[i].revents = 0;
 		}
 		pollFDs[0].revents = 0;

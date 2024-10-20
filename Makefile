@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/18 16:39:41 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/20 22:52:57 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ CLIENT_SRC	= $(addprefix client/, $(_CLIENT_SRC))
 _SERVER_SRC	=	Server.cpp\
 				mainLoop.cpp\
 				receiveMessage.cpp\
+				sendMessage.cpp\
 				serverStaticMethods.cpp
 SERVER_SRC	= $(addprefix server/, $(_SERVER_SRC))
 
