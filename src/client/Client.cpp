@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/20 20:39:30 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/10/20 22:24:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void Client::setNickname(std::string nickname)
 	if (isNicknameAvailable(nickname) == false)
 		throw std::invalid_argument("Nickname already in use");
 	_Nickname = nickname.substr(0, 9);
-	_usedNicknames.insert(nickname);
+	_usedNicknames.insert(_Nickname);
 }
 
-void Client::setIpAddr(std::string ipAddr)
+void Client::setHostname(std::string &Hostname)
 {
-	_ipAddr = ipAddr;
+	_Hostname = std::move(Hostname);
 }
 
 void Client::setUsername(std::string username)
@@ -58,14 +58,19 @@ void Client::setUsername(std::string username)
 	_Username = username.substr(0, 9);
 }
 
-void Client::setSendBuffer(std::string buffer)
+void Client::addToSendBuffer(std::string buffer)
 {
-	_sendbuffer = buffer;
+	_sendBuffer += buffer;
 }
 
-void Client::setRecvBuffer(std::string buffer)
+void Client::addToRecvBuffer(std::string buffer)
 {
-	_recvBuffer = buffer;
+	_recvBuffer += buffer;
+}
+
+void Client::markAsRegistered()
+{
+	_registered = true;
 }
 
 const int &Client::getFd() const
@@ -85,12 +90,12 @@ const std::string	&Client::setUsername() const
 
 const std::string &Client::getIpAddr() const
 {
-	return (_ipAddr);
+	return (_Hostname);
 }
 
 const std::string &Client::getSendBuffer() const
 {
-	return (_sendbuffer);
+	return (_sendBuffer);
 }
 
 const std::string &Client::getRecvBuffer() const
@@ -98,9 +103,14 @@ const std::string &Client::getRecvBuffer() const
 	return (_recvBuffer);
 }
 
+const bool &Client::IsRegistered() const
+{
+	return (_registered);
+}
+
 void Client::clearSendBuffer()
 {
-	_sendbuffer.clear();
+	_sendBuffer.clear();
 }
 
 void Client::clearRecvBuffer()
