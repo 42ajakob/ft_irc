@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/20 22:47:40 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/21 13:27:08 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ class Server
 		void executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD);
 		void debugBypass(std::string &line);
 		void Pong(int fd, std::string &line);
+		void doCapNegotiation(int fd, std::string &line);
 
 	public:
 		const Client &getClientByNickname(const std::string &nickname) const;
-		static void doCapNegotiation(int fd, std::string &line);
 
 		Server()								= delete;
 		Server(const Server &other)				= delete;

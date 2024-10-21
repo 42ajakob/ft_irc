@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 23:25:22 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/21 13:27:14 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ void	Server::Pong(int fd, std::string &line)
 	_clients[fd].addToSendBuffer(line);
 }
 
+void	Server::doCapNegotiation(int fd, std::string &line)
+{
+	if (line.find("LS") != std::string::npos)
+		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
+}
+
 void	Server::executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD)
 {
 	switch (command)
@@ -84,7 +90,7 @@ void	Server::executeCommand(const eCommand &command, std::string &line, const po
 		case eCommand::PASS:
 			break;
 		case eCommand::CAP:
-			// Server::doCapNegotiation(pollFD.fd, line);
+			doCapNegotiation(pollFD.fd, line);
 			break;
 		case eCommand::DEBUG_BYPASS:
 			debugBypass(line);
