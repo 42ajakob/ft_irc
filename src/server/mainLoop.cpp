@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 22:51:07 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:52:24 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 	pollFDs[_clients.size()].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
 	pollFDs[_clients.size()].revents = 0;
 	std::cout << "Client " << clientFd << " connected" << std::endl;
+	_clients[clientFd].addToSendBuffer(":Ft_IRC NOTICE AUTH :*** Password required to connect, use /PASS <password>\r\n");
 }
 
 void Server::disconnectClient(pollfd &pollFD)
 {
+	if (pollFD.fd == -1)
+		return ;
 	debug_print_revents(pollFD.revents);
 	std::cout << "Client " << pollFD.fd << " disconnected" << std::endl;
 	close(pollFD.fd);
@@ -77,7 +80,7 @@ void Server::start()
 		init_pollFDs(pollFDs, _socketFd);
 	while (!_sig)
 	{
-		if (poll(pollFDs.data(), _clients.size() + 1, -1) == -1 && errno != EINTR)
+		if (poll(pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
 			throw std::runtime_error(std::string("Poll Error: ") + strerror(errno));
 		if (pollFDs[0].revents & POLLIN)
 			acceptClient(pollFDs);
@@ -90,6 +93,7 @@ void Server::start()
 			if (pollFDs[i].revents & POLLOUT)
 				sendMessage(pollFDs[i].fd);
 			pollFDs[i].revents = 0;
+			checkConnectionTimeout(pollFDs[i]);
 		}
 		pollFDs[0].revents = 0;
 	}

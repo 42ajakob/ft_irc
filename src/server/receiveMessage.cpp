@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/21 13:27:14 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/21 21:12:52 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,50 +18,60 @@
 
 static eCommand	checkForCommand(const std::string &line)
 {
-	if (std::strncmp(line.c_str(), "PING", 4) == 0 && (line.size() == 4
-		|| line[4] == ' '))
+	std::string command = line.substr(0, line.find(' '));
+	if (command == "PING")
 		return (eCommand::PING);
-	if (std::strncmp(line.c_str(), "PRIVMSG", 7) == 0 && (line.size() == 7
-		|| line[7] == ' '))
+	if (command == "PONG")
+		return (eCommand::PONG);
+	if (command == "PRIVMSG")
 		return (eCommand::PRIVMSG);
-	if (std::strncmp(line.c_str(), "JOIN", 4) == 0 && (line.size() == 4
-		|| line[4] == ' '))
+	if (command == "JOIN")
 		return (eCommand::JOIN);
-	if (std::strncmp(line.c_str(), "NICK", 4) == 0 && (line.size() == 4
-		|| line[4] == ' '))
+	if (command == "NICK")
 		return (eCommand::NICK);
-	if (std::strncmp(line.c_str(), "USER", 4) == 0 && (line.size() == 4
-		|| line[4] == ' '))
+	if (command == "USER")
 		return (eCommand::USER);
-	if (std::strncmp(line.c_str(), "QUIT", 4) == 0 && (line.size() == 4
-		|| line[4] == ' '))
+	if (command == "QUIT")
 		return (eCommand::QUIT);
-	if (std::strncmp(line.c_str(), "PASS", 4) == 0 && (line.size() == 4
-		|| line[4] == ' '))
+	if (command == "PASS")
 		return (eCommand::PASS);
-	if (std::strncmp(line.c_str(), "CAP", 3) == 0 && (line.size() == 3
-		|| line[3] == ' '))
+	if (command == "CAP")
 		return (eCommand::CAP);
-	if (std::strncmp(line.c_str(), ":bypass", 7) == 0)
+	if (command == ":bypass")
 		return (eCommand::DEBUG_BYPASS);
 	return (eCommand::UNKNOWN);
 }
 
 void	Server::debugBypass(std::string &line)
 {
-	line += "\r\n";
+	const auto	fd = line.find_first_of("0123456789");
+	const auto	msgStart = line.find_first_of(":", fd) + 1;
+	int			clientFd;
+
 	try{
-		_clients[std::stoi(line.c_str() + 7)].addToSendBuffer(&line[9]);
-		std::cout << "Message sent to client " << std::stoi(line.c_str() + 7) << ": " << &line[9] << std::flush;
-	} catch (const std::exception &e) {
+		if (fd == std::string::npos)
+			return ;
+		line += "\r\n";
+		clientFd = std::stoi(&line[fd]);
+
+		_clients[clientFd].addToSendBuffer(&line[msgStart]);
+		std::cout << "Bypass message sent to client " << clientFd;
+		std::cout << std::endl;
+	}
+	catch (const std::exception &e) {
 		std::cerr << "Error bypassing :" << e.what() << std::endl;
 	}
 }
 
-void	Server::Pong(int fd, std::string &line)
+void	Server::Pong(const int &fd, const std::string &line)
 {
-	line = "PONG" + line.substr(4) + "\n";
-	_clients[fd].addToSendBuffer(line);
+	auto		pos = line.find_first_of(":");
+	std::string	pong = "PONG";
+
+	if (pos != std::string::npos)
+		pong += " " + line.substr(pos);
+	pong += "\n";
+	_clients[fd].addToSendBuffer(pong);
 }
 
 void	Server::doCapNegotiation(int fd, std::string &line)
@@ -70,24 +80,46 @@ void	Server::doCapNegotiation(int fd, std::string &line)
 		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
 }
 
+void	Server::checkPassword(const int fd, const std::string &line)
+{
+	size_t	pos = line.find_first_of(" ");
+	std::string password;
+
+	if (pos == std::string::npos)
+		return ;
+	pos++;
+	password = line.substr(pos);
+	pos = password.find_first_of("\r");
+	if (pos != std::string::npos)
+		password.erase(pos, 1);
+	_clients[fd].setPasswordCorrect(password == _password);
+}
+
 void	Server::executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD)
 {
+	try{
 	switch (command)
 	{
 		case eCommand::PING:
 			Pong(pollFD.fd, line);
+			break;
+		case eCommand::PONG:
+			_clients[pollFD.fd].resetPingTimer();
 			break;
 		case eCommand::PRIVMSG:
 			break;
 		case eCommand::JOIN:
 			break;
 		case eCommand::NICK:
+			_clients[pollFD.fd].setNickname(line);
 			break;
 		case eCommand::USER:
+			_clients[pollFD.fd].setUsername(line);
 			break;
 		case eCommand::QUIT:
 			break;
 		case eCommand::PASS:
+			checkPassword(pollFD.fd, line);
 			break;
 		case eCommand::CAP:
 			doCapNegotiation(pollFD.fd, line);
@@ -96,6 +128,10 @@ void	Server::executeCommand(const eCommand &command, std::string &line, const po
 			debugBypass(line);
 		default:
 			break;
+	}
+	}
+	catch (const std::exception &e) {
+		std::cerr << "Error executing command: " << e.what() << std::endl;
 	}
 }
 
@@ -122,7 +158,7 @@ void	Server::parseMessage(const pollfd &pollFD)
 void	Server::receiveMessage(pollfd &pollFD)
 {
 	char			buffer[512];
-	ssize_t				bytesRead;
+	ssize_t			bytesRead;
 
 	std::memset(buffer, 0, sizeof(buffer));
 	bytesRead = recv(pollFD.fd, buffer, sizeof(buffer), 0);

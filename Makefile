@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/20 22:52:57 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/21 18:25:55 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,21 @@ NAME		= ircserv
 _INCLUDE_FLAGS	= includes
 INCLUDE_FLAGS	= $(addprefix -I, $(_INCLUDE_FLAGS))
 
-_CHANNEL_SRC	= Channel.cpp
+_CHANNEL_SRC	=	Channel.cpp
 CHANNEL_SRC		= $(addprefix channel/, $(_CHANNEL_SRC))
 
-_CLIENT_SRC	= Client.cpp
+_CLIENT_SRC	=	Client.cpp\
+				bufferMethods.cpp\
+				registrationMethods.cpp\
+				timeoutMethods.cpp
 CLIENT_SRC	= $(addprefix client/, $(_CLIENT_SRC))
 
 _SERVER_SRC	=	Server.cpp\
 				mainLoop.cpp\
 				receiveMessage.cpp\
 				sendMessage.cpp\
-				serverStaticMethods.cpp
+				serverStaticMethods.cpp\
+				timeouts.cpp
 SERVER_SRC	= $(addprefix server/, $(_SERVER_SRC))
 
 _UTILS_SRC	= Utils.cpp

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/20 17:35:19 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:09:19 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #define UTILS_HPP
 
 #include <iostream>
+# include <chrono>
+
+typedef std::chrono::time_point<std::chrono::system_clock> t_TimeStamp;
 
 enum class eCommand
 {
