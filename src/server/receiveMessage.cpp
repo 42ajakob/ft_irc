@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/21 21:12:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:49:37 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ void	Server::checkPassword(const int fd, const std::string &line)
 
 	if (pos == std::string::npos)
 		return ;
+	if (line.find_first_of(":") > pos && line.find_first_of(":") != std::string::npos)
+		pos = line.find_first_of(":");
 	pos++;
 	password = line.substr(pos);
-	pos = password.find_first_of("\r");
-	if (pos != std::string::npos)
-		password.erase(pos, 1);
+	if (password[password.length() - 1] == '\r')
+		password.erase(password.length() - 1, 1);
 	_clients[fd].setPasswordCorrect(password == _password);
 }
 
@@ -104,7 +105,7 @@ void	Server::executeCommand(const eCommand &command, std::string &line, const po
 			Pong(pollFD.fd, line);
 			break;
 		case eCommand::PONG:
-			_clients[pollFD.fd].resetPingTimer();
+			_clients[pollFD.fd].resetPingTimer(line);
 			break;
 		case eCommand::PRIVMSG:
 			break;

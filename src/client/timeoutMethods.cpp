@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:45:38 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/21 20:53:42 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 17:58:43 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,24 @@ void Client::pingClient()
 {
 	if (_isPingSent == true)
 		return ;
-	std::string ping = "PING :" + _Nickname + "\r\n";
+	string ping = "PING :" + _Nickname + "\r\n";
 	addToSendBuffer(ping);
 	_isPingSent = true;
 }
 
-void Client::resetPingTimer()
+void Client::resetPingTimer(const string &line)
 {
-	if (this->IsRegistered() == true)
-	{
-		_programmedDisconnection = std::chrono::system_clock::now() + std::chrono::seconds(60);
-		_isPingSent = false;
-	}
+	std::size_t	pos = line.find_first_of(" ");
+	string		pong;
+
+	if (pos == std::string::npos)
+		return ;
+	if (line.find_first_of(":") > pos)
+		pos = line.find_first_of(":");
+	pos++;
+	pong = line.substr(pos);
+	if (pong != _Nickname + "\r")
+		return ;
+	_programmedDisconnection = std::chrono::system_clock::now() + std::chrono::seconds(300);
+	_isPingSent = false;
 }

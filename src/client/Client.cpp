@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/21 17:48:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:39:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdexcept>
 #include <chrono>
 
-std::unordered_set<std::string> Client::_usedNicknames;
+std::unordered_set<string> Client::_usedNicknames;
 
 Client::Client() : _connectionTime(std::chrono::system_clock::now()),
 	_programmedDisconnection(std::chrono::system_clock::now() + std::chrono::seconds(60))
@@ -40,17 +40,17 @@ const int	&Client::getFd() const
 	return (_fd);
 }
 
-const std::string	&Client::getNickname() const
+const string	&Client::getNickname() const
 {
 	return (_Nickname);
 }
 
-const std::string	&Client::getUsername() const
+const string	&Client::getUsername() const
 {
 	return (_Username);
 }
 
-const std::string	&Client::getIpAddr() const
+const string	&Client::getIpAddr() const
 {
 	return (_Hostname);
 }

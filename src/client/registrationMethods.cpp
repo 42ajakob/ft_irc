@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/21 20:56:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:38:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <cctype>
 
-static void	toLower(std::string &str)
+static void	toLower(string &str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 }
@@ -30,6 +30,8 @@ void Client::_markAsRegistered()
 	if (_isPasswordCorrect == false || _Nickname.empty() || _Username.empty())
 		return ;
 	_registered = true;
+	_isPingSent = false;
+	this->addToSendBuffer(":FT_IRC 001 " + _Nickname + " :Welcome to the FT_IRC Network " + _Nickname + "!" + _Username + "@" + _Hostname + "\r\n");
 }
 
 void Client::setPasswordCorrect(bool isPasswordCorrect)
@@ -37,7 +39,8 @@ void Client::setPasswordCorrect(bool isPasswordCorrect)
 	if (_registered == true)
 		throw std::invalid_argument("Client already registered");
 	_isPasswordCorrect = isPasswordCorrect;
-	_markAsRegistered();
+	if (_isPasswordCorrect == false)
+		this->addToSendBuffer(":FT_IRC 464 * :Password incorrect\r\n");
 }
 
 const bool &Client::IsPasswordCorrect() const
@@ -45,28 +48,34 @@ const bool &Client::IsPasswordCorrect() const
 	return (_isPasswordCorrect);
 }
 
-bool	Client::isNicknameAvailable(std::string nickname)
+bool	Client::isNicknameAvailable(string nickname)
 {
 	return (_usedNicknames.find(nickname) == _usedNicknames.end());
 }
 
-bool	isNicknameValid(std::string &nickname)
+bool	isNicknameValid(string &nickname)
 {
 	if (nickname.empty())
 		return (false);
+	if (nickname[nickname.length() - 1] == '\r')
+		nickname = nickname.substr(0, nickname.length() - 1);
 	if (nickname.length() > 9)
 		nickname = nickname.substr(0, 9);
 	if (nickname[0] == ':' || nickname[0] == '#'
-		|| nickname.find(' ') != std::string::npos)
+		|| nickname.find(' ') != string::npos)
 		return (false);
 	return (true);
 }
 
-void Client::setNickname(std::string nickname)
+void Client::setNickname(string nickname)
 {
+	if (_registered == true)
+		throw std::invalid_argument("Client already registered");
+	if (_isPasswordCorrect == false)
+		throw std::invalid_argument("missing password");
 	if (nickname.empty())
 		throw std::invalid_argument("Nickname cannot be empty");
-	if (nickname.find(" ") == std::string::npos)
+	if (nickname.find(" ") == string::npos)
 		throw std::invalid_argument("Missing nickname");
 	nickname = nickname.substr(nickname.find_first_of(" ") + 1);
 	toLower(nickname);
@@ -79,24 +88,28 @@ void Client::setNickname(std::string nickname)
 	_markAsRegistered();
 }
 
-void Client::setHostname(std::string &&Hostname)
+void Client::setHostname(string &&Hostname)
 {
 	_Hostname = std::move(Hostname);
 }
 
-void Client::setUsername(std::string line)
+void Client::setUsername(string line)
 {
-	std::string	username;
+	string	username;
 	size_t		start;
 	size_t		end;
 
+	if (_registered == true)
+		throw std::invalid_argument("Client already registered");
+	if (_isPasswordCorrect == false)
+		throw std::invalid_argument("missing password");
 	if (line.empty())
 		throw std::invalid_argument("Username cannot be empty");
 	start = line.find(" ");
-	if (start == std::string::npos)
+	if (start == string::npos)
 		throw std::invalid_argument("Missing username");
 	end = line.find(" ", ++start);
-	if (end == std::string::npos)
+	if (end == string::npos)
 		end = line.length();
 	username = line.substr(start, end - start);
 	_Username = username;
@@ -104,7 +117,7 @@ void Client::setUsername(std::string line)
 	if (end != line.length())
 	{
 		start = line.find("0", end);
-		if (start == std::string::npos)
+		if (start == string::npos)
 			this->setHostname("localhost");
 		start = line.find(" ", start);
 		end = line.find(" ", ++start);

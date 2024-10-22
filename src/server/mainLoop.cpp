@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/21 16:52:24 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:50:25 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 	pollFDs[_clients.size()].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
 	pollFDs[_clients.size()].revents = 0;
 	std::cout << "Client " << clientFd << " connected" << std::endl;
-	_clients[clientFd].addToSendBuffer(":Ft_IRC NOTICE AUTH :*** Password required to connect, use /PASS <password>\r\n");
 }
 
 void Server::disconnectClient(pollfd &pollFD)
