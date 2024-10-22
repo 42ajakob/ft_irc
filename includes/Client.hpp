@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 19:42:06 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:54:47 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ public:
 	const int			&getFd() const;
 	const string		&getNickname() const;
 	const string		&getUsername() const;
-	const string		&getIpAddr() const;
+	const string		&getHostname() const;
 	bool				operator==(const Client &other) const;
 
 // *** Buffer methods ***

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 19:39:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:54:47 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ const string	&Client::getUsername() const
 	return (_Username);
 }
 
-const string	&Client::getIpAddr() const
+const string	&Client::getHostname() const
 {
 	return (_Hostname);
 }
