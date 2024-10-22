@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 20:59:12 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:03:21 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,60 +24,60 @@ typedef std::unordered_set<string>	t_StringSet;
 
 class Client
 {
-private:
-	static t_StringSet	_usedNicknames;
-	int					_fd = -1;
-	string				_Nickname;
-	string				_Username;
-	string				_Hostname;
-	string				_sendBuffer;
-	string				_recvBuffer;
-	bool				_registered = false;
-	t_TimeStamp			_connectionTime;
-	t_TimeStamp			_programmedDisconnection;
-	bool				_isPingSent = true;
-	bool				_isPasswordCorrect = false;
+	private:
+		static t_StringSet	_usedNicknames;
+		int					_fd = -1;
+		string				_Nickname;
+		string				_Username;
+		string				_Hostname;
+		string				_sendBuffer;
+		string				_recvBuffer;
+		bool				_registered = false;
+		t_TimeStamp			_connectionTime;
+		t_TimeStamp			_programmedDisconnection;
+		bool				_isPingSent = true;
+		bool				_isPasswordCorrect = false;
 
-	bool				_isNicknameAvailable(string nickname);
-	void				_markAsRegistered();
+		bool				_isNicknameAvailable(string nickname);
+		void				_markAsRegistered();
 
-public:
-	Client(const Client &other)				= delete;
-	Client &operator=(const Client &other)	= delete;
-	Client();
-	~Client();
+	public:
+		Client(const Client &other)				= delete;
+		Client &operator=(const Client &other)	= delete;
+		Client();
+		~Client();
 
-	const int			&getFd() const;
-	const string		&getNickname() const;
-	const string		&getUsername() const;
-	const string		&getHostname() const;
+		const int			&getFd() const;
+		const string		&getNickname() const;
+		const string		&getUsername() const;
+		const string		&getHostname() const;
 
-	bool				operator==(const Client &other) const;
+		bool				operator==(const Client &other) const;
 
-	void				setFd(int fd_value);
+		void				setFd(int fd_value);
 
-// *** Buffer methods ***
-	void				addToSendBuffer(string buffer);
-	void				addToRecvBuffer(string buffer);
-	void				clearSendBuffer();
-	void				clearRecvBuffer();
-	const string		&getSendBuffer() const;
-	const string		&getRecvBuffer() const;
+	// *** Buffer methods ***
+		void				addToSendBuffer(string buffer);
+		void				addToRecvBuffer(string buffer);
+		void				clearSendBuffer();
+		void				clearRecvBuffer();
+		const string		&getSendBuffer() const;
+		const string		&getRecvBuffer() const;
 
-// *** Registration methods ***
-	const bool			&IsPasswordCorrect() const;
-	const bool			&IsRegistered() const;
-	void				setHostname(string &&Hostname);
-	void				setNickname(string nickname);
-	void				setPasswordCorrect(const bool);
-	void				setUsername(string username);
+	// *** Registration methods ***
+		const bool			&IsPasswordCorrect() const;
+		const bool			&IsRegistered() const;
+		void				setHostname(string &&Hostname);
+		void				setNickname(string nickname);
+		void				setPasswordCorrect(const bool);
+		void				setUsername(string username);
 
-// *** Timeout methods ***
-	const t_TimeStamp	&getProgrammedDisconnection() const;
-	const t_TimeStamp	&getConnectionTime() const;
-	void				pingClient();
-	void				resetPingTimer(const string &line);
-	void				setProgrammedDisconnection(std::chrono::seconds seconds);
+	// *** Timeout methods ***
+		const t_TimeStamp	&getProgrammedDisconnection() const;
+		const t_TimeStamp	&getConnectionTime() const;
+		void				pingClient();
+		void				resetPingTimer(const string &line);
+		void				setProgrammedDisconnection(std::chrono::seconds seconds);
 };
 
 #endif
