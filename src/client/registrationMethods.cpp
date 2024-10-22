@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 19:38:56 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:56:35 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ const bool &Client::IsPasswordCorrect() const
 	return (_isPasswordCorrect);
 }
 
-bool	Client::isNicknameAvailable(string nickname)
+bool	Client::_isNicknameAvailable(string nickname)
 {
 	return (_usedNicknames.find(nickname) == _usedNicknames.end());
 }
@@ -81,7 +81,7 @@ void Client::setNickname(string nickname)
 	toLower(nickname);
 	if (isNicknameValid(nickname) == false)
 		throw std::invalid_argument("Invalid nickname");
-	if (isNicknameAvailable(nickname) == false)
+	if (_isNicknameAvailable(nickname) == false)
 		throw std::invalid_argument("Nickname already in use");
 	_Nickname = nickname;
 	_usedNicknames.insert(_Nickname);

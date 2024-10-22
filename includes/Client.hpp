@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 19:54:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:56:35 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ private:
 	bool				_isPingSent = true;
 	bool				_isPasswordCorrect = false;
 
-	bool				isNicknameAvailable(string nickname);
+	bool				_isNicknameAvailable(string nickname);
 	void				_markAsRegistered();
 
 public:
