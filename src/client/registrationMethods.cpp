@@ -113,15 +113,5 @@ void Client::setUsername(string line)
 		end = line.length();
 	username = line.substr(start, end - start);
 	_Username = username;
-	this->setHostname("localhost");
-	if (end != line.length())
-	{
-		start = line.find("0", end);
-		if (start == string::npos)
-			this->setHostname("localhost");
-		start = line.find(" ", start);
-		end = line.find(" ", ++start);
-		this->setHostname(line.substr(start, end - start));
-	}
 	_markAsRegistered();
 }

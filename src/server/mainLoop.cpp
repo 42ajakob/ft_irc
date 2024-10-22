@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 19:50:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 20:44:15 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 	if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error setting the client socket to non-blocking");
 	_clients[clientFd].setFd(clientFd);
+	_clients[clientFd].setHostname(inet_ntoa(clientAddr.sin_addr) + std::string(":") + std::to_string(ntohs(clientAddr.sin_port)));
 	pollFDs[_clients.size()].fd = clientFd;
 	pollFDs[_clients.size()].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
 	pollFDs[_clients.size()].revents = 0;
