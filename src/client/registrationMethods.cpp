@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 19:56:35 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 20:56:06 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,12 @@
 #include <algorithm>
 #include <cctype>
 
-static void	toLower(string &str)
+bool	Client::_isNicknameAvailable(string nickname)
 {
-	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	return (_usedNicknames.find(nickname) == _usedNicknames.end());
 }
 
-const bool &Client::IsRegistered() const
-{
-	return (_registered);
-}
-
-void Client::_markAsRegistered()
+void	Client::_markAsRegistered()
 {
 	if (_isPasswordCorrect == false || _Nickname.empty() || _Username.empty())
 		return ;
@@ -34,26 +29,27 @@ void Client::_markAsRegistered()
 	this->addToSendBuffer(":FT_IRC 001 " + _Nickname + " :Welcome to the FT_IRC Network " + _Nickname + "!" + _Username + "@" + _Hostname + "\r\n");
 }
 
-void Client::setPasswordCorrect(bool isPasswordCorrect)
-{
-	if (_registered == true)
-		throw std::invalid_argument("Client already registered");
-	_isPasswordCorrect = isPasswordCorrect;
-	if (_isPasswordCorrect == false)
-		this->addToSendBuffer(":FT_IRC 464 * :Password incorrect\r\n");
-}
-
 const bool &Client::IsPasswordCorrect() const
 {
 	return (_isPasswordCorrect);
 }
 
-bool	Client::_isNicknameAvailable(string nickname)
+const bool &Client::IsRegistered() const
 {
-	return (_usedNicknames.find(nickname) == _usedNicknames.end());
+	return (_registered);
 }
 
-bool	isNicknameValid(string &nickname)
+void	Client::setHostname(string &&Hostname)
+{
+	_Hostname = std::move(Hostname);
+}
+
+static void	toLower(string &str)
+{
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
+static bool	isNicknameValid(string &nickname)
 {
 	if (nickname.empty())
 		return (false);
@@ -67,7 +63,7 @@ bool	isNicknameValid(string &nickname)
 	return (true);
 }
 
-void Client::setNickname(string nickname)
+void	Client::setNickname(string nickname)
 {
 	if (_registered == true)
 		throw std::invalid_argument("Client already registered");
@@ -88,12 +84,16 @@ void Client::setNickname(string nickname)
 	_markAsRegistered();
 }
 
-void Client::setHostname(string &&Hostname)
+void	Client::setPasswordCorrect(bool isPasswordCorrect)
 {
-	_Hostname = std::move(Hostname);
+	if (_registered == true)
+		throw std::invalid_argument("Client already registered");
+	_isPasswordCorrect = isPasswordCorrect;
+	if (_isPasswordCorrect == false)
+		this->addToSendBuffer(":FT_IRC 464 * :Password incorrect\r\n");
 }
 
-void Client::setUsername(string line)
+void	Client::setUsername(string line)
 {
 	string	username;
 	size_t		start;

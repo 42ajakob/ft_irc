@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 19:56:35 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 20:59:12 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,36 +47,37 @@ public:
 	Client();
 	~Client();
 
-	void				setFd(int fd_value);
-	void				setNickname(string nickname);
-	void				setUsername(string username);
-	void				setHostname(string &&Hostname);
-
 	const int			&getFd() const;
 	const string		&getNickname() const;
 	const string		&getUsername() const;
 	const string		&getHostname() const;
+
 	bool				operator==(const Client &other) const;
 
+	void				setFd(int fd_value);
+
 // *** Buffer methods ***
-	const string		&getSendBuffer() const;
-	const string		&getRecvBuffer() const;
 	void				addToSendBuffer(string buffer);
 	void				addToRecvBuffer(string buffer);
 	void				clearSendBuffer();
 	void				clearRecvBuffer();
+	const string		&getSendBuffer() const;
+	const string		&getRecvBuffer() const;
 
 // *** Registration methods ***
-	const t_TimeStamp	&getConnectionTime() const;
-	void				setPasswordCorrect(const bool);
 	const bool			&IsPasswordCorrect() const;
 	const bool			&IsRegistered() const;
+	void				setHostname(string &&Hostname);
+	void				setNickname(string nickname);
+	void				setPasswordCorrect(const bool);
+	void				setUsername(string username);
 
 // *** Timeout methods ***
+	const t_TimeStamp	&getProgrammedDisconnection() const;
+	const t_TimeStamp	&getConnectionTime() const;
 	void				pingClient();
 	void				resetPingTimer(const string &line);
 	void				setProgrammedDisconnection(std::chrono::seconds seconds);
-	const t_TimeStamp	&getProgrammedDisconnection() const;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 19:54:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:00:19 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ Client::Client() : _connectionTime(std::chrono::system_clock::now()),
 Client::~Client()
 {
 	_usedNicknames.erase(_Nickname);
-}
-
-void	Client::setFd(int fd_value)
-{
-	_fd = fd_value;
 }
 
 const int	&Client::getFd() const
@@ -58,4 +53,9 @@ const string	&Client::getHostname() const
 bool	Client::operator==(const Client &other) const
 {
 	return (other.getNickname() == this->getNickname());
+}
+
+void	Client::setFd(int fd_value)
+{
+	_fd = fd_value;
 }
