@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/18 16:38:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 20:44:15 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 	if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error setting the client socket to non-blocking");
 	_clients[clientFd].setFd(clientFd);
+	_clients[clientFd].setHostname(inet_ntoa(clientAddr.sin_addr) + std::string(":") + std::to_string(ntohs(clientAddr.sin_port)));
 	pollFDs[_clients.size()].fd = clientFd;
 	pollFDs[_clients.size()].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
 	pollFDs[_clients.size()].revents = 0;
@@ -47,11 +48,14 @@ void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 
 void Server::disconnectClient(pollfd &pollFD)
 {
+	if (pollFD.fd == -1)
+		return ;
 	debug_print_revents(pollFD.revents);
 	std::cout << "Client " << pollFD.fd << " disconnected" << std::endl;
 	close(pollFD.fd);
 	_clients.erase(pollFD.fd);
 	pollFD.fd = -1;
+	pollFD.revents = 0;
 }
 
 static void	init_pollFDs(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs,
@@ -76,7 +80,7 @@ void Server::start()
 		init_pollFDs(pollFDs, _socketFd);
 	while (!_sig)
 	{
-		if (poll(pollFDs.data(), _clients.size() + 1, -1) == -1 && errno != EINTR)
+		if (poll(pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
 			throw std::runtime_error(std::string("Poll Error: ") + strerror(errno));
 		if (pollFDs[0].revents & POLLIN)
 			acceptClient(pollFDs);
@@ -86,9 +90,10 @@ void Server::start()
 				receiveMessage(pollFDs[i]);
 			if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
 				disconnectClient(pollFDs[i]);
-			// if (pollFDs[i].revents & POLLOUT)
-			// 	sendMessage(pollFDs[i].fd);
+			if (pollFDs[i].revents & POLLOUT)
+				sendMessage(pollFDs[i].fd);
 			pollFDs[i].revents = 0;
+			checkConnectionTimeout(pollFDs[i]);
 		}
 		pollFDs[0].revents = 0;
 	}

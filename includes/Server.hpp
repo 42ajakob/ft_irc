@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/18 13:12:01 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:04:45 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iostream>
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Utils.hpp"
 # include <vector>
 # include <map>
 # include <sys/socket.h>
@@ -42,10 +43,18 @@ class Server
 		std::string				_password;
 		sockaddr_in				_serverAddr;
 
-		void acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs);
-		void receiveMessage(pollfd &pollFD);
-		void disconnectClient(pollfd &pollFD);
-		void sendMessage(int fd);
+		void	acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs);
+		void	receiveMessage(pollfd &pollFD);
+		void	disconnectClient(pollfd &pollFD);
+		void	sendMessage(int fd);
+		void	parseMessage(const pollfd &pollFD);
+		void	executeCommand(const eCommand &command, std::string &line,
+			const pollfd &pollFD);
+		void	debugBypass(std::string &line);
+		void	Pong(const int &fd, const std::string &line);
+		void	doCapNegotiation(int fd, std::string &line);
+		void	checkConnectionTimeout(pollfd &pollFD);
+		void	checkPassword(const int fd, const std::string &line);
 
 	public:
 		const Client &getClientByNickname(const std::string &nickname) const;
@@ -56,14 +65,14 @@ class Server
 		Server(std::string port, std::string password);
 		~Server();
 		
-		void init();
-		void start();
-		void stop();
-		void restart();
-		void reload();
-		void status();
-		void fdCloser();
-		void help();
+		void	init();
+		void	start();
+		void	stop();
+		void	restart();
+		void	reload();
+		void	status();
+		void	fdCloser();
+		void	help();
 };
 
 #endif

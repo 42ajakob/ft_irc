@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 19:18:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/08 21:40:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/20 15:57:53 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ not consider the following:
 		'\r\n' sequence, and the maximum length of a message is 512 characters,
 		including the '\r\n'.
 	- Each message sent to the server will be in the format:
-		":<prefix> <command> <params (max 15)> <trailing>\r\n"
+		":<prefix> <command> <params (max 15)> :<trailing>\r\n"
 		or
-		"<command> <params (max 15)> <trailing>\r\n"
+		"<command> <params (max 15)> :<trailing>\r\n"
 		? Notice that when the prefix is present, the first character of the
 		?	parameter is a colon ':', and all the parameters are separated
-		?	by a space ' '.
+		?	by a space ' ', except for the last one (trailing), which is
+		?	separated by a ':' and can contain spaces.
 	@Server Functionality:
 				--- this ---
 	- The server will ask for a password when a new Client connects.
