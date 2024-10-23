@@ -41,7 +41,9 @@ void Server::initSocket()
 	_serverAddr.sin_family = AF_INET;
 	_serverAddr.sin_port = htons(_port);
 	_serverAddr.sin_addr.s_addr = INADDR_ANY;
-	_serverAddr.sin_len = sizeof(_serverAddr);
+	#ifdef __APPLE__
+		_serverAddr.sin_len = sizeof(_serverAddr);
+	#endif
 	if (bind(_socketFd, (struct sockaddr *)&_serverAddr, sizeof(_serverAddr)) == -1)
 		throw std::runtime_error("Error binding the server socket");
 	if (listen(_socketFd, BACKLOG_SIZE) == -1)
