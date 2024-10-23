@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 19:49:37 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:42:40 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	Server::debugBypass(std::string &line)
 
 void	Server::Pong(const int &fd, const std::string &line)
 {
-	auto		pos = line.find_first_of(":");
+	const auto	pos = line.find_first_of(":");
 	std::string	pong = "PONG";
 
 	if (pos != std::string::npos)
@@ -78,6 +78,8 @@ void	Server::doCapNegotiation(int fd, std::string &line)
 {
 	if (line.find("LS") != std::string::npos)
 		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
+	if (line.find("REQ") != std::string::npos)
+		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(line.find_first_of(":")) + "\n");
 }
 
 void	Server::checkPassword(const int fd, const std::string &line)
