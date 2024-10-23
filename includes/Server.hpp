@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 21:04:45 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:32:08 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Server
 		Server(std::string port, std::string password);
 		~Server();
 		
-		void	init();
+		void	initSocket();
 		void	start();
 		void	stop();
 		void	restart();

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 20:35:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:34:25 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ Server::Server(std::string port, std::string password)
 Server::~Server()
 {}
 
-void Server::init()
+void Server::initSocket()
 {
 	const int	True = 1;
 	_socketFd = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socketFd == -1 || fcntl(_socketFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error creating the server socket");
-	std::cout << "Server initialized" << std::endl;
 	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int)) == -1)
 		throw std::runtime_error("Error setting the socket options");
 	_serverAddr.sin_family = AF_INET;
@@ -47,6 +46,7 @@ void Server::init()
 		throw std::runtime_error("Error binding the server socket");
 	if (listen(_socketFd, BACKLOG_SIZE) == -1)
 		throw std::runtime_error("Error listening on the server socket");
+	std::cout << "Server socket created" << std::endl;
 }
 
 void Server::fdCloser()
