@@ -12,6 +12,7 @@
 
 #include "Channel.hpp"
 #include "Server.hpp"
+#include <algorithm>
 
 std::vector<std::string> Channel::_usedNames;
 

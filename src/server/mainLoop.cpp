@@ -13,6 +13,7 @@
 #include "Server.hpp"
 #include <poll.h>
 #include <array>
+#include <cstring>
 
 static void	debug_print_revents(short revents)
 {
