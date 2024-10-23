@@ -11,43 +11,43 @@
 # **************************************************************************** #
 
 # Metadata
-AUTHORS		= apeposhi & jfikents & ajakob
-NAME		= ircserv
+AUTHORS			=	apeposhi & jfikents & ajakob
+NAME			=	ircserv
 
 # Files
-_INCLUDE_FLAGS	= includes
-INCLUDE_FLAGS	= $(addprefix -I, $(_INCLUDE_FLAGS))
+_INCLUDE_FLAGS	=	includes
+INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
 _CHANNEL_SRC	=	Channel.cpp
-CHANNEL_SRC		= $(addprefix channel/, $(_CHANNEL_SRC))
+CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
-_CLIENT_SRC	=	Client.cpp\
-				bufferMethods.cpp\
-				registrationMethods.cpp\
-				timeoutMethods.cpp
-CLIENT_SRC	= $(addprefix client/, $(_CLIENT_SRC))
+_CLIENT_SRC		=	Client.cpp\
+					bufferMethods.cpp\
+					registrationMethods.cpp\
+					timeoutMethods.cpp
+CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
 
-_SERVER_SRC	=	Server.cpp\
-				mainLoop.cpp\
-				receiveMessage.cpp\
-				sendMessage.cpp\
-				serverStaticMethods.cpp\
-				timeouts.cpp
-SERVER_SRC	= $(addprefix server/, $(_SERVER_SRC))
+_SERVER_SRC		=	Server.cpp\
+					mainLoop.cpp\
+					receiveMessage.cpp\
+					sendMessage.cpp\
+					serverStaticMethods.cpp\
+					timeouts.cpp
+SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
-_UTILS_SRC	= Utils.cpp
-UTILS_SRC	= $(addprefix utils/, $(_UTILS_SRC))
+_UTILS_SRC		=	Utils.cpp
+UTILS_SRC		=	$(addprefix utils/, $(_UTILS_SRC))
 
-_SRC		= main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(UTILS_SRC) $(CHANNEL_SRC)
-SRC			= $(addprefix src/, $(_SRC))
-OBJ			= $(SRC:src/%.cpp=bin/%.o)
+_SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(UTILS_SRC) $(CHANNEL_SRC)
+SRC				=	$(addprefix src/, $(_SRC))
+OBJ				=	$(SRC:src/%.cpp=bin/%.o)
 
 # Compiler and Flags
-CXX			:= c++
-CXXFLAGS	:= -Wall -Wextra -Werror -std=c++17 -MMD -MP
+CXX				:=	c++
+CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++17 -MMD -MP
 
 ifdef DEBUG
-CXXFLAGS += -g3
+CXXFLAGS		+=	-g3
 endif
 
 # Targets
