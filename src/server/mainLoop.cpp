@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/24 15:41:24 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:11:20 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static void	debug_print_revents(short revents)
 	std::cout << std::endl;
 }
 
-void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
+void Server::acceptClient()
 {
 	int			clientFd;
 	sockaddr_in	clientAddr;
 	socklen_t	clientAddrLen = sizeof(clientAddr);
-	const auto	clientPollFD = std::find_if(pollFDs.begin(), pollFDs.end(), [](const pollfd &pollFD) { return pollFD.fd == -1; });
+	const auto	clientPollFD = std::find_if(_pollFDs.begin(), _pollFDs.end(), [](const pollfd &pollFD) { return pollFD.fd == -1; });
 
 	clientFd = accept(_socketFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
 	if (clientFd == -1 && errno != EINTR)
@@ -58,43 +58,38 @@ void Server::disconnectClient(pollfd &pollFD)
 	pollFD.revents = 0;
 }
 
-static void	init_pollFDs(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs,
-	int socketFd)
+void	Server::initPollFDs()
 {
-	pollFDs[0].fd = socketFd;
-	pollFDs[0].events = POLLIN;
-	pollFDs[0].revents = 0;
-	for (size_t i = 1; i < pollFDs.size(); i++)
+	_pollFDs[0].fd = _socketFd;
+	_pollFDs[0].events = POLLIN;
+	_pollFDs[0].revents = 0;
+	for (size_t i = 1; i < _pollFDs.size(); i++)
 	{
-		pollFDs[i].fd = -1;
-		pollFDs[i].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
-		pollFDs[i].revents = 0;
+		_pollFDs[i].fd = -1;
+		_pollFDs[i].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
+		_pollFDs[i].revents = 0;
 	}
 }
 
 void Server::start()
 {
-	static std::array<pollfd, BACKLOG_SIZE + 1>	pollFDs;
-
-	if (pollFDs[0].fd != _socketFd)
-		init_pollFDs(pollFDs, _socketFd);
 	while (!_sig)
 	{
-		if (poll(pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
+		if (poll(_pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
 			throw std::runtime_error(std::string("Poll Error: ") + strerror(errno));
-		if (pollFDs[0].revents & POLLIN)
-			acceptClient(pollFDs);
+		if (_pollFDs[0].revents & POLLIN)
+			acceptClient();
 		for (size_t i = 1; i <= _clients.size(); i++)
 		{
-			if (pollFDs[i].revents & POLLIN)
-				receiveMessage(pollFDs[i]);
-			if (pollFDs[i].revents & POLLHUP || pollFDs[i].revents & POLLERR)
-				disconnectClient(pollFDs[i]);
-			if (pollFDs[i].revents & POLLOUT)
-				sendMessage(pollFDs[i].fd);
-			pollFDs[i].revents = 0;
-			checkConnectionTimeout(pollFDs[i]);
+			if (_pollFDs[i].revents & POLLIN)
+				receiveMessage(_pollFDs[i]);
+			if (_pollFDs[i].revents & POLLHUP || _pollFDs[i].revents & POLLERR)
+				disconnectClient(_pollFDs[i]);
+			if (_pollFDs[i].revents & POLLOUT)
+				sendMessage(_pollFDs[i].fd);
+			_pollFDs[i].revents = 0;
+			checkConnectionTimeout(_pollFDs[i]);
 		}
-		pollFDs[0].revents = 0;
+		_pollFDs[0].revents = 0;
 	}
 }

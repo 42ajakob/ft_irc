@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:15:50 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/23 14:32:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:11:20 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int main(int argc, char **argv)
 		// SIGINT
 		// SIGQUIT
 		server.initSocket();
+		server.initPollFDs();
 		std::cout << "Starting server" << std::endl;
 		server.start();
 	}

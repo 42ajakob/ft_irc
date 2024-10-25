@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/25 19:54:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:11:20 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,24 @@
 
 using std::unordered_map;
 
+typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
+
 class Client;
 class Channel;
 
 class Server
 {
 	private:
+		static bool					_sig;
 		int							_port;
 		int							_socketFd;
-		static bool					_sig;
 		unordered_map<int, Client>	_clients;
+		t_PollFDs					_pollFDs;
 		std::vector<Channel>		_channels;
 		std::string					_password;
 		sockaddr_in					_serverAddr;
 
-		void	acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs);
+		void	acceptClient();
 		void	receiveMessage(pollfd &pollFD);
 		void	disconnectClient(pollfd &pollFD);
 		void	sendMessage(int fd);
@@ -68,6 +71,7 @@ class Server
 		~Server();
 		
 		void	initSocket();
+		void	initPollFDs();
 		void	start();
 		void	stop();
 		void	restart();
