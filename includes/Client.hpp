@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/22 21:03:21 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:43:46 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,12 @@ class Client
 {
 	private:
 		static t_StringSet	_usedNicknames;
-		int					_fd = -1;
 		string				_Nickname;
 		string				_Username;
 		string				_Hostname;
 		string				_sendBuffer;
 		string				_recvBuffer;
 		bool				_registered = false;
-		t_TimeStamp			_connectionTime;
 		t_TimeStamp			_programmedDisconnection;
 		bool				_isPingSent = true;
 		bool				_isPasswordCorrect = false;
@@ -47,14 +45,11 @@ class Client
 		Client();
 		~Client();
 
-		const int			&getFd() const;
 		const string		&getNickname() const;
 		const string		&getUsername() const;
 		const string		&getHostname() const;
 
 		bool				operator==(const Client &other) const;
-
-		void				setFd(int fd_value);
 
 	// *** Buffer methods ***
 		void				addToSendBuffer(string buffer);

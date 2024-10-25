@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 18:03:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:51:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 		return ;
 	Client		&client = _clients[pollFD.fd];
 	auto		now		= std::chrono::system_clock::now();
-	auto		elapsed = now - _clients[pollFD.fd].getConnectionTime();
-	auto		elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(elapsed);
 
-	if (elapsedSeconds > std::chrono::seconds(10) && client.IsRegistered() == false
-		&& client.getProgrammedDisconnection() > now + std::chrono::seconds(6))
+	if (client.IsRegistered() == false
+		&& client.getProgrammedDisconnection() > now + std::chrono::seconds(4)
+		&& client.getProgrammedDisconnection() < now + std::chrono::seconds(10))
 	{
 		std::cout << "Client " << pollFD.fd << " timed out" << std::endl;
 		client.addToSendBuffer("ERROR :Closing Link: " + client.getNickname() + " (Failed to register in Time)\r\n");

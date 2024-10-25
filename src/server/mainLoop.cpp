@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 20:44:15 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:41:24 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,19 @@ static void	debug_print_revents(short revents)
 
 void Server::acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs)
 {
-	int					clientFd;
-	sockaddr_in			clientAddr;
-	socklen_t			clientAddrLen = sizeof(clientAddr);
+	int			clientFd;
+	sockaddr_in	clientAddr;
+	socklen_t	clientAddrLen = sizeof(clientAddr);
+	const auto	clientPollFD = std::find_if(pollFDs.begin(), pollFDs.end(), [](const pollfd &pollFD) { return pollFD.fd == -1; });
 
 	clientFd = accept(_socketFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
 	if (clientFd == -1 && errno != EINTR)
 		throw std::runtime_error("Error accepting a client connection");
+	clientPollFD->fd = clientFd;
+	_clients[clientFd].setHostname(inet_ntoa(clientAddr.sin_addr) + std::string(":") + std::to_string(ntohs(clientAddr.sin_port)));
+	clientPollFD->revents = 0;
 	if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error setting the client socket to non-blocking");
-	_clients[clientFd].setFd(clientFd);
-	_clients[clientFd].setHostname(inet_ntoa(clientAddr.sin_addr) + std::string(":") + std::to_string(ntohs(clientAddr.sin_port)));
-	pollFDs[_clients.size()].fd = clientFd;
-	pollFDs[_clients.size()].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
-	pollFDs[_clients.size()].revents = 0;
 	std::cout << "Client " << clientFd << " connected" << std::endl;
 }
 

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:45:38 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/22 20:57:15 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:44:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 const t_TimeStamp	&Client::getProgrammedDisconnection() const
 {
 	return (_programmedDisconnection);
-}
-
-const t_TimeStamp	&Client::getConnectionTime() const
-{
-	return (_connectionTime);
 }
 
 void Client::pingClient()

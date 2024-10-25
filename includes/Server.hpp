@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/23 14:32:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:54:47 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "Channel.hpp"
 # include "Utils.hpp"
 # include <vector>
-# include <map>
+# include <unordered_map>
 # include <sys/socket.h>
 # include <sys/types.h> // getaddrinfo, bind, connect
 # include <arpa/inet.h> // htons, htonl, ntohl, ntohs, inet_addr, inet_ntoa
@@ -29,19 +29,21 @@
 
 # define BACKLOG_SIZE 512
 
+using std::unordered_map;
+
 class Client;
 class Channel;
 
 class Server
 {
 	private:
-		int						_port;
-		int						_socketFd;
-		static bool				_sig;
-		std::map<int, Client>	_clients;
-		std::vector<Channel>	_channels;
-		std::string				_password;
-		sockaddr_in				_serverAddr;
+		int							_port;
+		int							_socketFd;
+		static bool					_sig;
+		unordered_map<int, Client>	_clients;
+		std::vector<Channel>		_channels;
+		std::string					_password;
+		sockaddr_in					_serverAddr;
 
 		void	acceptClient(std::array<pollfd, BACKLOG_SIZE + 1> &pollFDs);
 		void	receiveMessage(pollfd &pollFD);
