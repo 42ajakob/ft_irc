@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/23 14:42:40 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:11:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	Server::checkPassword(const int fd, const std::string &line)
 
 void	Server::executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD)
 {
-	try{
 	switch (command)
 	{
 		case eCommand::PING:
@@ -132,10 +131,6 @@ void	Server::executeCommand(const eCommand &command, std::string &line, const po
 		default:
 			break;
 	}
-	}
-	catch (const std::exception &e) {
-		std::cerr << "Error executing command: " << e.what() << std::endl;
-	}
 }
 
 void	Server::parseMessage(const pollfd &pollFD)
@@ -152,8 +147,12 @@ void	Server::parseMessage(const pollfd &pollFD)
 		command = checkForCommand(line);
 		if (command != eCommand::DEBUG_BYPASS)
 			std::cout << "Received message from client " << pollFD.fd << ": " << line << std::endl;
-		if (command != eCommand::UNKNOWN)
+		try {
 			executeCommand(command, line, pollFD);
+		}
+		catch (const std::exception &e) {
+			std::cerr << "Error executing command: " << e.what() << std::endl;
+		}
 		std::getline(ss, line, '\n');
 	}
 }
