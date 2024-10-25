@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:45:38 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/24 15:44:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:39:21 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void Client::resetPingTimer(const string &line)
 	pong = line.substr(pos);
 	if (pong != _Nickname + "\r")
 		return ;
-	_programmedDisconnection = std::chrono::system_clock::now() + std::chrono::seconds(300);
+	setProgrammedDisconnection(std::chrono::seconds(TIMEOUT));
 	_isPingSent = false;
 }
 
