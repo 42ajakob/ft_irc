@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/24 15:11:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:29:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,13 @@ void	Server::debugBypass(std::string &line)
 
 void	Server::Pong(const int &fd, const std::string &line)
 {
-	const auto	pos = line.find_first_of(":");
+	auto	pos = line.find_first_of(":");
 	std::string	pong = "PONG";
 
+	if (pos == std::string::npos)
+		pos = line.find_first_of(" ");
+	if (line[pos] == ' ')
+		pos++;
 	if (pos != std::string::npos)
 		pong += " " + line.substr(pos);
 	pong += "\n";
