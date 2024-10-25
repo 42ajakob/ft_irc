@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/25 19:51:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:14:03 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 	{
 		std::cout << "Client " << pollFD.fd << " timed out" << std::endl;
 		client.addToSendBuffer("ERROR :Closing Link: " + client.getNickname() + " (Failed to register in Time)\r\n");
-		client.setProgrammedDisconnection(std::chrono::seconds(5));
+		client.setProgrammedDisconnection(std::chrono::seconds(3));
 	}
 	if (client.getProgrammedDisconnection() < now + std::chrono::seconds(10))
 		client.pingClient();
