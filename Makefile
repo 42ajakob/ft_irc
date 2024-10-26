@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/21 18:25:55 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/26 20:57:14 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ _SERVER_SRC		=	Server.cpp\
 					receiveMessage.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\
-					timeouts.cpp
+					timeouts.cpp\
+					utils.cpp
 SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
 _UTILS_SRC		=	Utils.cpp
