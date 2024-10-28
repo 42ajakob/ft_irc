@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/24 15:43:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:12:43 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unordered_set>
 # include <chrono>
 # include "Utils.hpp"
+#include <arpa/inet.h>
 
 using std::string;
 
@@ -62,14 +63,13 @@ class Client
 	// *** Registration methods ***
 		const bool			&IsPasswordCorrect() const;
 		const bool			&IsRegistered() const;
-		void				setHostname(string &&Hostname);
-		void				setNickname(string nickname);
+		void				setHostname(const sockaddr_in &clientAddr);
+		void				setNickname(string &&nickname);
 		void				setPasswordCorrect(const bool);
-		void				setUsername(string username);
+		void				setUsername(string &&username);
 
 	// *** Timeout methods ***
 		const t_TimeStamp	&getProgrammedDisconnection() const;
-		const t_TimeStamp	&getConnectionTime() const;
 		void				pingClient();
 		void				resetPingTimer(const string &line);
 		void				setProgrammedDisconnection(std::chrono::seconds seconds);

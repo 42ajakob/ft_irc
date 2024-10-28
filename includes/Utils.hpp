@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/25 20:42:26 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:29:42 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ enum class eCommand
 	CAP,
 	DEBUG_BYPASS
 };
+
+size_t	findNextParameter(const std::string &line, size_t pos = 0);
 
 class Utils
 {

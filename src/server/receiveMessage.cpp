@@ -119,10 +119,10 @@ void	Server::executeCommand(const eCommand &command, std::string &line, const po
 		case eCommand::JOIN:
 			break;
 		case eCommand::NICK:
-			_clients[pollFD.fd].setNickname(line);
+			_clients[pollFD.fd].setNickname(std::move(line));
 			break;
 		case eCommand::USER:
-			_clients[pollFD.fd].setUsername(line);
+			_clients[pollFD.fd].setUsername(std::move(line));
 			break;
 		case eCommand::QUIT:
 			break;
