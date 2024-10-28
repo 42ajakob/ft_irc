@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/25 20:39:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:48:49 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static eCommand	checkForCommand(const std::string &line)
 
 void	Server::debugBypass(std::string &line)
 {
-	const auto	fd = line.find_first_of("0123456789");
-	const auto	msgStart = line.find_first_of(":", fd) + 1;
-	int			clientFd;
+	const size_t	fd = line.find_first_of("0123456789");
+	const size_t	msgStart = line.find_first_of(":", fd) + 1;
+	int				clientFd;
 
 	try{
 		if (fd == std::string::npos)
@@ -65,13 +65,9 @@ void	Server::debugBypass(std::string &line)
 
 void	Server::Pong(const int &fd, const std::string &line)
 {
-	auto	pos = line.find_first_of(":");
+	size_t		pos = findNextParameter(line);
 	std::string	pong = "PONG";
 
-	if (pos == std::string::npos)
-		pos = line.find_first_of(" ");
-	if (line[pos] == ' ')
-		pos++;
 	if (pos != std::string::npos)
 		pong += " " + line.substr(pos);
 	pong += "\n";
@@ -85,19 +81,22 @@ void	Server::doCapNegotiation(int fd, std::string &line)
 	if (line.find("LS") != std::string::npos)
 		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
 	if (line.find("REQ") != std::string::npos)
-		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(line.find_first_of(":")) + "\n");
+	{
+		size_t	pos = findNextParameter(line, line.find("REQ"));
+		pos = findNextParameter(line, pos);
+		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(pos) + "\n");
+	}
 }
 
 void	Server::checkPassword(const int fd, const std::string &line)
 {
-	size_t	pos = line.find_first_of(" ");
-	std::string password;
+	size_t		pos = findNextParameter(line);
+	std::string	password;
 
 	if (pos == std::string::npos)
 		return ;
-	if (line.find_first_of(":") > pos && line.find_first_of(":") != std::string::npos)
-		pos = line.find_first_of(":");
-	pos++;
+	if (line[pos] == ':')
+		pos++;
 	password = line.substr(pos);
 	if (password[password.length() - 1] == '\r')
 		password.erase(password.length() - 1, 1);
