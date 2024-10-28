@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 18:09:00 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:59:08 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void Server::start()
 	while (!_sig)
 	{
 		if (poll(_pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
-			throw std::runtime_error(std::string("Poll Error: ") + strerror(errno));
+			throw std::runtime_error(string("Poll Error: ") + strerror(errno));
 		if (_pollFDs[0].revents & POLLIN)
 			acceptClient();
 		for (size_t i = 1; i <= _clients.size(); i++)

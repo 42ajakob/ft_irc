@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:15:50 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/25 20:11:20 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:57:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 		std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
 		return (1);
 	}
-	Server server(argv[1], argv[2]);
+	Server server(argv[1], std::move(argv[2]));
 
 	try {
 		// start signals

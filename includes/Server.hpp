@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 18:51:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:00:23 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define BACKLOG_SIZE 512
 
 using std::unordered_map;
+using std::string;
 
 typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
 
@@ -45,29 +46,29 @@ class Server
 		unordered_map<int, Client>	_clients;
 		t_PollFDs					_pollFDs;
 		std::vector<Channel>		_channels;
-		std::string					_password;
+		string					_password;
 		sockaddr_in					_serverAddr;
 
 		void	acceptClient();
 		void	receiveMessage(pollfd &pollFD);
 		void	disconnectClient(pollfd &pollFD);
-		void	sendMessage(int fd);
+		void	sendMessage(const int &fd);
 		void	parseMessage(const int &fd);
-		void	executeCommand(const eCommand &command, std::string &line,
-			const int &fd);
-		void	debugBypass(std::string &line);
-		void	Pong(const int &fd, const std::string &line);
-		void	doCapNegotiation(const int &fd, std::string &line);
+		void	executeCommand(const eCommand &command, string &line,
+					const int &fd);
+		void	debugBypass(string &line);
+		void	Pong(const int &fd, const string &line);
+		void	doCapNegotiation(const int &fd, string &line);
 		void	checkConnectionTimeout(pollfd &pollFD);
-		void	checkPassword(const int &fd, const std::string &line);
+		void	checkPassword(const int &fd, const string &line);
 
 	public:
-		const Client &getClientByNickname(const std::string &nickname) const;
+		const Client &getClientByNickname(const string &nickname) const;
 
 		Server()								= delete;
 		Server(const Server &other)				= delete;
 		Server &operator=(const Server &other)	= delete;
-		Server(std::string port, std::string password);
+		Server(const string &port, const string &&password);
 		~Server();
 		
 		void	initSocket();

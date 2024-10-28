@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:24:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/17 14:52:30 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:59:49 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdexcept>
 #include "Client.hpp"
 
-const Client &Server::getClientByNickname(const std::string &nickname) const
+const Client &Server::getClientByNickname(const string &nickname) const
 {
 	auto it = std::find_if(_clients.begin(), _clients.end(),
 		[&nickname](const std::pair<const int, Client> &client)

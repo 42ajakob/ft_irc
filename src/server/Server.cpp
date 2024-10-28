@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 18:19:30 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:56:32 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 bool Server::_sig = false;
 
-Server::Server(std::string port, std::string password)
-	: _password(password)
+Server::Server(const string &port, const string &&password): _password(std::move(password))
 {
 	try{
 		this->_port = std::stoi(port);

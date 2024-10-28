@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 22:51:52 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/20 23:31:37 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:59:38 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include <stdexcept>
 #include <sstream>
 
-void	Server::sendMessage(int fd)
+void	Server::sendMessage(const int &fd)
 {
 	ssize_t	bytesSent;
-	std::string	buffer;
+	string	buffer;
 
 	buffer = _clients[fd].getSendBuffer();
 	if (buffer.empty())

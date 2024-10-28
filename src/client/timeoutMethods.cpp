@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:45:38 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/25 20:39:21 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:58:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void Client::resetPingTimer(const string &line)
 	std::size_t	pos = line.find_first_of(" ");
 	string		pong;
 
-	if (pos == std::string::npos)
+	if (pos == string::npos)
 		return ;
 	if (line.find_first_of(":") > pos)
 		pos = line.find_first_of(":");
