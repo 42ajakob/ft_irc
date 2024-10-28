@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 18:48:39 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:51:25 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ class Server
 		void	receiveMessage(pollfd &pollFD);
 		void	disconnectClient(pollfd &pollFD);
 		void	sendMessage(int fd);
-		void	parseMessage(const pollfd &pollFD);
+		void	parseMessage(const int &fd);
 		void	executeCommand(const eCommand &command, std::string &line,
 			const int &fd);
 		void	debugBypass(std::string &line);

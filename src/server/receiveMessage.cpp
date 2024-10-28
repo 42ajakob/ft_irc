@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 18:49:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:52:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,22 +139,22 @@ void	Server::executeCommand(const eCommand &command, std::string &line,
 	}
 }
 
-void	Server::parseMessage(const pollfd &pollFD)
+void	Server::parseMessage(const int &fd)
 {
 	eCommand			command;
 	std::stringstream	ss;
 	std::string			line;
 
-	ss << _clients[pollFD.fd].getRecvBuffer();
-	_clients[pollFD.fd].clearRecvBuffer();
+	ss << _clients[fd].getRecvBuffer();
+	_clients[fd].clearRecvBuffer();
 	std::getline(ss, line, '\n');
 	while (line.size() > 0)
 	{
 		command = checkForCommand(line);
 		if (command != eCommand::DEBUG_BYPASS)
-			std::cout << "Received message from client " << pollFD.fd << ": " << line << std::endl;
+			std::cout << "Received message from client " << fd << ": " << line << std::endl;
 		try {
-			executeCommand(command, line, pollFD.fd);
+			executeCommand(command, line, fd);
 		}
 		catch (const std::exception &e) {
 			std::cerr << "Error executing command: " << e.what() << std::endl;
@@ -177,5 +177,5 @@ void	Server::receiveMessage(pollfd &pollFD)
 	_clients[pollFD.fd].addToRecvBuffer(std::string(buffer, bytesRead));
 	if (_clients[pollFD.fd].getRecvBuffer().find("\n") == std::string::npos)
 		return ;
-	parseMessage(pollFD);
+	parseMessage(pollFD.fd);
 }
