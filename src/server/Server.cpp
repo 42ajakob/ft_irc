@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/23 14:34:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:19:30 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void Server::initSocket()
 
 void Server::fdCloser()
 {
-	for (auto it = _clients.begin(); it != _clients.end(); it++)
+	for (const auto &[fd, client] : _clients)
 	{
-		std::cout << "Client " << it->first << " disconnected" << std::endl;
-		close(it->first);
+		std::cout << "Client " << fd << " disconnected" << std::endl;
+		close(fd);
 	}
 }
 
