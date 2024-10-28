@@ -14,6 +14,7 @@
 #include <poll.h>
 #include <array>
 #include <cstring>
+#include <algorithm>
 
 static void	debug_print_revents(short revents)
 {
