@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 17:48:49 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:49:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	Server::Pong(const int &fd, const std::string &line)
 		_clients[fd].setProgrammedDisconnection(std::chrono::seconds(TIMEOUT));
 }
 
-void	Server::doCapNegotiation(int fd, std::string &line)
+void	Server::doCapNegotiation(const int &fd, std::string &line)
 {
 	if (line.find("LS") != std::string::npos)
 		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
@@ -88,7 +88,7 @@ void	Server::doCapNegotiation(int fd, std::string &line)
 	}
 }
 
-void	Server::checkPassword(const int fd, const std::string &line)
+void	Server::checkPassword(const int &fd, const std::string &line)
 {
 	size_t		pos = findNextParameter(line);
 	std::string	password;
@@ -103,33 +103,34 @@ void	Server::checkPassword(const int fd, const std::string &line)
 	_clients[fd].setPasswordCorrect(password == _password);
 }
 
-void	Server::executeCommand(const eCommand &command, std::string &line, const pollfd &pollFD)
+void	Server::executeCommand(const eCommand &command, std::string &line,
+	const int &fd)
 {
 	switch (command)
 	{
 		case eCommand::PING:
-			Pong(pollFD.fd, line);
+			Pong(fd, line);
 			break;
 		case eCommand::PONG:
-			_clients[pollFD.fd].resetPingTimer(line);
+			_clients[fd].resetPingTimer(line);
 			break;
 		case eCommand::PRIVMSG:
 			break;
 		case eCommand::JOIN:
 			break;
 		case eCommand::NICK:
-			_clients[pollFD.fd].setNickname(std::move(line));
+			_clients[fd].setNickname(std::move(line));
 			break;
 		case eCommand::USER:
-			_clients[pollFD.fd].setUsername(std::move(line));
+			_clients[fd].setUsername(std::move(line));
 			break;
 		case eCommand::QUIT:
 			break;
 		case eCommand::PASS:
-			checkPassword(pollFD.fd, line);
+			checkPassword(fd, line);
 			break;
 		case eCommand::CAP:
-			doCapNegotiation(pollFD.fd, line);
+			doCapNegotiation(fd, line);
 			break;
 		case eCommand::DEBUG_BYPASS:
 			debugBypass(line);
@@ -153,7 +154,7 @@ void	Server::parseMessage(const pollfd &pollFD)
 		if (command != eCommand::DEBUG_BYPASS)
 			std::cout << "Received message from client " << pollFD.fd << ": " << line << std::endl;
 		try {
-			executeCommand(command, line, pollFD);
+			executeCommand(command, line, pollFD.fd);
 		}
 		catch (const std::exception &e) {
 			std::cerr << "Error executing command: " << e.what() << std::endl;
