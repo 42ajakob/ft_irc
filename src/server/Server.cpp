@@ -6,16 +6,19 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 19:56:32 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:51:18 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 bool Server::_sig = false;
+Server *Server::_instance = nullptr;
 
 Server::Server(const string &port, const string &&password): _password(std::move(password))
 {
+	if (_instance != nullptr)
+		throw std::runtime_error("Attempt to create a second server instance");
 	try{
 		this->_port = std::stoi(port);
 	}
@@ -23,11 +26,19 @@ Server::Server(const string &port, const string &&password): _password(std::move
 		std::cerr << e.what() << std::endl;
 		exit(1);
 	}
+	_instance = this;
 	std::cout << "Server created" << std::endl;
 }
 
 Server::~Server()
 {}
+
+Server	&Server::getInstance()
+{
+	if (_instance == nullptr)
+		throw std::runtime_error("Server instance not created");
+	return (*_instance);
+}
 
 void Server::initSocket()
 {

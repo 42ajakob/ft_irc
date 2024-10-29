@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 20:00:23 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:53:18 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ class Channel;
 class Server
 {
 	private:
+		static Server				*_instance;
 		static bool					_sig;
 		int							_port;
 		int							_socketFd;
 		unordered_map<int, Client>	_clients;
 		t_PollFDs					_pollFDs;
 		std::vector<Channel>		_channels;
-		string					_password;
+		string						_password;
 		sockaddr_in					_serverAddr;
 
 		void	acceptClient();
@@ -63,7 +64,8 @@ class Server
 		void	checkPassword(const int &fd, const string &line);
 
 	public:
-		const Client &getClientByNickname(const string &nickname) const;
+		const Client	&getClientByNickname(const string &nickname) const;
+		static Server	&getInstance();
 
 		Server()								= delete;
 		Server(const Server &other)				= delete;
