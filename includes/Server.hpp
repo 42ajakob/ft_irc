@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/29 16:51:14 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:32:58 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ class Channel;
 class Server
 {
 	private:
-		static Server				*_instance;
-		static bool					_sig;
-		int							_port;
-		int							_socketFd;
-		unordered_map<int, Client>	_clients;
-		t_PollFDs					_pollFDs;
-		std::vector<Channel>		_channels;
-		string						_password;
-		sockaddr_in					_serverAddr;
+		static std::unique_ptr<Server>	_instance;
+		static bool						_sig;
+		int								_port;
+		int								_socketFd;
+		unordered_map<int, Client>		_clients;
+		t_PollFDs						_pollFDs;
+		std::vector<Channel>			_channels;
+		string							_password;
+		sockaddr_in						_serverAddr;
+
+		Server(const string &port, const string &&password);
 
 		void	acceptClient();
 		void	receiveMessage(pollfd &pollFD);
@@ -63,15 +65,14 @@ class Server
 		void	checkConnectionTimeout(pollfd &pollFD);
 		void	checkPassword(const int &fd, const string &line);
 		void	joinChannel(const int &fd, string &line);
-
+	
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;
-		static Server	&getInstance();
+		static Server	&getInstance(const string & = "", const string && = "");
 
 		Server()								= delete;
 		Server(const Server &other)				= delete;
 		Server &operator=(const Server &other)	= delete;
-		Server(const string &port, const string &&password);
 		~Server();
 		
 		void	initSocket();

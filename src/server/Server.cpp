@@ -6,14 +6,14 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/29 14:51:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:33:12 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 bool Server::_sig = false;
-Server *Server::_instance = nullptr;
+std::unique_ptr<Server> Server::_instance = nullptr;
 
 Server::Server(const string &port, const string &&password): _password(std::move(password))
 {
@@ -26,17 +26,20 @@ Server::Server(const string &port, const string &&password): _password(std::move
 		std::cerr << e.what() << std::endl;
 		exit(1);
 	}
-	_instance = this;
 	std::cout << "Server created" << std::endl;
 }
 
 Server::~Server()
 {}
 
-Server	&Server::getInstance()
+Server	&Server::getInstance(const string &port, const string &&password)
 {
 	if (_instance == nullptr)
-		throw std::runtime_error("Server instance not created");
+	{
+		if (port.empty() || password.empty())
+			throw std::runtime_error("Server instance not created");
+		_instance = std::unique_ptr<Server>(new Server(port, std::move(password)));
+	}
 	return (*_instance);
 }
 
