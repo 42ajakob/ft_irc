@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 16:57:28 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:35:44 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	Server::Pong(const int &fd, const string &line)
 
 	if (pos != string::npos)
 		pong += " " + line.substr(pos);
-	pong += "\n";
+	pong += "\r\n";
 	_clients[fd].addToSendBuffer(pong);
 	if (_clients[fd].IsRegistered() == true)
 		_clients[fd].setProgrammedDisconnection(std::chrono::seconds(TIMEOUT));
@@ -84,7 +84,7 @@ void	Server::doCapNegotiation(const int &fd, string &line)
 	{
 		size_t	pos = findNextParameter(line, line.find("REQ"));
 		pos = findNextParameter(line, pos);
-		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(pos) + "\n");
+		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(pos) + "\r\n");
 	}
 }
 
@@ -98,8 +98,6 @@ void	Server::checkPassword(const int &fd, const string &line)
 	if (line[pos] == ':')
 		pos++;
 	password = line.substr(pos);
-	if (password[password.length() - 1] == '\r')
-		password.erase(password.length() - 1, 1);
 	_clients[fd].setPasswordCorrect(password == _password);
 }
 
@@ -141,6 +139,8 @@ void	Server::parseMessage(const int &fd)
 	std::getline(ss, line, '\n');
 	while (line.size() > 0)
 	{
+		if (line[line.size() - 1] == '\r')
+			line.erase(line.size() - 1, 1);
 		command = checkForCommand(line);
 		if (command != eCommand::DEBUG_BYPASS)
 			std::cout << "Received message from client " << fd << ": " << line << std::endl;

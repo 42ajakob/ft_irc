@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 16:52:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:36:46 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ void	Client::setNickname(string &&nickname)
 	nickname.erase(0, findNextParameter(nickname));
 	if (nickname.empty())
 		throw std::invalid_argument("Nickname cannot be empty");
-	if (nickname[nickname.length() - 1] == '\r')
-		nickname.erase(nickname.length() - 1, 1);
 	toLower(nickname);
 	if (isNicknameValid(nickname) == false)
 		throw std::invalid_argument("Invalid nickname");
