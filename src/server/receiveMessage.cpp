@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 16:54:56 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:57:28 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	Server::executeCommand(const eCommand &command, string &line,
 		_clients[fd].resetPingTimer(line);
 	else if (command == eCommand::PRIVMSG)
 		;
-	else if (command == eCommand::JOIN);
+	else if (command == eCommand::JOIN)
 		joinChannel(fd, line);
 	else if (command == eCommand::NICK)
 		_clients[fd].setNickname(std::move(line));
