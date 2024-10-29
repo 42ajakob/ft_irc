@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 15:06:23 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:14:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Channel
 		Channel()									= delete;
 		Channel(const Channel &other)				= delete;
 		Channel &operator=(const Channel &other)	= delete;
-		Channel(std::string name, const Client &creator, const Server &server);
+		Channel(std::string name, const Client &creator);
 		~Channel();
 
 		void join(Client &client);
@@ -36,6 +36,9 @@ class Channel
 		void leave(Client &client);
 		void mode(Client &client);
 		void clear();
+
+		bool operator==(const Channel &other) const;
+		bool operator==(const std::string &name) const;
 
 	enum class Mode
 	{
@@ -56,7 +59,6 @@ class Channel
 		std::string					_topic;
 		std::string					_password;
 		uint16_t					_userLimit;
-		const Server				*_server;
 
 		bool	isNameAvailable(std::string name);
 };

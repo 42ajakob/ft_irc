@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 18:12:43 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:58:14 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class Client
 		const string		&getHostname() const;
 
 		bool				operator==(const Client &other) const;
+		bool				operator==(const string &nickname) const;
 
 	// *** Buffer methods ***
 		void				addToSendBuffer(string buffer);

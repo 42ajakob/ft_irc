@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/24 15:43:55 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:58:29 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,9 @@ const string	&Client::getHostname() const
 bool	Client::operator==(const Client &other) const
 {
 	return (other.getNickname() == this->getNickname());
+}
+
+bool	Client::operator==(const string &nickname) const
+{
+	return (nickname == this->getNickname());
 }

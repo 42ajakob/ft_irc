@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/29 14:53:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:51:14 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Server
 		void	doCapNegotiation(const int &fd, string &line);
 		void	checkConnectionTimeout(pollfd &pollFD);
 		void	checkPassword(const int &fd, const string &line);
+		void	joinChannel(const int &fd, string &line);
 
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;

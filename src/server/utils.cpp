@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 19:58:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:28:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,9 @@ size_t	findNextParameter(const string &line, size_t pos)
 	if (next_colon == string::npos || next_space < next_colon)
 		return (next_space);
 	return (next_colon);
+}
+
+void	toLower(string &str)
+{
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 }

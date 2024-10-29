@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 18:13:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:52:46 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@ void	Client::setHostname(const sockaddr_in &clientAddr)
 	string	port = std::to_string(ntohs(clientAddr.sin_port));
 
 	_Hostname = ip_address + ":" + port;
-}
-
-static void	toLower(string &str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 }
 
 static bool	isNicknameValid(string &nickname)

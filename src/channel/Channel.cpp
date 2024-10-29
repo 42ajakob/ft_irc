@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/17 15:20:28 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:13:10 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ bool Channel::isNameAvailable(std::string name)
 	return (it == _usedNames.end());
 }
 
-Channel::Channel(std::string name, const Client &creator, const Server &server)
-	: _name(name), _userLimit(BACKLOG_SIZE), _server(&server)
+Channel::Channel(std::string name, const Client &creator)
+	: _name(name), _userLimit(BACKLOG_SIZE)
 {
 	if (name.empty())
 		throw std::invalid_argument("Channel name cannot be empty");
@@ -49,7 +49,7 @@ void Channel::join(Client &client)
 
 void Channel::kick(const std::string &nickname)
 {
-	const Client &client = _server->getClientByNickname(nickname);
+	const Client &client = Server::getInstance().getClientByNickname(nickname);
 	const auto it = std::find(_members.begin(), _members.end(), &client);
 
 	if (it != _members.end())
@@ -58,7 +58,7 @@ void Channel::kick(const std::string &nickname)
 
 void Channel::invite(const std::string &nickname)
 {
-	const Client &client = _server->getClientByNickname(nickname);
+	const Client &client = Server::getInstance().getClientByNickname(nickname);
 	_members.push_back(&client);
 }
 
@@ -77,4 +77,14 @@ void Channel::mode(Client &client)
 void Channel::clear()
 {
 	_members.clear();
+}
+
+bool Channel::operator==(const Channel &other) const
+{
+	return (_name == other._name);
+}
+
+bool Channel::operator==(const std::string &name) const
+{
+	return (_name == name);
 }

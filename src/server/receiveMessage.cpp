@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 19:59:26 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:54:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,37 +106,28 @@ void	Server::checkPassword(const int &fd, const string &line)
 void	Server::executeCommand(const eCommand &command, string &line,
 	const int &fd)
 {
-	switch (command)
-	{
-		case eCommand::PING:
-			Pong(fd, line);
-			break;
-		case eCommand::PONG:
-			_clients[fd].resetPingTimer(line);
-			break;
-		case eCommand::PRIVMSG:
-			break;
-		case eCommand::JOIN:
-			break;
-		case eCommand::NICK:
-			_clients[fd].setNickname(std::move(line));
-			break;
-		case eCommand::USER:
-			_clients[fd].setUsername(std::move(line));
-			break;
-		case eCommand::QUIT:
-			break;
-		case eCommand::PASS:
-			checkPassword(fd, line);
-			break;
-		case eCommand::CAP:
-			doCapNegotiation(fd, line);
-			break;
-		case eCommand::DEBUG_BYPASS:
-			debugBypass(line);
-		default:
-			break;
-	}
+	if (command == eCommand::PING)
+		Pong(fd, line);
+	else if (command == eCommand::PONG)
+		_clients[fd].resetPingTimer(line);
+	else if (command == eCommand::PRIVMSG)
+		;
+	else if (command == eCommand::JOIN);
+		joinChannel(fd, line);
+	else if (command == eCommand::NICK)
+		_clients[fd].setNickname(std::move(line));
+	else if (command == eCommand::USER)
+		_clients[fd].setUsername(std::move(line));
+	else if (command == eCommand::QUIT)
+		;
+	else if (command == eCommand::PASS)
+		checkPassword(fd, line);
+	else if (command == eCommand::CAP)
+		doCapNegotiation(fd, line);
+	else if (command == eCommand::DEBUG_BYPASS)
+		debugBypass(line);
+	else
+		;
 }
 
 void	Server::parseMessage(const int &fd)

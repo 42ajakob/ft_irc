@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/26 20:57:14 by JFikents         ###   ########.fr        #
+#    Updated: 2024/10/29 16:13:40 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ _CLIENT_SRC		=	Client.cpp\
 CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
 
 _SERVER_SRC		=	Server.cpp\
+					joinChannel.cpp\
 					mainLoop.cpp\
 					receiveMessage.cpp\
 					sendMessage.cpp\
