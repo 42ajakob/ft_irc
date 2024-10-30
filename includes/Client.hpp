@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/29 14:58:14 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:55:03 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ class Client
 	// *** Timeout methods ***
 		const t_TimeStamp	&getProgrammedDisconnection() const;
 		void				pingClient();
-		void				resetPingTimer(const string &line);
-		void				setProgrammedDisconnection(std::chrono::seconds seconds);
+		void				resetPingTimerIfPongMatches(const string &line);
+		void				setProgrammedDisconnection(const int seconds);
 };
 
 #endif

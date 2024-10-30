@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 17:35:44 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:27:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	Server::Pong(const int &fd, const string &line)
 	pong += "\r\n";
 	_clients[fd].addToSendBuffer(pong);
 	if (_clients[fd].IsRegistered() == true)
-		_clients[fd].setProgrammedDisconnection(std::chrono::seconds(TIMEOUT));
+		_clients[fd].setProgrammedDisconnection(TIMEOUT);
 }
 
 void	Server::doCapNegotiation(const int &fd, string &line)
@@ -107,7 +107,7 @@ void	Server::executeCommand(const eCommand &command, string &line,
 	if (command == eCommand::PING)
 		Pong(fd, line);
 	else if (command == eCommand::PONG)
-		_clients[fd].resetPingTimer(line);
+		_clients[fd].resetPingTimerIfPongMatches(line);
 	else if (command == eCommand::PRIVMSG)
 		;
 	else if (command == eCommand::JOIN)
