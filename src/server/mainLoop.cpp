@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 19:59:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:28:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void Server::disconnectClient(pollfd &pollFD)
 		return ;
 	debug_print_revents(pollFD.revents);
 	std::cout << "Client " << pollFD.fd << " disconnected" << std::endl;
+	Channel::clientDisconnected(_clients[pollFD.fd]);
 	close(pollFD.fd);
 	_clients.erase(pollFD.fd);
 	pollFD.fd = -1;

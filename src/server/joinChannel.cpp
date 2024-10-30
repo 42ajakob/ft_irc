@@ -6,11 +6,12 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 17:28:32 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:22:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Channel.hpp"
 #include <stdexcept>
 #include <vector>
 
@@ -30,12 +31,12 @@ std::vector<string>	split(const string &line, const char &delimiter)
 	return (result);
 }
 
-void	Server::joinChannel(const int &fd, string &line)
+void	splitPasswordsAndChannels(const string &line,
+	std::vector<string> &channelNames,
+	std::vector<string> &passwords)
 {
-	size_t					pos = findNextParameter(line);
-	string					rawChannelNames;
-	std::vector<string>		channelNames;
-	std::vector<string>		passwords;
+	size_t	pos = findNextParameter(line);
+	string	rawChannelNames;
 
 	if (pos == string::npos)
 		throw std::runtime_error("JOIN command without channel name");
@@ -48,13 +49,24 @@ void	Server::joinChannel(const int &fd, string &line)
 	channelNames = split(rawChannelNames, ',');
 	while (channelNames.size() > passwords.size())
 		passwords.emplace_back("");
+}
+
+void	Server::joinChannel(const int &fd, string &line)
+{
+	std::vector<string>		channelNames;
+	std::vector<string>		passwords;
+
+	splitPasswordsAndChannels(line, channelNames, passwords);
 	for (size_t i = 0; i < channelNames.size(); i++)
 	{
 		string	ChannelName = channelNames[i];
 		string	Password = passwords[i];
 		toLower(ChannelName);
-		// TODO: Decide on Channel creation method
+		Channel	&channel = Channel::getChannel(ChannelName, _clients[fd]);
+
+		channel.join(_clients[fd], Password);
 		std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl;
 		std::cout << "Password: <" << Password + '>' << std::endl;
+		channel.printMembers();
 	}
 }

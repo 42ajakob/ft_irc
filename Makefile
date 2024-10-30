@@ -18,7 +18,8 @@ NAME			=	ircserv
 _INCLUDE_FLAGS	=	includes
 INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
-_CHANNEL_SRC	=	Channel.cpp
+_CHANNEL_SRC	=	Channel.cpp\
+					channelCreation.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
 _CLIENT_SRC		=	Client.cpp\

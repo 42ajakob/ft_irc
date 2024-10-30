@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 20:27:17 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:26:21 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iostream>
 # include <chrono>
 
-# define TIMEOUT 90
+# define TIMEOUT 300
 typedef std::chrono::time_point<std::chrono::system_clock> t_TimeStamp;
 
 enum class eCommand
