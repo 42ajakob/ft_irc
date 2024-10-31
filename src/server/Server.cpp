@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/29 19:33:12 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:30:35 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,13 @@ Server::Server(const string &port, const string &&password): _password(std::move
 }
 
 Server::~Server()
-{}
+{
+	for (const auto &[fd, client] : _clients)
+	{
+		disconnectClient(_pollFDs[fd]);
+	}
+	std::cout << "Server destroyed" << std::endl;
+}
 
 Server	&Server::getInstance(const string &port, const string &&password)
 {
