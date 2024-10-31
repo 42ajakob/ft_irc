@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/30 21:39:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:02:53 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,28 @@ void Channel::join(Client &client, const string &password)
 		_members.size() >= _userLimit)
 		throw std::invalid_argument("Channel is full");
 	_members.insert(&client);
+	sendChannelInfo(client);
+}
+
+void Channel::sendChannelInfo(Client & client)
+{
+	//  SEND JOIN MESSAGE TO ALL MEMBERS
+	if (_topic.empty())
+		client.addToSendBuffer(":FT_IRC 331 " + client.getNickname() + " " + this->_name + " :No topic is set\r\n");
+	else
+		client.addToSendBuffer(":FT_IRC 332 " + client.getNickname() + " " + this->_name + " :" + this->_topic + "\r\n");
+	client.addToSendBuffer(":FT_IRC 353 " + client.getNickname() + " = " + this->_name + " :");
+	size_t	i = 0;
+	for (const auto member : _members)
+	{
+		if (_operators.find(member) != _operators.end())
+			client.addToSendBuffer("@");
+		client.addToSendBuffer(member->getNickname());
+		if (i++ < _members.size() - 1)
+			client.addToSendBuffer(" ");
+	}
+	client.addToSendBuffer("\r\n");
+	client.addToSendBuffer(":FT_IRC 366 " + client.getNickname() + " " + this->_name + " :End of /NAMES list\r\n");
 }
 
 void Channel::kick(const string &nickname)

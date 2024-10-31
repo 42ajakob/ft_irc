@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/30 19:12:23 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:17:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class	Channel
 		~Channel();
 
 		void	join(Client &client, const string &password);
+		void	sendChannelInfo(Client &client);
 		void	kick(const string &nickname);
 		void	invite(const string &nickname);
 		void	leave(const Client &client);
