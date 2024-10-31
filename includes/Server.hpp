@@ -29,10 +29,11 @@
 
 # define BACKLOG_SIZE 512
 
-using std::unordered_map;
 using std::string;
 
 typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
+typedef std::unordered_map<int, Client>			t_ClientMap;
+typedef std::unique_ptr<Server>					t_ServerPtr;
 
 class Client;
 class Channel;
@@ -40,15 +41,14 @@ class Channel;
 class Server
 {
 	private:
-		static std::unique_ptr<Server>	_instance;
-		static bool						_sig;
-		int								_port;
-		int								_socketFd;
-		unordered_map<int, Client>		_clients;
-		t_PollFDs						_pollFDs;
-		std::vector<Channel>			_channels;
-		string							_password;
-		sockaddr_in						_serverAddr;
+		static t_ServerPtr	_instance;
+		static bool			_sig;
+		int					_port;
+		int					_socketFd;
+		t_ClientMap			_clients;
+		t_PollFDs			_pollFDs;
+		string				_password;
+		sockaddr_in			_serverAddr;
 
 		Server(const string &port, const string &&password);
 
