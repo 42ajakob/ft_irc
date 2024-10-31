@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/29 19:32:58 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:36:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ class Server
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;
 		static Server	&getInstance(const string & = "", const string && = "");
+		static void		sigAction(int sig);
 
 		Server()								= delete;
 		Server(const Server &other)				= delete;

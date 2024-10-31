@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/30 19:28:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:37:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,16 @@ void	Server::initPollFDs()
 	}
 }
 
+void	Server::sigAction(int sig)
+{
+	(void)sig;
+	_sig = true;
+}
+
 void Server::start()
 {
+	signal(SIGINT, &Server::sigAction);
+	signal(SIGTERM, &Server::sigAction);
 	while (!_sig)
 	{
 		if (poll(_pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
