@@ -70,6 +70,7 @@ class Server
 		void	checkConnectionTimeout(pollfd &pollFD);
 		void	checkPassword(const int &fd, const string &line);
 		void	joinChannel(const int &fd, string &line);
+		void	quitClient(const int &fd);
 	
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;
