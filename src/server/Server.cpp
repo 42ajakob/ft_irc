@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:30:35 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:36:18 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,26 @@ Server::Server(const string &port, const string &&password): _password(std::move
 	std::cout << "Server created" << std::endl;
 }
 
+void Server::_closeFD()
+{
+	for (auto &pollfd : _pollFDs)
+	{
+		if (pollfd.fd == -1 || pollfd.fd == _socketFd)
+			continue ;
+		std::cout << "Server disconnecting client " << pollfd.fd << std::endl;
+		close(pollfd.fd);
+	}
+	std::cout << "Server closing socket" << std::endl;
+	close(_socketFd);
+}
+
 Server::~Server()
 {
-	for (const auto &[fd, client] : _clients)
-	{
-		disconnectClient(_pollFDs[fd]);
-	}
+	_closeFD();
 	std::cout << "Server destroyed" << std::endl;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGTERM, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 Server	&Server::getInstance(const string &port, const string &&password)
@@ -49,10 +62,23 @@ Server	&Server::getInstance(const string &port, const string &&password)
 	return (*_instance);
 }
 
-void Server::initSocket()
+void	Server::initServer()
+{
+	signal(SIGINT, &Server::sigAction);		/* SIGINT = Ctrl+C	*/
+	signal(SIGTERM, &Server::sigAction);	/* SIGTERM = kill	*/
+	signal(SIGQUIT, &Server::sigAction);	/* SIGQUIT = Ctrl+\	*/
+	_instance->_initPollFDs();
+	_instance->_initSocket();
+	std::cout << "Starting server" << std::endl;
+	_instance->_startMainLoop();
+}
+
+void Server::_initSocket()
 {
 	const int	True = 1;
+
 	_socketFd = socket(AF_INET, SOCK_STREAM, 0);
+	_pollFDs[0].fd = _socketFd;
 	if (_socketFd == -1 || fcntl(_socketFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error creating the server socket");
 	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int)) == -1)
@@ -70,36 +96,7 @@ void Server::initSocket()
 	std::cout << "Server socket created" << std::endl;
 }
 
-void Server::fdCloser()
-{
-	for (const auto &[fd, client] : _clients)
-	{
-		std::cout << "Client " << fd << " disconnected" << std::endl;
-		close(fd);
-	}
-}
-
-void Server::stop()
-{
-	std::cout << "Server stopped" << std::endl;
-}
-
-void Server::restart()
-{
-	std::cout << "Server restarted" << std::endl;
-}
-
 void Server::reload()
 {
 	std::cout << "Server reloaded" << std::endl;
-}
-
-void Server::status()
-{
-	std::cout << "Server status" << std::endl;
-}
-
-void Server::help()
-{
-	std::cout << "Server help" << std::endl;
 }

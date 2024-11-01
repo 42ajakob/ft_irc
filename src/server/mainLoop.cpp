@@ -59,29 +59,24 @@ void Server::disconnectClient(pollfd &pollFD)
 	pollFD.revents = 0;
 }
 
-void	Server::initPollFDs()
+void	Server::_initPollFDs()
 {
-	_pollFDs[0].fd = _socketFd;
-	_pollFDs[0].events = POLLIN;
-	_pollFDs[0].revents = 0;
-	for (size_t i = 1; i < _pollFDs.size(); i++)
+	for (auto &pollFD : _pollFDs)
 	{
-		_pollFDs[i].fd = -1;
-		_pollFDs[i].events = POLLIN | POLLHUP | POLLERR | POLLOUT;
-		_pollFDs[i].revents = 0;
+		pollFD.fd = -1;
+		pollFD.events = POLLIN | POLLHUP | POLLERR | POLLOUT;
+		pollFD.revents = 0;
 	}
+	_pollFDs[0].events = POLLIN;
 }
 
 void	Server::sigAction(int sig)
 {
-	(void)sig;
 	_sig = true;
 }
 
-void Server::start()
+void Server::_startMainLoop()
 {
-	signal(SIGINT, &Server::sigAction);
-	signal(SIGTERM, &Server::sigAction);
 	while (!_sig)
 	{
 		if (poll(_pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)

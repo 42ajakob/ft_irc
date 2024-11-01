@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:36:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:16:38 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ class Server
 
 		Server(const string &port, const string &&password);
 
+		void	_initSocket();
+		void	_initPollFDs();
+		void	_startMainLoop();
+		void	_closeFD();
+
 		void	acceptClient();
 		void	receiveMessage(pollfd &pollFD);
 		void	disconnectClient(pollfd &pollFD);
@@ -76,15 +81,8 @@ class Server
 		Server &operator=(const Server &other)	= delete;
 		~Server();
 		
-		void	initSocket();
-		void	initPollFDs();
-		void	start();
-		void	stop();
-		void	restart();
+		void	initServer();
 		void	reload();
-		void	status();
-		void	fdCloser();
-		void	help();
 };
 
 #endif

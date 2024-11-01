@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/30 15:27:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/31 15:18:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	Server::debugBypass(string &line)
 
 void	Server::Pong(const int &fd, const string &line)
 {
-	size_t		pos = findNextParameter(line);
+	size_t	pos = findNextParameter(line);
 	string	pong = "PONG";
 
 	if (pos != string::npos)
@@ -90,7 +90,7 @@ void	Server::doCapNegotiation(const int &fd, string &line)
 
 void	Server::checkPassword(const int &fd, const string &line)
 {
-	size_t		pos = findNextParameter(line);
+	size_t	pos = findNextParameter(line);
 	string	password;
 
 	if (pos == string::npos)
@@ -132,7 +132,7 @@ void	Server::parseMessage(const int &fd)
 {
 	eCommand			command;
 	std::stringstream	ss;
-	string			line;
+	string				line;
 
 	ss << _clients[fd].getRecvBuffer();
 	_clients[fd].clearRecvBuffer();
@@ -156,8 +156,8 @@ void	Server::parseMessage(const int &fd)
 
 void	Server::receiveMessage(pollfd &pollFD)
 {
-	char			buffer[512];
-	ssize_t			bytesRead;
+	char	buffer[512];
+	ssize_t	bytesRead;
 
 	std::memset(buffer, 0, sizeof(buffer));
 	bytesRead = recv(pollFD.fd, buffer, sizeof(buffer), 0);
