@@ -98,5 +98,15 @@ void Server::_initSocket()
 
 void Server::reload()
 {
+	std::cout << "Server reloading" << std::endl;
+	for (auto &pollfd : _pollFDs)
+	{
+		if (pollfd.fd == -1 || pollfd.fd == _socketFd)
+			continue ;
+		std::cout << "Server disconnecting client " << pollfd.fd << std::endl;
+		disconnectClient(pollfd);
+	}
+	close(_socketFd);
+	_instance->initServer();
 	std::cout << "Server reloaded" << std::endl;
 }

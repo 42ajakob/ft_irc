@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/31 14:37:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:34:03 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ void	Server::_initPollFDs()
 void	Server::sigAction(int sig)
 {
 	_sig = true;
+	if (sig == SIGINT)
+	{
+		_instance->reload();
+		_sig = false;
+	}
 }
 
 void Server::_startMainLoop()
