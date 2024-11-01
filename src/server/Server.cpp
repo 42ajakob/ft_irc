@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 17:30:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:36:04 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,6 @@ void Server::reload()
 
 void Server::quitClient(const int &fd)
 {
-	_clients[fd].addToSendBuffer("ERROR :/quit received by " + _clients[fd].getNickname() + "\r\n");
-	_clients[fd].setProgrammedDisconnection(1, true);
+	_clients[fd]->addToSendBuffer("ERROR :/quit received by " + _clients[fd]->getNickname() + "\r\n");
+	_clients[fd]->setProgrammedDisconnection(1, true);
 }

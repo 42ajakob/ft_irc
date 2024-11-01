@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/30 15:37:36 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:38:17 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 {
 	if (pollFD.fd == -1)
 		return ;
-	Client		&client = _clients[pollFD.fd];
+	Client		&client = *_clients[pollFD.fd];
 	auto		now		= std::chrono::system_clock::now();
 
 	if (client.IsRegistered() == false

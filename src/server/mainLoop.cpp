@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 16:34:03 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:39:10 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void Server::acceptClient()
 	if (clientFd == -1 && errno != EINTR)
 		throw std::runtime_error("Error accepting a client connection");
 	clientPollFD->fd = clientFd;
-	_clients[clientFd].setHostname(clientAddr);
+	_clients[clientFd]->setHostname(clientAddr);
 	clientPollFD->revents = 0;
 	if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1)
 		throw std::runtime_error("Error setting the client socket to non-blocking");
@@ -52,7 +52,7 @@ void Server::disconnectClient(pollfd &pollFD)
 		return ;
 	debug_print_revents(pollFD.revents);
 	std::cout << "Client " << pollFD.fd << " disconnected" << std::endl;
-	Channel::clientDisconnected(_clients[pollFD.fd]);
+	Channel::clientDisconnected(*_clients[pollFD.fd]);
 	close(pollFD.fd);
 	_clients.erase(pollFD.fd);
 	pollFD.fd = -1;

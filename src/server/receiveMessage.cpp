@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 17:16:29 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:39:26 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	Server::debugBypass(string &line)
 		line += "\r\n";
 		clientFd = std::stoi(&line[fd]);
 
-		_clients[clientFd].addToSendBuffer(&line[msgStart]);
+		_clients[clientFd]->addToSendBuffer(&line[msgStart]);
 		std::cout << "Bypass message sent to client " << clientFd;
 		std::cout << std::endl;
 	}
@@ -71,20 +71,20 @@ void	Server::Pong(const int &fd, const string &line)
 	if (pos != string::npos)
 		pong += " " + line.substr(pos);
 	pong += "\r\n";
-	_clients[fd].addToSendBuffer(pong);
-	if (_clients[fd].IsRegistered() == true)
-		_clients[fd].setProgrammedDisconnection(TIMEOUT);
+	_clients[fd]->addToSendBuffer(pong);
+	if (_clients[fd]->IsRegistered() == true)
+		_clients[fd]->setProgrammedDisconnection(TIMEOUT);
 }
 
 void	Server::doCapNegotiation(const int &fd, string &line)
 {
 	if (line.find("LS") != string::npos)
-		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
+		_clients[fd]->addToSendBuffer("CAP * LS :\r\n");
 	if (line.find("REQ") != string::npos)
 	{
 		size_t	pos = findNextParameter(line, line.find("REQ"));
 		pos = findNextParameter(line, pos);
-		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(pos) + "\r\n");
+		_clients[fd]->addToSendBuffer("CAP * NAK " + line.substr(pos) + "\r\n");
 	}
 }
 
@@ -98,7 +98,7 @@ void	Server::checkPassword(const int &fd, const string &line)
 	if (line[pos] == ':')
 		pos++;
 	password = line.substr(pos);
-	_clients[fd].setPasswordCorrect(password == _password);
+	_clients[fd]->setPasswordCorrect(password == _password);
 }
 
 void	Server::executeCommand(const eCommand &command, string &line,
@@ -107,15 +107,15 @@ void	Server::executeCommand(const eCommand &command, string &line,
 	if (command == eCommand::PING)
 		Pong(fd, line);
 	else if (command == eCommand::PONG)
-		_clients[fd].resetPingTimerIfPongMatches(line);
+		_clients[fd]->resetPingTimerIfPongMatches(line);
 	else if (command == eCommand::PRIVMSG)
 		;
 	else if (command == eCommand::JOIN)
 		joinChannel(fd, line);
 	else if (command == eCommand::NICK)
-		_clients[fd].setNickname(std::move(line));
+		_clients[fd]->setNickname(std::move(line));
 	else if (command == eCommand::USER)
-		_clients[fd].setUsername(std::move(line));
+		_clients[fd]->setUsername(std::move(line));
 	else if (command == eCommand::QUIT)
 		quitClient(fd);
 	else if (command == eCommand::PASS)
@@ -134,8 +134,8 @@ void	Server::parseMessage(const int &fd)
 	std::stringstream	ss;
 	string				line;
 
-	ss << _clients[fd].getRecvBuffer();
-	_clients[fd].clearRecvBuffer();
+	ss << _clients[fd]->getRecvBuffer();
+	_clients[fd]->clearRecvBuffer();
 	std::getline(ss, line, '\n');
 	while (line.size() > 0)
 	{
@@ -165,8 +165,8 @@ void	Server::receiveMessage(pollfd &pollFD)
 		throw std::runtime_error("Error receiving message from client");
 	if (bytesRead == 0)
 		return (disconnectClient(pollFD));
-	_clients[pollFD.fd].addToRecvBuffer(string(buffer, bytesRead));
-	if (_clients[pollFD.fd].getRecvBuffer().find("\n") == string::npos)
+	_clients[pollFD.fd]->addToRecvBuffer(string(buffer, bytesRead));
+	if (_clients[pollFD.fd]->getRecvBuffer().find("\n") == string::npos)
 		return ;
 	parseMessage(pollFD.fd);
 }
