@@ -83,16 +83,18 @@ void Server::_startMainLoop()
 			throw std::runtime_error(string("Poll Error: ") + strerror(errno));
 		if (_pollFDs[0].revents & POLLIN)
 			acceptClient();
-		for (size_t i = 1; i <= _clients.size(); i++)
+		for (auto &clientPollFD : _pollFDs)
 		{
-			if (_pollFDs[i].revents & POLLIN)
-				receiveMessage(_pollFDs[i]);
-			if (_pollFDs[i].revents & POLLHUP || _pollFDs[i].revents & POLLERR)
-				disconnectClient(_pollFDs[i]);
-			if (_pollFDs[i].revents & POLLOUT)
-				sendMessage(_pollFDs[i].fd);
-			_pollFDs[i].revents = 0;
-			checkConnectionTimeout(_pollFDs[i]);
+			if (clientPollFD.fd == -1 || clientPollFD.fd == _socketFd)
+				continue ;
+			if (clientPollFD.revents & POLLIN)
+				receiveMessage(clientPollFD);
+			if (clientPollFD.revents & POLLHUP || clientPollFD.revents & POLLERR)
+				disconnectClient(clientPollFD);
+			if (clientPollFD.revents & POLLOUT)
+				sendMessage(clientPollFD.fd);
+			clientPollFD.revents = 0;
+			checkConnectionTimeout(clientPollFD);
 		}
 		_pollFDs[0].revents = 0;
 	}
