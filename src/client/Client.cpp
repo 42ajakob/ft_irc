@@ -6,77 +6,51 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/14 20:15:52 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:36:21 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Client.hpp"
+#include "Client.hpp"
+#include <stdexcept>
+#include <chrono>
 
-Client::Client()
-{}
+std::unordered_set<string> Client::_usedNicknames;
+
+Client::Client() :
+	_programmedDisconnection(std::chrono::system_clock::now() + std::chrono::seconds(60))
+{
+	static bool reserveMemory = true;
+
+	if (reserveMemory == true)
+		_usedNicknames.reserve(512), reserveMemory = false;
+}
 
 Client::~Client()
-{}
-
-Client::Client(const Client &other)
 {
-	(void)other;
+	_usedNicknames.erase(_Nickname);
 }
 
-Client &Client::operator=(const Client &other)
+const string	&Client::getNickname() const
 {
-	(void)other;
-	return (*this);
+	return (_Nickname);
 }
 
-int Client::getFd() {
-	return (fd);
+const string	&Client::getUsername() const
+{
+	return (_Username);
 }
 
-void Client::setFd(int fd_value) {
-	fd = fd_value;
+const string	&Client::getHostname() const
+{
+	return (_Hostname);
 }
 
-void Client::setIp(std::string ip_value) {
-	ip = ip_value;
+bool	Client::operator==(const Client &other) const
+{
+	return (other.getNickname() == this->getNickname());
 }
 
-void Client::send(std::string message) {
-	send(fd, message.c_str(), message.length(), 0);
-}
-
-std::string Client::getIp() {
-	return (ip);
-}
-
-std::string Client::getNick() {
-	return (nick);
-}
-
-std::string Client::getRealname() {
-	return (realname);
-}
-
-void Client::setNick(std::string nick_value) {
-	nick = nick_value;
-}
-
-void Client::setRealname(std::string realname_value) {
-	realname = realname_value;
-}
-
-void Client::setUsername(std::string username_value) {
-	username = username_value;
-}
-
-std::string Client::getUsername() {
-	return (username);
-}
-
-void Client::setHostname(std::string hostname_value) {
-	hostname = hostname_value;
-}
-
-std::string Client::getHostname() {
-	return (hostname);
+bool	Client::operator==(const string &nickname) const
+{
+	return (nickname == this->getNickname());
 }

@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Utils.cpp                                          :+:      :+:    :+:   */
+/*   channelCreation.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 17:11:06 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/01 15:54:56 by JFikents         ###   ########.fr       */
+/*   Created: 2024/10/30 15:48:40 by JFikents          #+#    #+#             */
+/*   Updated: 2024/10/30 17:04:10 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Utils.hpp"
+#include "Channel.hpp"
 
-Utils::Utils()
-{}
+t_ChannelMap	Channel::_channels;
 
-Utils::~Utils()
-{}
-
-Utils::Utils(const Utils &other)
+Channel &Channel::getChannel(const std::string &name, const Client &client)
 {
-	(void)other;
-}
-
-Utils &Utils::operator=(const Utils &other)
-{
-	(void)other;
-	return (*this);
+	if (_channels.find(name) == _channels.end())
+	{
+		t_ChannelCreatorKey	Key;
+		_channels.emplace(std::piecewise_construct,
+			std::forward_as_tuple(name),
+			std::forward_as_tuple(Key, name, client));
+	}
+	return (_channels.at(name));
 }
