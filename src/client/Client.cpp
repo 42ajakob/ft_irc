@@ -6,39 +6,51 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/01 15:54:31 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:58:29 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
+#include <stdexcept>
+#include <chrono>
 
-Client::Client()
-{}
+std::unordered_set<string> Client::_usedNicknames;
+
+Client::Client() :
+	_programmedDisconnection(std::chrono::system_clock::now() + std::chrono::seconds(60))
+{
+	static bool reserveMemory = true;
+
+	if (reserveMemory == true)
+		_usedNicknames.reserve(512), reserveMemory = false;
+}
 
 Client::~Client()
-{}
-
-Client::Client(const Client &other)
 {
-	(void)other;
+	_usedNicknames.erase(_Nickname);
 }
 
-Client &Client::operator=(const Client &other)
+const string	&Client::getNickname() const
 {
-	(void)other;
-	return (*this);
+	return (_Nickname);
 }
 
-int Client::getFd() {
-	return (fd);
+const string	&Client::getUsername() const
+{
+	return (_Username);
 }
 
-void Client::setFd(int fd_value) {
-	fd = fd_value;
+const string	&Client::getHostname() const
+{
+	return (_Hostname);
 }
 
-void Client::setIp(std::string ip_value) {
-	ip = ip_value;
+bool	Client::operator==(const Client &other) const
+{
+	return (other.getNickname() == this->getNickname());
 }
 
-
+bool	Client::operator==(const string &nickname) const
+{
+	return (nickname == this->getNickname());
+}

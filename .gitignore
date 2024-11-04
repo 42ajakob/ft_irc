@@ -2,3 +2,6 @@ en.subject.pdf
 .vscode/*
 *.o
 *.d
+.normignore
+.DS_Store
+ircserv

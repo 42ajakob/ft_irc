@@ -1,34 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   bufferMethods.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 17:15:50 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 16:06:17 by JFikents         ###   ########.fr       */
+/*   Created: 2024/10/21 17:40:13 by JFikents          #+#    #+#             */
+/*   Updated: 2024/10/22 20:58:15 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include "Client.hpp"
-#include "Server.hpp"
 
-int main(int argc, char **argv)
+void	Client::addToSendBuffer(string buffer)
 {
-	if (argc != 3)
-	{
-		std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
-		return (1);
-	}
-	Server &server = Server::getInstance(argv[1], std::move(argv[2]));
+	_sendBuffer += buffer;
+}
 
-	try {
-		std::cout << "Starting server" << std::endl;
-		server.initServer();
-	}
-	catch (std::exception &e) {
-		std::cerr << e.what() << std::endl;
-	}
-	return (0);
+void	Client::addToRecvBuffer(string buffer)
+{
+	_recvBuffer += buffer;
+}
+
+void	Client::clearSendBuffer()
+{
+	_sendBuffer.clear();
+}
+
+void	Client::clearRecvBuffer()
+{
+	_recvBuffer.clear();
+}
+
+const string	&Client::getSendBuffer() const
+{
+	return (_sendBuffer);
+}
+
+const string	&Client::getRecvBuffer() const
+{
+	return (_recvBuffer);
 }
