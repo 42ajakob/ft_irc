@@ -6,15 +6,21 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/10/28 17:47:09 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/04 16:31:14 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-// MULTI USE
-#define RPL_WELCOME(client, nick, user, host) (client + " :Welcome to the ft_irc Network, "  + nick + "[!" + user + "@" + host + "]\r\n")
-#define ERR_NEEDMOREPARAMS(client, command) (client + " " + command + " :Not enough parameters\r\n")
+// AFTER REGISTRATION
+#define RPL_WELCOME(client, nick, user, host) (":FT_IRC 001 " + client + " :Welcome to the ft_irc Network, "  + nick + "[!" + user + "@" + host + "]\r\n")
+#define RPL_YOURHOST(client, server, version) (":FT_IRC 002 " + client + " :Your host is " + server + ", running version " + version + "\r\n")
+#define RPL_CREATED(client, datetime) (":FT_IRC 003 " + client + " :This server was created " + datetime + "\r\n")
+#define RPL_MYINFO(client, server, version, avail_user_modes, avail_channel_modes, channel_modes_with_params) (":FT_IRC 004 "  + client + " " + server + " " + version + " " + avail_user_modes + " " + avail_channel_modes + " [" + channel_modes_with_params + "]\r\n")
+#define RPL_ISUPPORT(client, tokens) (":FT_IRC 005 " + client + " " + tokens + " :are supported by this server\r\n")
+
+// MULTIUSE
+#define ERR_NEEDMOREPARAMS(client, command) (":FT_IRC 461 " + client + " " + command + " :Not enough parameters\r\n")
 
 // USER
 #define ERR_ALREADYREGISTRED(client) (client + " :You may not reregister\r\n") 
@@ -26,7 +32,9 @@
 // NICK
 #define ERR_NONICKNAMEGIVEN(client) (client + " :No nickname given\r\n")
 #define ERR_ERRONEUSNICKNAME(client, nick) (client + " " + nick + " :Erroneus nickname\r\n")
-#define ERR_NICKNAMEINUSE(client, nick) (client + " " + nick + " :Nickname is already in use\r\n")
+#define ERR_NICKNERR_NONICKNAMEGIVEN(client) (client + " :No nickname given\r\n")
+#define ERR_ERRONEUSNICKNAME(client, nick) (client + " " + nick + " :Erroneus nickname\r\n")
+#define ERR_NICKNAMEINUSEAMEINUSE(client, nick) (client + " " + nick + " :Nickname is already in use\r\n")
 // ERR_USERNOTINCHANNEL Maybe?
 // ERR_NOTONCHANNEL Maybe?
 #define ERR_USERONCHANNEL(client, nick, channel) (client + " " + nick + " " + channel + " :is already on channel\r\n")
