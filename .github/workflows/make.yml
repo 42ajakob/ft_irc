@@ -9,7 +9,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: /ft_irc
+    working-directory: ~/ft_irc
 
 jobs:
   compile_in_linux:
