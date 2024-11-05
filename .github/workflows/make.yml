@@ -29,7 +29,7 @@ jobs:
         nc localhost 4242
     - name: clean afterwards
       run: |
-        kill -9 ${{ cat server_pid.txt }}
+        kill -9 $( cat server_pid.txt )
 
   compile_in_MacOs:
     name: compile_Mac
@@ -49,5 +49,5 @@ jobs:
         nc localhost 4242
     - name: clean afterwards
       run: |
-        kill -9 ${{ cat server_pid.txt }}
+        kill -9 $( cat server_pid.txt )
 
