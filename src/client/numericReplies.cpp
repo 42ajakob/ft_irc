@@ -6,14 +6,14 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/05 17:49:58 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/05 18:02:00 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
 #define RPL_WELCOME(client, nick, user, host) (":FT_IRC 001 " + client + " :Welcome to the Internet Relay Network "  + nick + "!" + user + "@" + host + "\r\n")
-#define RPL_YOURHOST(client, server, version) (":FT_IRC 002 " + client + " :Your host is " + server + ", running version " + version + "\r\n")
+#define RPL_YOURHOST(client, version) (":FT_IRC 002 " + client + " :Your host is ft_irc, running version " + version + "\r\n")
 #define RPL_CREATED(client, date) (":FT_IRC 003 " + client + " :This server was created " + date + "\r\n")
 #define RPL_MYINFO(client, version, avail_user_modes, avail_channel_modes) (":FT_IRC 004 "  + client + " " + version + " " + avail_user_modes + " " + avail_channel_modes + "\r\n")
 
