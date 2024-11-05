@@ -9,7 +9,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ~/ft_irc
+    working-directory: ${{ github.workspace }}
 
 jobs:
   compile_in_linux:
