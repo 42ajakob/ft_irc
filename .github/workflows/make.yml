@@ -1,0 +1,30 @@
+name: Compilation test
+
+on:
+  push:
+    branches: [ "main", "server" ]
+  pull_request:
+    branches: [ "main" ]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./
+
+jobs:
+  compile_in_linux:
+    name: compile_linux
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: make
+      run: make
+
+  compile_in_MacOs:
+    name: compile_Mac
+    runs-on:  macos-12
+
+    steps:
+    - name: make
+      run: make
+
