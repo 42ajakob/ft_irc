@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: check PWD
+      run: echo $PWD
     - name: make
       run: make
 
