@@ -1,0 +1,74 @@
+name: Compilation test
+
+on:
+  push:
+    branches: [ "main", "server" ]
+  pull_request:
+    branches: [ "main" ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  compile_in_linux:
+    name: compile_linux
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: make
+      run: make
+    - name: run server
+      run: |
+        ./ircserv 4242 password > normal.log 2> error.log &
+        echo $! > server_pid.txt
+    - name: test connection
+      run: |
+        sleep 5
+        if nc -z localhost 4242; then
+          echo "Server is running"
+        else
+          echo "Server failed to start"
+          exit 1
+        fi
+    - name: show normal logs
+      run: cat normal.log
+    - name: show error logs
+      run: cat error.log
+    - name: clean afterwards
+      if: success()
+      run: |
+        kill -9 $( cat server_pid.txt ) || echo "Server already terminated"
+
+  compile_in_MacOs:
+    name: compile_Mac
+    runs-on:  macos-12
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: make
+      run: make
+    - name: run server
+      run: |
+        ./ircserv 4242 password > normal.log 2> error.log &
+        echo $! > server_pid.txt
+    - name: test connection
+      run: |
+        sleep 5
+        if nc -z localhost 4242; then
+          echo "Server is running"
+        else
+          echo "Server failed to start"
+          exit 1
+        fi
+    - name: show normal logs
+      run: cat normal.log
+    - name: show error logs
+      run: cat error.log
+    - name: clean afterwards
+      if: success()
+      run: |
+        kill -9 $( cat server_pid.txt ) || echo "Server already terminated"

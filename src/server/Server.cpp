@@ -6,11 +6,12 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 18:36:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:23:17 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include <csignal>
 
 bool Server::_sig = false;
 std::unique_ptr<Server> Server::_instance = nullptr;

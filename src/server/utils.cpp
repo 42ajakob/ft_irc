@@ -6,11 +6,12 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 20:28:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:31:18 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include <algorithm>
 
 static size_t	jumpSpaces(const string &line, size_t pos)
 {

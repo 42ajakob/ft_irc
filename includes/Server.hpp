@@ -26,6 +26,7 @@
 # include <poll.h>
 # include <unistd.h>
 # include <array>
+# include <memory>
 
 # define BACKLOG_SIZE 512
 

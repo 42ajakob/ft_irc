@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 18:39:10 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:27:49 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <poll.h>
 #include <array>
 #include <cstring>
+#include <algorithm>
+#include <csignal>
 
 static void	debug_print_revents(short revents)
 {
