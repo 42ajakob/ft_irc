@@ -9,7 +9,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: /
+    working-directory: ./
 
 jobs:
   compile_in_linux:
@@ -18,7 +18,9 @@ jobs:
 
     steps:
     - name: check PWD
-      run: echo $PWD
+      run: ls
+    - name: check ../
+      run: ls ../
     - name: make
       run: make
 
