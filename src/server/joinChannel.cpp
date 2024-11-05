@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:02:12 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:17:53 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ void	Server::joinChannel(const int &fd, string &line)
 	std::vector<string>		channelNames;
 	std::vector<string>		passwords;
 
+	if (_clients[fd].IsRegistered() == false)
+	{
+		// _clients[fd]->addToSendBuffer("451 You have not registered\n");
+		return;
+	}
 	splitPasswordsAndChannels(line, channelNames, passwords);
 	for (size_t i = 0; i < channelNames.size(); i++)
 	{
