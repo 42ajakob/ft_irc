@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:05:36 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:26:15 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <iostream>
 #include <chrono>
 
-void	Server::checkConnectionTimeout(pollfd &pollFD)
+void	Server::_checkConnectionTimeout(pollfd &pollFD)
 {
 	if (pollFD.fd == -1)
 		return ;
@@ -35,6 +35,6 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 	if (client.getProgrammedDisconnection() < now)
 	{
 		pollFD.revents |= POLLERR;
-		disconnectClient(pollFD);
+		_disconnectClient(pollFD);
 	}
 }

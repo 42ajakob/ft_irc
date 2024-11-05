@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 22:51:52 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:04:10 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:25:55 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdexcept>
 #include <sstream>
 
-void	Server::sendMessage(const int &fd)
+void	Server::_sendMessage(const int &fd)
 {
 	ssize_t	bytesSent;
 	string	buffer;

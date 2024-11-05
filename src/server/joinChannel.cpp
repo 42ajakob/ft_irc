@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:17:53 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:22:28 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	splitPasswordsAndChannels(const string &line,
 		passwords.emplace_back("");
 }
 
-void	Server::joinChannel(const int &fd, string &line)
+void	Server::_joinChannel(const int &fd, string &line)
 {
 	std::vector<string>		channelNames;
 	std::vector<string>		passwords;

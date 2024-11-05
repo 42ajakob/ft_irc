@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 14:00:37 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:22:03 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,14 @@ void Server::reload()
 		if (pollfd.fd == -1 || pollfd.fd == _socketFd)
 			continue ;
 		std::cout << "Server disconnecting client " << pollfd.fd << std::endl;
-		disconnectClient(pollfd);
+		_disconnectClient(pollfd);
 	}
 	close(_socketFd);
 	_instance->initServer();
 	std::cout << "Server reloaded" << std::endl;
 }
 
-void Server::quitClient(const int &fd)
+void Server::_quitClient(const int &fd)
 {
 	_clients[fd].addToSendBuffer("ERROR :/quit received by " + _clients[fd].getNickname() + "\r\n");
 	_clients[fd].setProgrammedDisconnection(1, true);

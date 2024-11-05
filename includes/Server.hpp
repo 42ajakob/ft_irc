@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 13:57:05 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:23:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 using std::string;
 
 typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
-typedef std::unordered_map<int, Client>		t_ClientMap;
+typedef std::unordered_map<int, Client>			t_ClientMap;
 typedef std::unique_ptr<Server>					t_ServerPtr;
 
 class Client;
@@ -58,20 +58,20 @@ class Server
 		void	_startMainLoop();
 		void	_closeFD();
 
-		void	acceptClient();
-		void	receiveMessage(pollfd &pollFD);
-		void	disconnectClient(pollfd &pollFD);
-		void	sendMessage(const int &fd);
-		void	parseMessage(const int &fd);
-		void	executeCommand(const eCommand &command, string &line,
+		void	_acceptClient();
+		void	_receiveMessage(pollfd &pollFD);
+		void	_disconnectClient(pollfd &pollFD);
+		void	_sendMessage(const int &fd);
+		void	_parseMessage(const int &fd);
+		void	_executeCommand(const eCommand &command, string &line,
 					const int &fd);
-		void	debugBypass(string &line);
-		void	Pong(const int &fd, const string &line);
-		void	doCapNegotiation(const int &fd, string &line);
-		void	checkConnectionTimeout(pollfd &pollFD);
-		void	checkPassword(const int &fd, const string &line);
-		void	joinChannel(const int &fd, string &line);
-		void	quitClient(const int &fd);
+		void	_debugBypass(string &line);
+		void	_Pong(const int &fd, const string &line);
+		void	_doCapNegotiation(const int &fd, string &line);
+		void	_checkConnectionTimeout(pollfd &pollFD);
+		void	_checkPassword(const int &fd, const string &line);
+		void	_joinChannel(const int &fd, string &line);
+		void	_quitClient(const int &fd);
 	
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;

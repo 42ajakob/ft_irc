@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:03:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:25:44 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static eCommand	checkForCommand(const string &line)
 	return (eCommand::UNKNOWN);
 }
 
-void	Server::debugBypass(string &line)
+void	Server::_debugBypass(string &line)
 {
 	const size_t	fd = line.find_first_of("0123456789");
 	const size_t	msgStart = line.find_first_of(":", fd) + 1;
@@ -63,7 +63,7 @@ void	Server::debugBypass(string &line)
 	}
 }
 
-void	Server::Pong(const int &fd, const string &line)
+void	Server::_Pong(const int &fd, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	pong = "PONG";
@@ -76,7 +76,7 @@ void	Server::Pong(const int &fd, const string &line)
 		_clients[fd].setProgrammedDisconnection(TIMEOUT);
 }
 
-void	Server::doCapNegotiation(const int &fd, string &line)
+void	Server::_doCapNegotiation(const int &fd, string &line)
 {
 	if (line.find("LS") != string::npos)
 		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
@@ -88,7 +88,7 @@ void	Server::doCapNegotiation(const int &fd, string &line)
 	}
 }
 
-void	Server::checkPassword(const int &fd, const string &line)
+void	Server::_checkPassword(const int &fd, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	password;
@@ -101,32 +101,32 @@ void	Server::checkPassword(const int &fd, const string &line)
 	_clients[fd].setPasswordCorrect(password == _password);
 }
 
-void	Server::executeCommand(const eCommand &command, string &line,
+void	Server::_executeCommand(const eCommand &command, string &line,
 	const int &fd)
 {
 	if (command == eCommand::PING)
-		Pong(fd, line);
+		_Pong(fd, line);
 	else if (command == eCommand::PONG)
 		_clients[fd].resetPingTimerIfPongMatches(line);
 	else if (command == eCommand::PRIVMSG)
 		;
 	else if (command == eCommand::JOIN)
-		joinChannel(fd, line);
+		_joinChannel(fd, line);
 	else if (command == eCommand::NICK)
 		_clients[fd].setNickname(std::move(line));
 	else if (command == eCommand::USER)
 		_clients[fd].setUsername(std::move(line));
 	else if (command == eCommand::QUIT)
-		quitClient(fd);
+		_quitClient(fd);
 	else if (command == eCommand::PASS)
-		checkPassword(fd, line);
+		_checkPassword(fd, line);
 	else if (command == eCommand::CAP)
-		doCapNegotiation(fd, line);
+		_doCapNegotiation(fd, line);
 	else if (command == eCommand::DEBUG_BYPASS)
-		debugBypass(line);
+		_debugBypass(line);
 }
 
-void	Server::parseMessage(const int &fd)
+void	Server::_parseMessage(const int &fd)
 {
 	eCommand			command;
 	std::stringstream	ss;
@@ -143,7 +143,7 @@ void	Server::parseMessage(const int &fd)
 		if (command != eCommand::DEBUG_BYPASS)
 			std::cout << "Received message from client " << fd << ": " << line << std::endl;
 		try {
-			executeCommand(command, line, fd);
+			_executeCommand(command, line, fd);
 		}
 		catch (const std::exception &e) {
 			std::cerr << "Error executing command: " << e.what() << std::endl;
@@ -152,7 +152,7 @@ void	Server::parseMessage(const int &fd)
 	}
 }
 
-void	Server::receiveMessage(pollfd &pollFD)
+void	Server::_receiveMessage(pollfd &pollFD)
 {
 	char	buffer[512];
 	ssize_t	bytesRead;
@@ -162,9 +162,9 @@ void	Server::receiveMessage(pollfd &pollFD)
 	if (bytesRead == -1)
 		throw std::runtime_error("Error receiving message from client");
 	if (bytesRead == 0)
-		return (disconnectClient(pollFD));
+		return (_disconnectClient(pollFD));
 	_clients[pollFD.fd].addToRecvBuffer(string(buffer, bytesRead));
 	if (_clients[pollFD.fd].getRecvBuffer().find("\n") == string::npos)
 		return ;
-	parseMessage(pollFD.fd);
+	_parseMessage(pollFD.fd);
 }
