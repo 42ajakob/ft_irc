@@ -6,18 +6,23 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/30 18:26:21 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:43:32 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <iostream>
+# include <iostream>
 # include <chrono>
+# include <unordered_set>
 
 # define TIMEOUT 300
+
+using std::string;
+
 typedef std::chrono::time_point<std::chrono::system_clock> t_TimeStamp;
+typedef std::unordered_set<string>	t_StringSet;
 
 enum class eCommand
 {
@@ -31,6 +36,7 @@ enum class eCommand
 	QUIT,
 	PASS,
 	CAP,
+	OPER,
 	DEBUG_BYPASS
 };
 

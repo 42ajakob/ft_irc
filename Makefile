@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/10/29 16:13:40 by JFikents         ###   ########.fr        #
+#    Updated: 2024/11/05 16:10:50 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
 _CLIENT_SRC		=	Client.cpp\
 					bufferMethods.cpp\
+					clientOpMethods.cpp\
+					Operator.cpp\
 					registrationMethods.cpp\
 					timeoutMethods.cpp
 CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
@@ -31,6 +33,7 @@ CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
 _SERVER_SRC		=	Server.cpp\
 					joinChannel.cpp\
 					mainLoop.cpp\
+					Oper.cpp\
 					receiveMessage.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\

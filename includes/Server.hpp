@@ -6,17 +6,18 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 14:23:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:42:50 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <iostream>
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Operator.hpp"
 # include "Utils.hpp"
+# include <iostream>
 # include <vector>
 # include <unordered_map>
 # include <sys/socket.h>
@@ -30,14 +31,12 @@
 
 # define BACKLOG_SIZE 512
 
-using std::string;
+class Client;
+class Channel;
 
 typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
 typedef std::unordered_map<int, Client>			t_ClientMap;
 typedef std::unique_ptr<Server>					t_ServerPtr;
-
-class Client;
-class Channel;
 
 class Server
 {
@@ -72,6 +71,7 @@ class Server
 		void	_checkPassword(const int &fd, const string &line);
 		void	_joinChannel(const int &fd, string &line);
 		void	_quitClient(const int &fd);
+		void	_Oper(const int &fd, string &line);
 	
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;

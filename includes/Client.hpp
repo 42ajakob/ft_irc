@@ -6,22 +6,24 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 17:24:13 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:43:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
+# include "Utils.hpp"
+# include "Operator.hpp"
 # include <iostream>
 # include <unordered_set>
 # include <chrono>
-# include "Utils.hpp"
-#include <arpa/inet.h>
+# include <arpa/inet.h>
+# include <memory>
 
-using std::string;
+class Operator;
 
-typedef std::unordered_set<string>	t_StringSet;
+typedef std::unique_ptr<Operator>	t_OperatorAccess;
 
 class Client
 {
@@ -39,6 +41,8 @@ class Client
 
 		bool				_isNicknameAvailable(string nickname);
 		void				_markAsRegistered();
+
+		t_OperatorAccess	_operatorAccess = nullptr;
 
 	public:
 		Client(const Client &other)				= delete;
@@ -74,6 +78,11 @@ class Client
 		void				pingClient();
 		void				resetPingTimerIfPongMatches(const string &line);
 		void				setProgrammedDisconnection(const int seconds, bool setByQuitCommand = false);
+
+	// *** Operator methods ***
+		void				giveOperatorAccess(const string &&username, const string &password);
+		void				revokeOperatorAccess();
+		bool				isOperator() const;
 };
 
 #endif
