@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:15:50 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 16:06:17 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:40:00 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int main(int argc, char **argv)
 	Server &server = Server::getInstance(argv[1], std::move(argv[2]));
 
 	try {
-		std::cout << "Starting server" << std::endl;
 		server.initServer();
 	}
 	catch (std::exception &e) {
