@@ -22,7 +22,7 @@ jobs:
       run: make
     - name: run server
       run: |
-        ./ircserv 4242 password &&
+        ./ircserv 4242 password &
         echo $! > server_pid.txt
     - name: test connection
       run: |
@@ -42,7 +42,7 @@ jobs:
       run: make
     - name: run server
       run: |
-        ./ircserv 4242 password &&
+        ./ircserv 4242 password &
         echo $! > server_pid.txt
     - name: test connection
       run: |
