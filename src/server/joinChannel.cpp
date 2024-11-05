@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 18:38:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:02:12 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	Server::joinChannel(const int &fd, string &line)
 		string	ChannelName = channelNames[i];
 		string	Password = passwords[i];
 		toLower(ChannelName);
-		Channel	&channel = Channel::getChannel(ChannelName, *_clients[fd]);
+		Channel	&channel = Channel::getChannel(ChannelName, _clients[fd]);
 
-		channel.join(*_clients[fd], Password);
-		std::cout << "Client " << _clients[fd]->getNickname() << " joined channel " << ChannelName << std::endl;
+		channel.join(_clients[fd], Password);
+		std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl;
 		std::cout << "Password: <" << Password + '>' << std::endl;
 		channel.printMembers();
 	}

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 18:25:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:57:05 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 using std::string;
 
 typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
-typedef std::unordered_map<int, Client *>		t_ClientMap;
+typedef std::unordered_map<int, Client>		t_ClientMap;
 typedef std::unique_ptr<Server>					t_ServerPtr;
 
 class Client;
