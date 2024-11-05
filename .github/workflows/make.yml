@@ -18,10 +18,18 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: check PWD
-      run: ls
     - name: make
       run: make
+    - name: run server
+      run: |
+        ./ircserv 4242 password &&
+        echo $! > server_pid.txt
+    - name: test connection
+      run: |
+        nc localhost 4242
+    - name: clean afterwards
+      run: |
+        kill -9 ${{ cat server_pid.txt }}
 
   compile_in_MacOs:
     name: compile_Mac
@@ -32,4 +40,14 @@ jobs:
       uses: actions/checkout@v2
     - name: make
       run: make
+    - name: run server
+      run: |
+        ./ircserv 4242 password &&
+        echo $! > server_pid.txt
+    - name: test connection
+      run: |
+        nc localhost 4242
+    - name: clean afterwards
+      run: |
+        kill -9 ${{ cat server_pid.txt }}
 
