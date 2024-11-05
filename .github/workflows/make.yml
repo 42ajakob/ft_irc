@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: check PWD
       run: ls
-    - name: check ../
-      run: ls ../
     - name: make
       run: make
 
@@ -28,6 +28,8 @@ jobs:
     runs-on:  macos-12
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: make
       run: make
 
