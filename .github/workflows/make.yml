@@ -49,6 +49,8 @@ jobs:
       uses: actions/checkout@v2
     - name: make
       run: make
+    - name: prepare ServOp credentials
+      run: echo "admin admin" > .operator_credentials
     - name: run server
       run: |
         ./ircserv 4242 password > normal.log 2> error.log &
