@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 16:43:01 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:55:23 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class Client
 		void				setProgrammedDisconnection(const int seconds, bool setByQuitCommand = false);
 
 	// *** Operator methods ***
-		void				giveOperatorAccess(const string &&username, const string &password);
+		void				giveOperatorAccess(string &&username, const string &password);
 		void				revokeOperatorAccess();
 		bool				isOperator() const;
 };

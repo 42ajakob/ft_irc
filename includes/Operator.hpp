@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 19:13:00 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 16:42:55 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:58:24 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ class Operator
 	private:
 		static t_OperatorCredentials	_credentials;
 		static t_StringSet				_loggedOperators;
-		const string					&_username;
+		const string					_username;
 
 	public:
 		Operator()									= delete;
 		Operator(const Operator &other)				= delete;
 		Operator &operator=(const Operator &other)	= delete;
-		Operator(const string &&username, const string &password);
+		Operator(string &&username, const string &password);
 		~Operator();
 
 		static void	loadCredentials();

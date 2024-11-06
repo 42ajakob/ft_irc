@@ -6,14 +6,14 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:16:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 16:33:21 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:54:52 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 #include "Operator.hpp"
 
-void	Client::giveOperatorAccess(const string &&username, const string &password)
+void	Client::giveOperatorAccess(string &&username, const string &password)
 {
 	try{
 		_operatorAccess = std::make_unique<Operator>(std::move(username), password);

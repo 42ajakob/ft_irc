@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:44:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 16:42:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:54:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 t_OperatorCredentials	Operator::_credentials;
 t_StringSet				Operator::_loggedOperators;
 
-Operator::Operator(const string &&username, const string &password):
-	_username(username)
+Operator::Operator(string &&username, const string &password):
+	_username(std::move(username))
 {
 	if (_credentials.empty())
 		loadCredentials();
@@ -49,6 +49,6 @@ void	Operator::loadCredentials()
 
 Operator::~Operator()
 {
-	_loggedOperators.erase(_username);
 	std::cout << "Operator " << _username << " logged out" << std::endl;
+	_loggedOperators.erase(_username);
 }
