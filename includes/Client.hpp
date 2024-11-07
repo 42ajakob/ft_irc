@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 15:24:36 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:51:28 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <chrono>
 # include "Utils.hpp"
 # include "Server.hpp"
-# include "../src/client/numericReplies.cpp"
+# include "numericReplies.hpp"
 
 using std::string;
 
