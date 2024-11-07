@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 15:19:13 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:53:32 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 #include "Utils.hpp"
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 static eCommand	checkForCommand(const string &line)
 {
 	string command = line.substr(0, line.find(' '));
+	std::transform(command.begin(), command.end(), command.begin(), ::toupper);
 	if (command == "PING")
 		return (eCommand::PING);
 	if (command == "PONG")
