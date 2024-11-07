@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/06 19:41:42 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:19:13 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static eCommand	checkForCommand(const string &line)
 		return (eCommand::ADD_OPER);
 	if (command == "LS_OPER")
 		return (eCommand::LS_OPER);
+	if (command == "RELOAD_SERVER")
+		return (eCommand::RELOAD_SERVER);
 	if (command == ":bypass")
 		return (eCommand::DEBUG_BYPASS);
 	return (eCommand::UNKNOWN);
@@ -138,6 +140,8 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		_addOper(fd, line);
 	else if (command == eCommand::LS_OPER)	
 		_clients[fd].listOperators();
+	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
+		reload();
 	else if (command == eCommand::DEBUG_BYPASS)
 		_debugBypass(line);
 }
