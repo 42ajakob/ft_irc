@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/26 20:56:21 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:32:15 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 static std::string::iterator	jumpSpaces(std::string::iterator it, std::string::iterator end)
 {
@@ -53,3 +58,19 @@ size_t	Server::findNextParameter(std::string &line, size_t pos = 0)
 // 		return (next_space);
 // 	return (next_colon);
 // }
+
+void	Server::setTimestamp()
+{
+	auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "on %d.%m.%Y at %H:%M:%S");
+
+    _timestamp =  oss.str();
+}
+
+std::string Server::getTimestamp()
+{
+	return (_timestamp);	
+}

@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/28 17:46:18 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:30:44 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ bool	Client::_isNicknameAvailable(string nickname)
 	return (_usedNicknames.find(nickname) == _usedNicknames.end());
 }
 
-void	Client::_markAsRegistered()
+void	Client::_markAsRegistered(Server *server)
 {
 	if (_isPasswordCorrect == false || _Nickname.empty() || _Username.empty())
 		return ;
 	_registered = true;
 	_isPingSent = false;
-	this->addToSendBuffer(RPL_WELCOME(_Username, _Nickname, _Username, _Hostname));
+	this->addToSendBuffer(RPL_WELCOME(_Nickname, _Nickname, _Username, _Hostname) + RPL_YOURHOST(_Nickname) + RPL_CREATED(_Nickname, server->getTimestamp()) + RPL_MYINFO(_Nickname, "?", "?"));
 }
 
 const bool &Client::IsPasswordCorrect() const
@@ -63,7 +63,7 @@ static bool	isNicknameValid(string &nickname)
 	return (true);
 }
 
-void	Client::setNickname(string nickname)
+void	Client::setNickname(string nickname, Server *server)
 {
 	if (_registered == true)
 		throw std::invalid_argument("Client already registered");
@@ -81,7 +81,7 @@ void	Client::setNickname(string nickname)
 		throw std::invalid_argument("Nickname already in use");
 	_Nickname = nickname;
 	_usedNicknames.insert(_Nickname);
-	_markAsRegistered();
+	_markAsRegistered(server);
 }
 
 void	Client::setPasswordCorrect(bool isPasswordCorrect)
@@ -93,7 +93,7 @@ void	Client::setPasswordCorrect(bool isPasswordCorrect)
 		this->addToSendBuffer(":FT_IRC 464 * :Password incorrect\r\n");
 }
 
-void	Client::setUsername(string line)
+void	Client::setUsername(string line, Server *server)
 {
 	string	username;
 	size_t		start;
@@ -113,5 +113,5 @@ void	Client::setUsername(string line)
 		end = line.length();
 	username = line.substr(start, end - start);
 	_Username = username;
-	_markAsRegistered();
+	_markAsRegistered(server);
 }

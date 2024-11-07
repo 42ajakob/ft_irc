@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/26 20:55:42 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:19:06 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Server
 		std::vector<Channel>		_channels;
 		std::string					_password;
 		sockaddr_in					_serverAddr;
+		std::string					_timestamp;
 
 		void	acceptClient();
 		void	receiveMessage(pollfd &pollFD);
@@ -81,6 +82,8 @@ class Server
 		void	status();
 		void	fdCloser();
 		void	help();
+		void	setTimestamp();
+		std::string	getTimestamp();
 };
 
 #endif

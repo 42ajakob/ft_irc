@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/28 16:32:16 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:24:36 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@
 # include <unordered_set>
 # include <chrono>
 # include "Utils.hpp"
+# include "Server.hpp"
 # include "../src/client/numericReplies.cpp"
 
 using std::string;
+
+class Server;
 
 typedef std::unordered_set<string>	t_StringSet;
 
@@ -38,7 +41,7 @@ class Client
 		bool				_isPasswordCorrect = false;
 
 		bool				_isNicknameAvailable(string nickname);
-		void				_markAsRegistered();
+		void				_markAsRegistered(Server *server);
 
 	public:
 		Client(const Client &other)				= delete;
@@ -64,9 +67,9 @@ class Client
 		const bool			&IsPasswordCorrect() const;
 		const bool			&IsRegistered() const;
 		void				setHostname(string &&Hostname);
-		void				setNickname(string nickname);
+		void				setNickname(string nickname, Server *server);
 		void				setPasswordCorrect(const bool);
-		void				setUsername(string username);
+		void				setUsername(string username, Server *server);
 
 	// *** Timeout methods ***
 		const t_TimeStamp	&getProgrammedDisconnection() const;

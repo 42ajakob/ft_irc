@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/23 14:34:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:08:06 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ bool Server::_sig = false;
 Server::Server(std::string port, std::string password)
 	: _password(password)
 {
+	
 	try{
 		this->_port = std::stoi(port);
 	}
@@ -24,6 +25,7 @@ Server::Server(std::string port, std::string password)
 		std::cerr << e.what() << std::endl;
 		exit(1);
 	}
+	this->setTimestamp();
 	std::cout << "Server created" << std::endl;
 }
 

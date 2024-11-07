@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   receiveMessage.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/25 20:39:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:13:03 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,10 @@ void	Server::executeCommand(const eCommand &command, std::string &line, const po
 		case eCommand::JOIN:
 			break;
 		case eCommand::NICK:
-			_clients[pollFD.fd].setNickname(line);
+			_clients[pollFD.fd].setNickname(line, this);
 			break;
 		case eCommand::USER:
-			_clients[pollFD.fd].setUsername(line);
+			_clients[pollFD.fd].setUsername(line, this);
 			break;
 		case eCommand::QUIT:
 			break;
