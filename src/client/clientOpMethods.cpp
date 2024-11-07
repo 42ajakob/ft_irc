@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:16:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 15:17:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:23:34 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	Client::removeOperator(const string &username)
 	}
 }
 
-void	Client::listOperators()
+void	Client::listOperators() noexcept
 {
 	if (_operatorAccess == nullptr)
 	{
