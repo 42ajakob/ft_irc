@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 15:51:28 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 16:06:34 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class Client
 		bool				_isPasswordCorrect = false;
 
 		bool				_isNicknameAvailable(string nickname);
-		void				_markAsRegistered(Server *server);
+		void				_markAsRegistered();
 
 		t_OperatorAccess	_operatorAccess = nullptr;
 
