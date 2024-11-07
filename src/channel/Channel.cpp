@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 17:02:48 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:09:38 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ void Channel::sendChannelInfo(Client & client)
 
 void Channel::kick(const string &nickname)
 {
-	const Client &client = Server::getInstance().getClientByNickname(nickname);
-	const auto it = std::find(_members.begin(), _members.end(), &client);
+	const auto it = std::find(_members.begin(), _members.end(), &Server::getInstance().getClientByNickname(nickname));
 
 	if (it != _members.end())
 		_members.erase(it);
@@ -85,8 +84,7 @@ void Channel::invite(const string &nickname)
 {
 	try
 	{
-		const Client &client = Server::getInstance().getClientByNickname(nickname);
-		_invited.insert(&client);
+		_invited.insert(&Server::getInstance().getClientByNickname(nickname));
 	}
 	catch (const std::invalid_argument &e)
 	{
