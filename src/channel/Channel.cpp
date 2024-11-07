@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:02:53 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:02:48 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void Channel::join(Client &client, const string &password)
 		_members.size() >= _userLimit)
 		throw std::invalid_argument("Channel is full");
 	_members.insert(&client);
+	client.addToSendBuffer(":" +client.getNickname() + " JOIN " + _name + "\r\n");
 	sendChannelInfo(client);
 }
 
