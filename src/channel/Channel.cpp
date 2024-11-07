@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 17:09:38 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:17:20 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 #include "Server.hpp"
-#include <algorithm>
 #include <vector>
 
 Channel::Channel(const t_ChannelCreatorKey &key, const string &name,
@@ -74,10 +73,16 @@ void Channel::sendChannelInfo(Client & client)
 
 void Channel::kick(const string &nickname)
 {
-	const auto it = std::find(_members.begin(), _members.end(), &Server::getInstance().getClientByNickname(nickname));
+	const auto itMember = _members.find(&Server::getInstance().getClientByNickname(nickname));
+	const auto itOperator = _operators.find(&Server::getInstance().getClientByNickname(nickname));
+	const auto itInvited = _invited.find(&Server::getInstance().getClientByNickname(nickname));
 
-	if (it != _members.end())
-		_members.erase(it);
+	if (itMember != _members.end())
+		_members.erase(itMember);
+	if (itOperator != _operators.end())
+		_operators.erase(itOperator);
+	if (itInvited != _invited.end())
+		_invited.erase(itInvited);
 }
 
 void Channel::invite(const string &nickname)
