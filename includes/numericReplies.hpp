@@ -1,16 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   numericReplies.cpp                                 :+:      :+:    :+:   */
+/*   numericReplies.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/07 15:31:27 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:50:00 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "Client.hpp"
 
 #define RPL_WELCOME(client, nick, user, host) (":FT_IRC 001 " + client + " :Welcome to the Internet Relay Network "  + nick + "!" + user + "@" + host + "\r\n")
 #define RPL_YOURHOST(client) (":FT_IRC 002 " + client + " :Your host is ft_irc, running version 0.0.1\r\n")
