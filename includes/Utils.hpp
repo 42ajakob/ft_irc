@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 15:17:50 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:12:41 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ enum class eCommand
 	ADD_OPER,
 	LS_OPER,
 	RELOAD_SERVER,
+	TOPIC,
+	KICK,
+	INVITE,
+	MODE,
 	DEBUG_BYPASS
 };
 

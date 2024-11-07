@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   receiveMessage.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 16:53:32 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/07 19:17:08 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ static eCommand	checkForCommand(const string &line)
 		return (eCommand::LS_OPER);
 	if (command == "RELOAD_SERVER")
 		return (eCommand::RELOAD_SERVER);
+	if (command == "TOPIC")
+		return (eCommand::TOPIC);
+	if (command == "KICK")
+		return (eCommand::KICK);
+	if (command == "INVITE")
+		return (eCommand::INVITE);
+	if (command == "MODE")
+		return (eCommand::MODE);
 	if (command == ":bypass")
 		return (eCommand::DEBUG_BYPASS);
 	return (eCommand::UNKNOWN);
@@ -144,6 +152,14 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		_clients[fd].listOperators();
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
 		reload();
+	else if (command == eCommand::TOPIC)
+		;
+	else if (command == eCommand::KICK)
+		;
+	else if (command == eCommand::INVITE)
+		;
+	else if (command == eCommand::MODE)
+		;
 	else if (command == eCommand::DEBUG_BYPASS)
 		_debugBypass(line);
 }
