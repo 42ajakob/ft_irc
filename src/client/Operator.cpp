@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:44:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/06 19:53:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:12:42 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,13 @@ void	Operator::removeOperator(const string &username)
 const string	&Operator::getUsername() const noexcept
 {
 	return (_username);
+}
+
+const string	Operator::listOperators() const noexcept
+{
+	string	ret;
+
+	for (auto &it : _credentials)
+		ret += it.first + '\n';
+	return (ret);
 }

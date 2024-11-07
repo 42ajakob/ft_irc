@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/06 19:19:09 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:09:54 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ class Client
 		bool				isOperator() const;
 		void				addOperator(const string &username, const string &password);
 		void				removeOperator(const string &username);
+		void				listOperators() noexcept;
 };
 
 #endif

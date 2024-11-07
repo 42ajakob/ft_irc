@@ -43,6 +43,8 @@ static eCommand	checkForCommand(const string &line)
 		return (eCommand::RM_OPER);
 	if (command == "ADD_OPER")
 		return (eCommand::ADD_OPER);
+	if (command == "LS_OPER")
+		return (eCommand::LS_OPER);
 	if (command == ":bypass")
 		return (eCommand::DEBUG_BYPASS);
 	return (eCommand::UNKNOWN);
@@ -134,6 +136,8 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		_rmOper(fd, line);
 	else if (command == eCommand::ADD_OPER)
 		_addOper(fd, line);
+	else if (command == eCommand::LS_OPER)	
+		_clients[fd].listOperators();
 	else if (command == eCommand::DEBUG_BYPASS)
 		_debugBypass(line);
 }

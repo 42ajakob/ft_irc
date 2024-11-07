@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:16:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/06 19:56:05 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:17:25 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,15 @@ void	Client::removeOperator(const string &username)
 		std::cerr << "Error removing operator: " << e.what() << std::endl;
 		addToSendBuffer(":FT_IRC ERROR " + _Nickname + " " + e.what() + "\r\n");
 	}
+}
+
+void	Client::listOperators()
+{
+	if (_operatorAccess == nullptr)
+	{
+		addToSendBuffer(":FT_IRC 481 " + _Nickname + " :Permission Denied- You're not an IRC operator\r\n");
+		return ;
+	}
+	const string &ops = this->_operatorAccess->listOperators();
+	addToSendBuffer(":FT_IRC " + _Nickname + " :Operators: " + ops + "\r\n");
 }

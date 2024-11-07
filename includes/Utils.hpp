@@ -39,6 +39,7 @@ enum class eCommand
 	OPER,
 	RM_OPER,
 	ADD_OPER,
+	LS_OPER,
 	DEBUG_BYPASS
 };
 
