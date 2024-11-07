@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   receiveMessage.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
 /*   Updated: 2024/11/07 15:19:13 by JFikents         ###   ########.fr       */

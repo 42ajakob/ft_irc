@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
 /*   Updated: 2024/11/06 17:19:39 by JFikents         ###   ########.fr       */
@@ -27,6 +27,7 @@ Server::Server(const string &port, const string &&password): _password(std::move
 		std::cerr << e.what() << std::endl;
 		exit(1);
 	}
+	this->setTimestamp();
 	std::cout << "Server created" << std::endl;
 }
 

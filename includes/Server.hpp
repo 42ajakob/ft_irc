@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/06 19:39:54 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:19:06 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ class Server
 		t_PollFDs			_pollFDs;
 		string				_password;
 		sockaddr_in			_serverAddr;
+		std::string					_timestamp;
 
 		Server(const string &port, const string &&password);
 
@@ -87,6 +88,8 @@ class Server
 		
 		void	initServer();
 		void	reload();
+		void	setTimestamp();
+		std::string	getTimestamp();
 };
 
 #endif

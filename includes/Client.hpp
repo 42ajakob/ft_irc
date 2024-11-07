@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 15:09:54 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:51:28 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <chrono>
 # include <arpa/inet.h>
 # include <memory>
+# include "numericReplies.hpp"
 
 class Operator;
 
@@ -40,7 +41,7 @@ class Client
 		bool				_isPasswordCorrect = false;
 
 		bool				_isNicknameAvailable(string nickname);
-		void				_markAsRegistered();
+		void				_markAsRegistered(Server *server);
 
 		t_OperatorAccess	_operatorAccess = nullptr;
 

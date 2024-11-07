@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   registrationMethods.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 17:36:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:30:44 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ bool	Client::_isNicknameAvailable(string nickname)
 	return (_usedNicknames.find(nickname) == _usedNicknames.end());
 }
 
-void	Client::_markAsRegistered()
+void	Client::_markAsRegistered(Server *server)
 {
 	if (_isPasswordCorrect == false || _Nickname.empty() || _Username.empty())
 		return ;
 	_registered = true;
 	_isPingSent = false;
-	this->addToSendBuffer(":FT_IRC 001 " + _Nickname + " :Welcome to the FT_IRC Network " + _Nickname + "!" + _Username + "@" + _Hostname + "\r\n");
+	this->addToSendBuffer(RPL_WELCOME(_Nickname, _Nickname, _Username, _Hostname) + RPL_YOURHOST(_Nickname) + RPL_CREATED(_Nickname, server->getTimestamp()) + RPL_MYINFO(_Nickname, "?", "?"));
 }
 
 const bool &Client::IsPasswordCorrect() const
@@ -76,7 +76,7 @@ void	Client::setNickname(string &&nickname)
 		throw std::invalid_argument("Nickname already in use");
 	_Nickname = std::move(nickname);
 	_usedNicknames.insert(_Nickname);
-	_markAsRegistered();
+	_markAsRegistered(server);
 }
 
 void	Client::setPasswordCorrect(bool isPasswordCorrect)
