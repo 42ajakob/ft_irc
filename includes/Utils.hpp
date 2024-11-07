@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 16:43:32 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:41:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ enum class eCommand
 	PASS,
 	CAP,
 	OPER,
+	RM_OPER,
+	ADD_OPER,
 	DEBUG_BYPASS
 };
 

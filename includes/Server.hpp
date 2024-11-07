@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 16:42:50 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:39:54 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ class Server
 		void	_joinChannel(const int &fd, string &line);
 		void	_quitClient(const int &fd);
 		void	_Oper(const int &fd, string &line);
+		void	_addOper(const int &fd, string &line);
+		void	_rmOper(const int &fd, string &line);
 	
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;

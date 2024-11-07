@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 16:11:35 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:41:42 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ static eCommand	checkForCommand(const string &line)
 		return (eCommand::CAP);
 	if (command == "OPER")
 		return (eCommand::OPER);
+	if (command == "RM_OPER")
+		return (eCommand::RM_OPER);
+	if (command == "ADD_OPER")
+		return (eCommand::ADD_OPER);
 	if (command == ":bypass")
 		return (eCommand::DEBUG_BYPASS);
 	return (eCommand::UNKNOWN);
@@ -126,6 +130,10 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		_doCapNegotiation(fd, line);
 	else if (command == eCommand::OPER)
 		_Oper(fd, line);
+	else if (command == eCommand::RM_OPER)
+		_rmOper(fd, line);
+	else if (command == eCommand::ADD_OPER)
+		_addOper(fd, line);
 	else if (command == eCommand::DEBUG_BYPASS)
 		_debugBypass(line);
 }

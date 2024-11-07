@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:16:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/06 16:54:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:56:05 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,36 @@ void	Client::revokeOperatorAccess()
 bool	Client::isOperator() const
 {
 	return (_operatorAccess != nullptr);
+}
+
+void	Client::addOperator(const string &username,const string &password)
+{
+	if (_operatorAccess == nullptr)
+	{
+		addToSendBuffer(":FT_IRC 481 " + _Nickname + " :Permission Denied- You're not an IRC operator\r\n");
+		return ;
+	}
+	try{
+		this->_operatorAccess->addOperator(username, password);
+	}
+	catch (std::exception &e){
+		std::cerr << "Error adding operator: " << e.what() << std::endl;
+		addToSendBuffer(":FT_IRC ERROR " + _Nickname + " " + e.what() + "\r\n");
+	}
+}
+
+void	Client::removeOperator(const string &username)
+{
+	if (_operatorAccess == nullptr)
+	{
+		addToSendBuffer(":FT_IRC 481 " + _Nickname + " :Permission Denied- You're not an IRC operator\r\n");
+		return ;
+	}
+	try{
+		this->_operatorAccess->removeOperator(username);
+	}
+	catch (std::exception &e){
+		std::cerr << "Error removing operator: " << e.what() << std::endl;
+		addToSendBuffer(":FT_IRC ERROR " + _Nickname + " " + e.what() + "\r\n");
+	}
 }

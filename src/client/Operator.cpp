@@ -6,13 +6,14 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:44:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/06 16:54:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:53:16 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Operator.hpp"
 #include <fstream>
 #include <iostream>
+#include "Server.hpp"
 
 t_OperatorCredentials	Operator::_credentials;
 t_StringSet				Operator::_loggedOperators;
@@ -51,4 +52,35 @@ Operator::~Operator()
 {
 	std::cout << "Operator " << _username << " logged out" << std::endl;
 	_loggedOperators.erase(_username);
+}
+
+void	Operator::addOperator(const string &username, const string &password)
+{
+	std::ofstream	file(CREDENTIALS_FILE, std::ios::app);
+
+	if (!file.is_open())
+		throw std::runtime_error("Error opening the operator credentials file");
+	file << '\n' << username << ' ' << password << std::flush;
+	file.close();
+	_credentials[username] = password;
+}
+
+void	Operator::removeOperator(const string &username)
+{
+	std::ofstream	file(CREDENTIALS_FILE);
+	auto			it = _credentials.find(username);
+
+	if (!file.is_open())
+		throw std::runtime_error("Error opening the operator credentials file");
+	if (it == _credentials.end())
+		throw std::runtime_error("Operator not found");
+	_credentials.erase(it);
+	for (it = _credentials.begin(); it != _credentials.end(); ++it)
+		file << it->first << ' ' << it->second << std::endl;
+	file.close();
+}
+
+const string	&Operator::getUsername() const noexcept
+{
+	return (_username);
 }
