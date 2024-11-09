@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 19:12:41 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 13:46:29 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void	toLower(std::string &str);
 
 class Utils
 {
-private:
-	/* data */
-public:
-	Utils();
-	~Utils();
-	Utils(const Utils &other);
-	Utils &operator=(const Utils &other);
-	std::string getTimestamp();
+	private:
+		/* data */
+	public:
+		Utils();
+		~Utils();
+		Utils(const Utils &other);
+		Utils &operator=(const Utils &other);
+		std::string getTimestamp();
 };
 
 #endif

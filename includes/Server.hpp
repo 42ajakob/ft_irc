@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 15:19:06 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 13:40:59 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Server
 		t_PollFDs			_pollFDs;
 		string				_password;
 		sockaddr_in			_serverAddr;
-		std::string					_timestamp;
+		string				_timestamp;
 
 		Server(const string &port, const string &&password);
 
