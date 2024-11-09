@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverStaticMethods.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:24:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 18:40:38 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 12:47:58 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 const Client &Server::getClientByNickname(const string &nickname) const
 {
 	auto it = std::find_if(_clients.begin(), _clients.end(),
-		[&nickname](const std::pair<const int, Client *> &client)
+		[&nickname](const std::pair<const int, Client> &client)
 		{
-			return (*client.second == nickname);
+			return (client.second == nickname);
 		});
 	if (it != _clients.end())
-		return (*it->second);
-	throw std::invalid_argument("Client not found");
+		return (it->second);
+	throw std::invalid_argument(ERR_NOSUCHNICK(nickname));
 }

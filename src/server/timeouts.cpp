@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   timeouts.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 18:38:17 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 12:39:45 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 #include <iostream>
 #include <chrono>
 
-void	Server::checkConnectionTimeout(pollfd &pollFD)
+void	Server::_checkConnectionTimeout(pollfd &pollFD)
 {
 	if (pollFD.fd == -1)
 		return ;
-	Client		&client = *_clients[pollFD.fd];
+	Client		&client = _clients[pollFD.fd];
 	auto		now		= std::chrono::system_clock::now();
 
 	if (client.IsRegistered() == false
@@ -27,7 +27,7 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 		&& client.getProgrammedDisconnection() < now + std::chrono::seconds(10))
 	{
 		std::cout << "Client " << pollFD.fd << " timed out" << std::endl;
-		client.addToSendBuffer("ERROR :Closing Link: " + client.getNickname() + " (Failed to register in Time)\r\n");
+		client.addToSendBuffer(ERR_NOTREGISTERED(client.getNickname()));
 		client.setProgrammedDisconnection(3);
 	}
 	if (client.getProgrammedDisconnection() < now + std::chrono::seconds(10))
@@ -35,6 +35,6 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 	if (client.getProgrammedDisconnection() < now)
 	{
 		pollFD.revents |= POLLERR;
-		disconnectClient(pollFD);
+		_disconnectClient(pollFD);
 	}
 }

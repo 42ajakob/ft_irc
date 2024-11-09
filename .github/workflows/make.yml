@@ -20,9 +20,11 @@ jobs:
       uses: actions/checkout@v2
     - name: make
       run: make
+    - name: prepare ServOp credentials
+      run: echo "admin admin" > .operator_credentials
     - name: run server
       run: |
-        ./ircserv 4242 password > normal.log 2> error.log &
+        ./ircserv 4242 password &
         echo $! > server_pid.txt
     - name: test connection
       run: |
@@ -33,10 +35,6 @@ jobs:
           echo "Server failed to start"
           exit 1
         fi
-    - name: show normal logs
-      run: cat normal.log
-    - name: show error logs
-      run: cat error.log
     - name: clean afterwards
       if: success()
       run: |
@@ -51,6 +49,8 @@ jobs:
       uses: actions/checkout@v2
     - name: make
       run: make
+    - name: prepare ServOp credentials
+      run: echo "admin admin" > .operator_credentials
     - name: run server
       run: |
         ./ircserv 4242 password > normal.log 2> error.log &

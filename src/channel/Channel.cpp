@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:02:53 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:15:23 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 #include "Server.hpp"
-#include <algorithm>
 #include <vector>
 
 Channel::Channel(const t_ChannelCreatorKey &key, const string &name,
@@ -25,7 +24,7 @@ Channel::Channel(const string &name, const Client &creator)
 	: _name(name), _userLimit(BACKLOG_SIZE)
 {
 	if (name.empty())
-		throw std::invalid_argument("Channel name cannot be empty");
+		throw std::invalid_argument(ERR_NOSUCHCHANNEL(name));
 	_members.insert(&creator);
 	_operators.insert(&creator);
 }
@@ -39,14 +38,15 @@ void Channel::join(Client &client, const string &password)
 {
 	if (_mode.test(static_cast<size_t>(Mode::InviteOnly)) &&
 		_invited.find(&client) == _invited.end())
-		throw std::invalid_argument("Channel is invite only");
+		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), _name));
 	if (_mode.test(static_cast<size_t>(Mode::PasswordProtected)) &&
 		_password != password)
-		throw std::invalid_argument("Invalid password");
+		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), _name));
 	if (_mode.test(static_cast<size_t>(Mode::UserLimit)) &&
 		_members.size() >= _userLimit)
-		throw std::invalid_argument("Channel is full");
+		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), _name));
 	_members.insert(&client);
+	client.addToSendBuffer(":" +client.getNickname() + " JOIN " + _name + "\r\n");
 	sendChannelInfo(client);
 }
 
@@ -73,24 +73,16 @@ void Channel::sendChannelInfo(Client & client)
 
 void Channel::kick(const string &nickname)
 {
-	const Client &client = Server::getInstance().getClientByNickname(nickname);
-	const auto it = std::find(_members.begin(), _members.end(), &client);
+	const auto itMember = _members.find(&Server::getInstance().getClientByNickname(nickname));
+	const auto itOperator = _operators.find(&Server::getInstance().getClientByNickname(nickname));
+	const auto itInvited = _invited.find(&Server::getInstance().getClientByNickname(nickname));
 
-	if (it != _members.end())
-		_members.erase(it);
-}
-
-void Channel::invite(const string &nickname)
-{
-	try
-	{
-		const Client &client = Server::getInstance().getClientByNickname(nickname);
-		_invited.insert(&client);
-	}
-	catch (const std::invalid_argument &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
+	if (itMember != _members.end())
+		_members.erase(itMember);
+	if (itOperator != _operators.end())
+		_operators.erase(itOperator);
+	if (itInvited != _invited.end())
+		_invited.erase(itInvited);
 }
 
 void Channel::leave(const Client &client)

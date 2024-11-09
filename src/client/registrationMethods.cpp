@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   registrationMethods.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/10/29 17:36:46 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 13:20:17 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
+#include "Server.hpp"
 #include <stdexcept>
 #include <algorithm>
 #include <cctype>
@@ -23,11 +24,15 @@ bool	Client::_isNicknameAvailable(string nickname)
 
 void	Client::_markAsRegistered()
 {
+	Server	&server = Server::getInstance();
 	if (_isPasswordCorrect == false || _Nickname.empty() || _Username.empty())
 		return ;
 	_registered = true;
 	_isPingSent = false;
-	this->addToSendBuffer(":FT_IRC 001 " + _Nickname + " :Welcome to the FT_IRC Network " + _Nickname + "!" + _Username + "@" + _Hostname + "\r\n");
+	this->addToSendBuffer(RPL_WELCOME(_Nickname, _Nickname, _Username, _Hostname)
+		+ RPL_YOURHOST(_Nickname)
+		+ RPL_CREATED(_Nickname, server.getTimestamp())
+		+ RPL_MYINFO(_Nickname, "o", "itkol"));
 }
 
 const bool &Client::IsPasswordCorrect() const
@@ -85,7 +90,7 @@ void	Client::setPasswordCorrect(bool isPasswordCorrect)
 		throw std::invalid_argument("Client already registered");
 	_isPasswordCorrect = isPasswordCorrect;
 	if (_isPasswordCorrect == false)
-		this->addToSendBuffer(":FT_IRC 464 * :Password incorrect\r\n");
+		this->addToSendBuffer(ERR_PASSWDMISMATCH(_Nickname));
 }
 
 void	Client::setUsername(string &&line)

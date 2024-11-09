@@ -6,7 +6,7 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/04 14:36:21 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:35:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdexcept>
 #include <chrono>
 
-std::unordered_set<string> Client::_usedNicknames;
+t_StringSet	Client::_usedNicknames;
 
 Client::Client() :
 	_programmedDisconnection(std::chrono::system_clock::now() + std::chrono::seconds(60))
