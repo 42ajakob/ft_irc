@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 13:36:16 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 16:45:21 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	splitPasswordsAndChannels(const string &line,
 	string	rawChannelNames;
 
 	if (pos == string::npos)
-		throw std::runtime_error("JOIN command without channel name");
+		throw std::runtime_error("Missing channel name");
 	rawChannelNames = line.substr(pos);
 	if ((pos = findNextParameter(rawChannelNames)) != string::npos)
 	{
@@ -61,7 +61,15 @@ void	Server::_joinChannel(const int &fd, string &line)
 		_clients[fd].addToSendBuffer(ERR_NOTREGISTERED(_clients[fd].getNickname()));
 		return;
 	}
-	splitPasswordsAndChannels(line, channelNames, passwords);
+	try{
+		splitPasswordsAndChannels(line, channelNames, passwords);
+	}
+	catch (std::runtime_error &e)
+	{
+		_clients[fd].addToSendBuffer(ERR_NEEDMOREPARAMS(_clients[fd].getNickname(), line));
+		std::cerr << e.what() << std::endl;
+		return ;
+	}
 	for (size_t i = 0; i < channelNames.size(); i++)
 	{
 		string	ChannelName = channelNames[i];
@@ -70,8 +78,8 @@ void	Server::_joinChannel(const int &fd, string &line)
 		Channel	&channel = Channel::getChannel(ChannelName, _clients[fd]);
 
 		channel.join(_clients[fd], Password);
-		std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl;
+		std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl; // Topic
 		std::cout << "Password: <" << Password + '>' << std::endl;
-		channel.printMembers();
+		channel.printMembers(); // Numeric?
 	}
 }
