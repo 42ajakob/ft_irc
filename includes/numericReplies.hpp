@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/09 13:13:28 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 13:43:28 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@
 
 #define ERR_NOPRIVILEGES() (":FT_IRC 481 :Permission Denied- You're not an IRC operator\r\n")
 #define ERR_CHANOPRIVSNEEDED(channel) (":FT_IRC 482 " + channel + " :You're not channel operator\r\n")
+
+#define ERR_NOOPERHOST() (":FT_IRC 491 :No O-lines for your host\r\n")
 
 #define ERR_UMODEUNKNOWNFLAG(client) (":FT_IRC 501 " + client + " :Unknown MODE flag\r\n")
 #define ERR_USERSDONTMATCH(client) (":FT_IRC 502 " + client + " :Cant change mode for other users\r\n")
