@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+         #
+#    By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/09 18:18:31 by apeposhi         ###   ########.fr        #
+#    Updated: 2024/11/09 18:25:12 by ajakob           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ _SERVER_SRC		=	Server.cpp\
 					joinChannel.cpp\
 					mainLoop.cpp\
 					Oper.cpp\
+					parsing.cpp\
 					receiveMessage.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\
