@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   joinChannel.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:22:28 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 13:36:16 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	Server::_joinChannel(const int &fd, string &line)
 
 	if (_clients[fd].IsRegistered() == false)
 	{
-		// _clients[fd]->addToSendBuffer("451 You have not registered\n");
+		_clients[fd].addToSendBuffer(ERR_NOTREGISTERED(_clients[fd].getNickname()));
 		return;
 	}
 	splitPasswordsAndChannels(line, channelNames, passwords);

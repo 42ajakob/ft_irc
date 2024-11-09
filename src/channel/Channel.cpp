@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 17:17:20 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 12:59:46 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ Channel::Channel(const string &name, const Client &creator)
 	: _name(name), _userLimit(BACKLOG_SIZE)
 {
 	if (name.empty())
-		throw std::invalid_argument("Channel name cannot be empty");
+		throw std::invalid_argument(ERR_NOSUCHCHANNEL(name));
 	_members.insert(&creator);
 	_operators.insert(&creator);
 }
@@ -38,13 +38,13 @@ void Channel::join(Client &client, const string &password)
 {
 	if (_mode.test(static_cast<size_t>(Mode::InviteOnly)) &&
 		_invited.find(&client) == _invited.end())
-		throw std::invalid_argument("Channel is invite only");
+		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), _name));
 	if (_mode.test(static_cast<size_t>(Mode::PasswordProtected)) &&
 		_password != password)
-		throw std::invalid_argument("Invalid password");
+		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), _name));
 	if (_mode.test(static_cast<size_t>(Mode::UserLimit)) &&
 		_members.size() >= _userLimit)
-		throw std::invalid_argument("Channel is full");
+		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), _name));
 	_members.insert(&client);
 	client.addToSendBuffer(":" +client.getNickname() + " JOIN " + _name + "\r\n");
 	sendChannelInfo(client);
