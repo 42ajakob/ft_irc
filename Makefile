@@ -6,7 +6,7 @@
 #    By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/09 17:57:42 by ajakob           ###   ########.fr        #
+#    Updated: 2024/11/09 18:25:12 by ajakob           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ _INCLUDE_FLAGS	=	includes
 INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
 _CHANNEL_SRC	=	Channel.cpp\
-					channelCreation.cpp
+					channelCreation.cpp\
+					invite.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
 _CLIENT_SRC		=	Client.cpp\
@@ -31,6 +32,7 @@ _CLIENT_SRC		=	Client.cpp\
 CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
 
 _SERVER_SRC		=	Server.cpp\
+					Invite.cpp\
 					joinChannel.cpp\
 					mainLoop.cpp\
 					Oper.cpp\

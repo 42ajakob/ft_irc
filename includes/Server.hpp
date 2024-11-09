@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:11:49 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 18:27:29 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ class Server
 		void	_checkConnectionTimeout(pollfd &pollFD);
 		void	_checkPassword(const int &fd, const string &line);
 		void	_joinChannel(const int &fd, string &line);
+		void 	_invite(Client &client, const string &line);
 		void	_quitClient(const int &fd);
 		void	_Oper(const int &fd, string &line);
 		void	_addOper(const int &fd, string &line);

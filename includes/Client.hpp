@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 16:06:34 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:44:50 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ class Client
 		bool				operator==(const string &nickname) const;
 
 	// *** Buffer methods ***
-		void				addToSendBuffer(string buffer);
-		void				addToRecvBuffer(string buffer);
+		void				addToSendBuffer(string buffer) noexcept;
+		void				addToRecvBuffer(string buffer) noexcept;
 		void				clearSendBuffer();
 		void				clearRecvBuffer();
 		const string		&getSendBuffer() const;

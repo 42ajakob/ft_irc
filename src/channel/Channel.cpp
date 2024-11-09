@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:15:20 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 18:27:57 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,6 @@ void Channel::kick(const string &nickname, const Client &client)
 		_operators.erase(itOperator);
 	if (itInvited != _invited.end())
 		_invited.erase(itInvited);
-}
-
-void Channel::invite(const string &nickname)
-{
-	try
-	{
-		_invited.insert(&Server::getInstance().getClientByNickname(nickname));
-	}
-	catch (const std::invalid_argument &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
 }
 
 void Channel::leave(const Client &client)

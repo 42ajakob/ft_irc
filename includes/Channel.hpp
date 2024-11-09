@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:12:25 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 18:26:14 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class	Channel
 		void	join(Client &client, const string &password);
 		void	sendChannelInfo(Client &client);
 		void	kick(const string &nickname, const Client &client);
-		void	invite(const string &nickname);
+		void	invite(const string &nickname, Client &client);
 		void	leave(const Client &client);
 		void	mode(Client &client);
 		void	clear();
@@ -55,6 +55,7 @@ class	Channel
 		bool	operator==(const string &name) const;
 
 		static Channel	&getChannel(const string &name, const Client &client);
+		static Channel	&getChannel(const string &name);
 		static void		clientDisconnected(const Client &client);
 
 	enum class Mode
