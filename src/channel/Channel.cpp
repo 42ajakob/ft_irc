@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 12:59:46 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 18:15:23 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,6 @@ void Channel::kick(const string &nickname)
 		_operators.erase(itOperator);
 	if (itInvited != _invited.end())
 		_invited.erase(itInvited);
-}
-
-void Channel::invite(const string &nickname)
-{
-	try
-	{
-		_invited.insert(&Server::getInstance().getClientByNickname(nickname));
-	}
-	catch (const std::invalid_argument &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
 }
 
 void Channel::leave(const Client &client)

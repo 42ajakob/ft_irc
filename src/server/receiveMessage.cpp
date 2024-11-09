@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   receiveMessage.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 19:17:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:45:25 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::KICK)
 		;
 	else if (command == eCommand::INVITE)
-		;
+		_invite(_clients[fd], line);
 	else if (command == eCommand::MODE)
 		;
 	else if (command == eCommand::DEBUG_BYPASS)
