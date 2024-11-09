@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 12:59:46 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/09 18:15:20 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,11 @@ void Channel::sendChannelInfo(Client & client)
 	client.addToSendBuffer(":FT_IRC 366 " + client.getNickname() + " " + this->_name + " :End of /NAMES list\r\n");
 }
 
-void Channel::kick(const string &nickname)
+void Channel::kick(const string &nickname, const Client &client)
 {
+	if (_operators.find(&client) == _operators.end())
+		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
+	
 	const auto itMember = _members.find(&Server::getInstance().getClientByNickname(nickname));
 	const auto itOperator = _operators.find(&Server::getInstance().getClientByNickname(nickname));
 	const auto itInvited = _invited.find(&Server::getInstance().getClientByNickname(nickname));

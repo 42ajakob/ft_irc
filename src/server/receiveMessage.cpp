@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   receiveMessage.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 19:17:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:02:35 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::TOPIC)
 		;
 	else if (command == eCommand::KICK)
-		;
+		_parse_kick(fd, line);
 	else if (command == eCommand::INVITE)
 		;
 	else if (command == eCommand::MODE)

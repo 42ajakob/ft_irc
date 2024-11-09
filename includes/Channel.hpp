@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:17:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:12:25 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class	Channel
 
 		void	join(Client &client, const string &password);
 		void	sendChannelInfo(Client &client);
-		void	kick(const string &nickname);
+		void	kick(const string &nickname, const Client &client);
 		void	invite(const string &nickname);
 		void	leave(const Client &client);
 		void	mode(Client &client);
