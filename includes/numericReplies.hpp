@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/09 13:43:28 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 18:19:51 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 #define RPL_UMODEIS(user_mode) (":FT_IRC 221 " + user_mode + "\r\n")
 
-#define RPL_CHANNELMODEIS(channel, mode, mode_params) (":FT_IRC 324 " + channel + " " + mode + " " + mode_params + "\r\n")
 #define RPL_UNIQOPIS(channel, nick) (":FT_IRC 325 " + channel + " " + nick + "\r\n")
 
 #define RPL_NOTOPIC(client, channel) (":FT_IRC 331 " + client + " " + channel + " :No topic is set\r\n")
@@ -58,7 +57,6 @@
 #define ERR_UNKNOWNMODE(char, channel) (":FT_IRC 472 " + char + " :is unknown mode char to me for " + channel + "\r\n")
 #define ERR_INVITEONLYCHAN(client, channel) (":FT_IRC 473 " + client + " " + channel + " :Cannot join channel (+i)\r\n")
 #define ERR_BADCHANNELKEY(client, channel) (":FT_IRC 475 " + client + " " + channel + " :Cannot join channel (+k)\r\n")
-#define ERR_BADCHANMASK(channel) (":FT_IRC 476 " + channel + " :Bad Channel Mask\r\n")
 
 #define ERR_NOPRIVILEGES() (":FT_IRC 481 :Permission Denied- You're not an IRC operator\r\n")
 #define ERR_CHANOPRIVSNEEDED(channel) (":FT_IRC 482 " + channel + " :You're not channel operator\r\n")
