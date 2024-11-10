@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+         #
+#    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/10 16:26:49 by apeposhi         ###   ########.fr        #
+#    Updated: 2024/11/10 20:05:39 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ _INCLUDE_FLAGS	=	includes
 INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
 _CHANNEL_SRC	=	Channel.cpp\
+					broadcast.cpp\
 					channelCreation.cpp\
 					invite.cpp\
 					topic.cpp
@@ -38,6 +39,7 @@ _SERVER_SRC		=	Server.cpp\
 					mainLoop.cpp\
 					Oper.cpp\
 					parsing.cpp\
+					PrivMsg.cpp\
 					receiveMessage.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\

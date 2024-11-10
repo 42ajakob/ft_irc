@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 17:44:50 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:24:44 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ class Client
 		void				clearRecvBuffer();
 		const string		&getSendBuffer() const;
 		const string		&getRecvBuffer() const;
+		void				sendPrivMsg(const string &msg, const string &origin) noexcept;
 
 	// *** Registration methods ***
 		const bool			&IsPasswordCorrect() const;

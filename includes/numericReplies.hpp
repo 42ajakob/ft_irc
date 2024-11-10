@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   numericReplies.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/09 13:43:28 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:22:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 
 #define RPL_YOUREOPER(client) (":FT_IRC 381 " + client + " :You are now an IRC operator\r\n")
 
-#define ERR_NOSUCHNICK(nick) (":FT_IRC 401 " + nick + " :No such nick/channel\r\n")
+#define ERR_NOSUCHNICK(nick) (":FT_IRC 401 " + nick + " :No such nick\r\n")
 #define ERR_NOSUCHSERVER() (":FT_IRC 402 :No such server\r\n")
 #define ERR_NOSUCHCHANNEL(channel) (":FT_IRC 403 " + channel + " :No such channel\r\n")
 #define ERR_CANNOTSENDTOCHAN(channel) (":FT_IRC 404 " + channel + " :Cannot send to channel\r\n")
-#define ERR_TOOMANYTARGETS(target, error_code, abort_msg) (":FT_IRC 407 " + target + " :" + error_code + " recipients. " + abort_msg + "\r\n")
+#define ERR_TOOMANYTARGETS(targets) (":FT_IRC 407 " + targets + " :Max of 4 targets allowed per PRIVMSG\r\n")
 #define ERR_NOORIGIN() (":FT_IRC 409 :No origin specified\r\n")
 
 #define ERR_NORECIPIENT(command) (":FT_IRC 411 :No recipient given (" + command + ")\r\n")

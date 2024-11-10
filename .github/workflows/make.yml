@@ -2,7 +2,7 @@ name: Compilation test
 
 on:
   push:
-    branches: [ "main", "server" ]
+    branches: [ "main", "server" ,"Privmsg" ]
   pull_request:
     branches: [ "main" ]
 

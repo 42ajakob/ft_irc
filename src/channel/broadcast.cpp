@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   serverStaticMethods.cpp                            :+:      :+:    :+:   */
+/*   broadcast.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/17 14:24:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 18:38:25 by JFikents         ###   ########.fr       */
+/*   Created: 2024/11/10 17:21:54 by JFikents          #+#    #+#             */
+/*   Updated: 2024/11/10 18:50:54 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
-#include <algorithm>
-#include <stdexcept>
-#include "Client.hpp"
+#include "Channel.hpp"
 
-Client &Server::getClientByNickname(const string &nickname)
+void	Channel::broadcastMsg(const string &msg, const string &origin) const noexcept
 {
-	auto it = std::find_if(_clients.begin(), _clients.end(),
-		[&nickname](std::pair<const int, Client> &client)
-		{
-			return (client.second == nickname);
-		});
-	if (it != _clients.end())
-		return (it->second);
-	throw std::invalid_argument(ERR_NOSUCHNICK(nickname));
+	for (Client *member : _members)
+	{
+		if (member->getNickname() != origin)
+			member->addToSendBuffer(":" + origin + " PRIVMSG " + _name + " :" + msg + "\r\n");
+	}
 }
