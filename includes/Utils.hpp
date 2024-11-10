@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 18:42:24 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:03:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ using std::vector;
 
 typedef std::chrono::time_point<std::chrono::system_clock> t_TimeStamp;
 typedef std::unordered_set<string>	t_StringSet;
+
+constexpr size_t MAX_STREAM_SIZE = std::numeric_limits<std::streamsize>::max();
 
 enum class eCommand
 {

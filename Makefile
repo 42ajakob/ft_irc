@@ -39,6 +39,7 @@ _SERVER_SRC		=	Server.cpp\
 					mainLoop.cpp\
 					Oper.cpp\
 					parsing.cpp\
+					PrivMsg.cpp\
 					receiveMessage.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\

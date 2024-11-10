@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:48:40 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 18:49:55 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:22:35 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ Channel &Channel::getChannel(const std::string &name, Client &client)
 Channel &Channel::getChannel(const std::string &name)
 {
 	if (_channels.find(name) == _channels.end())
-		throw std::runtime_error("No such channel");
+		throw std::runtime_error(ERR_NOSUCHCHANNEL(name));
 	return (_channels.at(name));
 }

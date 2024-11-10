@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 18:21:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:40:25 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,10 @@ vector<string>	split(const string &line, const char &delimiter)
 	}
 	result.emplace_back(std::move(workingLine));
 	return (result);
+}
+
+void	Server::_logError(Client &client, const string &error) const
+{
+	client.addToSendBuffer(error);
+	std::cerr << error << std::endl;
 }

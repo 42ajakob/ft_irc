@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 18:39:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:38:36 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ class Server
 		void	_rmOper(const int &fd, string &line);
 
 		void	_parse_kick(const int &fd, std::string const &line);
+		void	_privmsg(Client &client, const string &line) noexcept;
+
+		void	_logError(Client &client, const string &error) const;
 	
 	public:
 		Client			&getClientByNickname(const string &nickname);

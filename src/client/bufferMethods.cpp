@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bufferMethods.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:40:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 17:44:42 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:58:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,9 @@ const string	&Client::getSendBuffer() const
 const string	&Client::getRecvBuffer() const
 {
 	return (_recvBuffer);
+}
+
+void	Client::sendPrivMsg(const string &msg, const string &origin) noexcept
+{
+	addToSendBuffer(":" + origin + " PRIVMSG " + _Nickname + " :" + msg + "\r\n");
 }
