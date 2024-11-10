@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   registrationMethods.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 16:12:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 13:20:17 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	Client::setPasswordCorrect(bool isPasswordCorrect)
 		throw std::invalid_argument("Client already registered");
 	_isPasswordCorrect = isPasswordCorrect;
 	if (_isPasswordCorrect == false)
-		this->addToSendBuffer(":FT_IRC 464 * :Password incorrect\r\n");
+		this->addToSendBuffer(ERR_PASSWDMISMATCH(_Nickname));
 }
 
 void	Client::setUsername(string &&line)

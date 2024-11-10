@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:17:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:49:59 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ using	std::string;
 using	std::bitset;
 
 typedef	std::unordered_map<string, Channel>	t_ChannelMap;
-typedef	std::unordered_set<const Client*>	t_ClientSet;
+typedef	std::unordered_set<Client *>	t_ClientSet;
 
 class	Channel
 {
@@ -39,23 +39,26 @@ class	Channel
 		Channel(const Channel &other)				= delete;
 		Channel	&operator=(const Channel &other)	= delete;
 		Channel(const t_ChannelCreatorKey &key, const string &name,
-			const Client &creator);
+			Client &creator);
 		~Channel();
 
 		void	join(Client &client, const string &password);
 		void	sendChannelInfo(Client &client);
-		void	kick(const string &nickname);
-		void	invite(const string &nickname);
-		void	leave(const Client &client);
+		void	kick(const string &nickname, Client &client);
+		void	invite(const string &nickname, Client &client);
+		void	leave(Client &client);
+		void	topic(string &topic, Client &client);
 		void	mode(Client &client);
 		void	clear();
 		void	printMembers() const;
+		void	broadcastMsg(const string &msg, const string &origin) const noexcept;
 
 		bool	operator==(const Channel &other) const;
 		bool	operator==(const string &name) const;
 
-		static Channel	&getChannel(const string &name, const Client &client);
-		static void		clientDisconnected(const Client &client);
+		static Channel	&getChannel(const string &name, Client &client);
+		static Channel	&getChannel(const string &name);
+		static void		clientDisconnected(Client &client);
 
 	enum class Mode
 	{
@@ -70,7 +73,7 @@ class	Channel
 		static constexpr size_t	ModeCount = static_cast<size_t>(Mode::Count);
 		static t_ChannelMap		_channels;
 
-		Channel(const string &name, const Client &creator);
+		Channel(const string &name, Client &creator);
 
 		bitset<ModeCount>	_mode;
 		string				_name;

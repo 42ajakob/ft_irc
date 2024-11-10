@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/07 16:15:53 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:22:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 
 #define RPL_YOUREOPER(client) (":FT_IRC 381 " + client + " :You are now an IRC operator\r\n")
 
-#define ERR_NOSUCHNICK() (":FT_IRC 401 :No such nick\r\n")
+#define ERR_NOSUCHNICK(nick) (":FT_IRC 401 " + nick + " :No such nick\r\n")
 #define ERR_NOSUCHSERVER() (":FT_IRC 402 :No such server\r\n")
 #define ERR_NOSUCHCHANNEL(channel) (":FT_IRC 403 " + channel + " :No such channel\r\n")
 #define ERR_CANNOTSENDTOCHAN(channel) (":FT_IRC 404 " + channel + " :Cannot send to channel\r\n")
-#define ERR_TOOMANYTARGETS(target, error_code, abort_msg) (":FT_IRC 407 " + target + " :" + error_code + " recipients. " + abort_msg + "\r\n")
+#define ERR_TOOMANYTARGETS(targets) (":FT_IRC 407 " + targets + " :Max of 4 targets allowed per PRIVMSG\r\n")
 #define ERR_NOORIGIN() (":FT_IRC 409 :No origin specified\r\n")
 
 #define ERR_NORECIPIENT(command) (":FT_IRC 411 :No recipient given (" + command + ")\r\n")
@@ -47,6 +47,8 @@
 #define ERR_NOTONCHANNEL(channel) (":FT_IRC 442 " + channel + " :You're not on that channel\r\n")
 #define ERR_USERONCHANNEL(client, nick, channel) (":FT_IRC 443 " + client + " " + nick + " " + channel + " :is already on channel\r\n")
 
+#define ERR_NOTREGISTERED(client) (":FT_IRC 451 " + client + " :You have not registered\r\n")
+
 #define ERR_NEEDMOREPARAMS(client, command) (":FT_IRC 461 " + client + " " + command + " :Not enough parameters\r\n")
 #define ERR_ALREADYREGISTRED(client) (":FT_IRC 462 " + client + " :You may not reregister\r\n")
 #define ERR_PASSWDMISMATCH(client) (":FT_IRC 464 " + client + " :Password incorrect\r\n")
@@ -58,8 +60,10 @@
 #define ERR_BADCHANNELKEY(client, channel) (":FT_IRC 475 " + client + " " + channel + " :Cannot join channel (+k)\r\n")
 #define ERR_BADCHANMASK(channel) (":FT_IRC 476 " + channel + " :Bad Channel Mask\r\n")
 
-#define ERR_NOPRIVILEGES() (":FT_IRC 481" ":Permission Denied- You're not an IRC operator\r\n")
+#define ERR_NOPRIVILEGES() (":FT_IRC 481 :Permission Denied- You're not an IRC operator\r\n")
 #define ERR_CHANOPRIVSNEEDED(channel) (":FT_IRC 482 " + channel + " :You're not channel operator\r\n")
+
+#define ERR_NOOPERHOST() (":FT_IRC 491 :No O-lines for your host\r\n")
 
 #define ERR_UMODEUNKNOWNFLAG(client) (":FT_IRC 501 " + client + " :Unknown MODE flag\r\n")
 #define ERR_USERSDONTMATCH(client) (":FT_IRC 502 " + client + " :Cant change mode for other users\r\n")

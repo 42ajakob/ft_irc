@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/07 15:19:06 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:38:36 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Server
 		t_PollFDs			_pollFDs;
 		string				_password;
 		sockaddr_in			_serverAddr;
-		std::string					_timestamp;
+		string				_timestamp;
 
 		Server(const string &port, const string &&password);
 
@@ -71,13 +71,20 @@ class Server
 		void	_checkConnectionTimeout(pollfd &pollFD);
 		void	_checkPassword(const int &fd, const string &line);
 		void	_joinChannel(const int &fd, string &line);
+		void 	_invite(Client &client, const string &line);
+		void	_topic(Client &client, const string &line);
 		void	_quitClient(const int &fd);
 		void	_Oper(const int &fd, string &line);
 		void	_addOper(const int &fd, string &line);
 		void	_rmOper(const int &fd, string &line);
+
+		void	_parse_kick(const int &fd, std::string const &line);
+		void	_privmsg(Client &client, const string &line) noexcept;
+
+		void	_logError(Client &client, const string &error) const;
 	
 	public:
-		const Client	&getClientByNickname(const string &nickname) const;
+		Client			&getClientByNickname(const string &nickname);
 		static Server	&getInstance(const string & = "", const string && = "");
 		static void		sigAction(int sig);
 

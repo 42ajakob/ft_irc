@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 19:17:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:35:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::PONG)
 		_clients[fd].resetPingTimerIfPongMatches(line);
 	else if (command == eCommand::PRIVMSG)
-		;
+		_privmsg(_clients[fd], line);
 	else if (command == eCommand::JOIN)
 		_joinChannel(fd, line);
 	else if (command == eCommand::NICK)
@@ -153,11 +153,11 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
 		reload();
 	else if (command == eCommand::TOPIC)
-		;
+		_topic(_clients[fd], line);
 	else if (command == eCommand::KICK)
-		;
+		_parse_kick(fd, line);
 	else if (command == eCommand::INVITE)
-		;
+		_invite(_clients[fd], line);
 	else if (command == eCommand::MODE)
 		;
 	else if (command == eCommand::DEBUG_BYPASS)

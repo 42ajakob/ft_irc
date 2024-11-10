@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clientOpMethods.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:16:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 15:23:34 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/09 13:51:21 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ void	Client::giveOperatorAccess(string &&username, const string &password)
 {
 	try{
 		_operatorAccess = std::make_unique<Operator>(std::move(username), password);
-		addToSendBuffer(":FT_IRC 381 " + _Nickname + " :You are now a Server operator\r\n");
+		addToSendBuffer(RPL_YOUREOPER(_Nickname));
 	}
 	catch (std::exception &e){
 		std::cerr << "Error giving operator access: " << e.what() << std::endl;
 		string	errorType = e.what();
 		if (errorType == "Wrong operator credentials")
-			addToSendBuffer(":FT_IRC 464 " + _Nickname + " :Wrong Credentials\r\n");
+			addToSendBuffer(ERR_PASSWDMISMATCH(_Nickname));
 		else if (errorType == "Operator already logged in")
-			addToSendBuffer(":FT_IRC 462 " + _Nickname + " :You may not re-register\r\n");
+			addToSendBuffer(ERR_ALREADYREGISTRED(_Nickname));
 		else
-			addToSendBuffer(":FT_IRC 464 " + _Nickname + " :No Serv-Operators are registered\r\n");
+			addToSendBuffer(ERR_NOOPERHOST());
 	}
 }
 
@@ -45,7 +45,7 @@ void	Client::addOperator(const string &username,const string &password)
 {
 	if (_operatorAccess == nullptr)
 	{
-		addToSendBuffer(":FT_IRC 481 " + _Nickname + " :Permission Denied- You're not an IRC operator\r\n");
+		addToSendBuffer(ERR_NOPRIVILEGES());
 		return ;
 	}
 	try{
@@ -61,7 +61,7 @@ void	Client::removeOperator(const string &username)
 {
 	if (_operatorAccess == nullptr)
 	{
-		addToSendBuffer(":FT_IRC 481 " + _Nickname + " :Permission Denied- You're not an IRC operator\r\n");
+		addToSendBuffer(ERR_NOPRIVILEGES());
 		return ;
 	}
 	try{
@@ -77,7 +77,7 @@ void	Client::listOperators() noexcept
 {
 	if (_operatorAccess == nullptr)
 	{
-		addToSendBuffer(":FT_IRC 481 " + _Nickname + " :Permission Denied- You're not an IRC operator\r\n");
+		addToSendBuffer(ERR_NOPRIVILEGES());
 		return ;
 	}
 	const string &ops = this->_operatorAccess->listOperators();

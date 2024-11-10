@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Utils.cpp                                          :+:      :+:    :+:   */
+/*   broadcast.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 17:11:06 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/01 15:54:56 by JFikents         ###   ########.fr       */
+/*   Created: 2024/11/10 17:21:54 by JFikents          #+#    #+#             */
+/*   Updated: 2024/11/10 18:50:54 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Utils.hpp"
+#include "Channel.hpp"
 
-Utils::Utils()
-{}
-
-Utils::~Utils()
-{}
-
-Utils::Utils(const Utils &other)
+void	Channel::broadcastMsg(const string &msg, const string &origin) const noexcept
 {
-	(void)other;
-}
-
-Utils &Utils::operator=(const Utils &other)
-{
-	(void)other;
-	return (*this);
+	for (Client *member : _members)
+	{
+		if (member->getNickname() != origin)
+			member->addToSendBuffer(":" + origin + " PRIVMSG " + _name + " :" + msg + "\r\n");
+	}
 }
