@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/10 18:24:50 by JFikents         ###   ########.fr        #
+#    Updated: 2024/11/10 20:05:39 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ _INCLUDE_FLAGS	=	includes
 INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
 _CHANNEL_SRC	=	Channel.cpp\
+					broadcast.cpp\
 					channelCreation.cpp\
 					invite.cpp\
-					broadcast.cpp
 					topic.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
