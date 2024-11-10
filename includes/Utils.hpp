@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:26:03 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:42:24 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@
 # include <iostream>
 # include <chrono>
 # include <unordered_set>
+# include <string>
+# include <vector>
 
 # define TIMEOUT 300
 
 using std::string;
+using std::vector;
 
 typedef std::chrono::time_point<std::chrono::system_clock> t_TimeStamp;
 typedef std::unordered_set<string>	t_StringSet;
@@ -48,7 +51,8 @@ enum class eCommand
 	DEBUG_BYPASS
 };
 
-size_t	findNextParameter(const std::string &line, size_t pos = 0);
-void	toLower(std::string &str);
+size_t			findNextParameter(const string &line, size_t pos = 0);
+void			toLower(string &str);
+vector<string>	split(const string &string, const char &delim = ',');
 
 #endif

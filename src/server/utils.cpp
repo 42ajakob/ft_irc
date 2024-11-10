@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/07 15:32:15 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 18:21:18 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <ctime>
 #include <iomanip>
@@ -61,7 +62,23 @@ void	Server::setTimestamp()
     _timestamp =  oss.str();
 }
 
-std::string Server::getTimestamp()
+string Server::getTimestamp()
 {
 	return (_timestamp);	
+}
+
+vector<string>	split(const string &line, const char &delimiter)
+{
+	vector<string>	result;
+	string				workingLine = line;
+	size_t				pos = workingLine.find(delimiter);
+
+	while (pos != string::npos)
+	{
+		result.emplace_back(workingLine.substr(0, pos));
+		workingLine.erase(0, pos + 1);
+		pos = workingLine.find(delimiter);
+	}
+	result.emplace_back(std::move(workingLine));
+	return (result);
 }
