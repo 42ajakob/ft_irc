@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:26:14 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 15:39:26 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class	Channel
 		void	kick(const string &nickname, const Client &client);
 		void	invite(const string &nickname, Client &client);
 		void	leave(const Client &client);
+		void	topic(const string &topic, const Client &client);
 		void	mode(Client &client);
 		void	clear();
 		void	printMembers() const;

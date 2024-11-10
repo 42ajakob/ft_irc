@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:27:29 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 15:29:45 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ class Server
 		void	_checkPassword(const int &fd, const string &line);
 		void	_joinChannel(const int &fd, string &line);
 		void 	_invite(Client &client, const string &line);
+		void	_topic(const int &fd, string &line);
 		void	_quitClient(const int &fd);
 		void	_Oper(const int &fd, string &line);
 		void	_addOper(const int &fd, string &line);
