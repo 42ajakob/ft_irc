@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 13:46:29 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 16:26:03 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,5 @@ enum class eCommand
 
 size_t	findNextParameter(const std::string &line, size_t pos = 0);
 void	toLower(std::string &str);
-
-class Utils
-{
-	private:
-		/* data */
-	public:
-		Utils();
-		~Utils();
-		Utils(const Utils &other);
-		Utils &operator=(const Utils &other);
-		std::string getTimestamp();
-};
 
 #endif

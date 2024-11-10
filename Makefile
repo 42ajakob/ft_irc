@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/09 18:25:12 by ajakob           ###   ########.fr        #
+#    Updated: 2024/11/10 16:26:49 by apeposhi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
 _CHANNEL_SRC	=	Channel.cpp\
 					channelCreation.cpp\
-					invite.cpp
+					invite.cpp\
+					topic.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
 _CLIENT_SRC		=	Client.cpp\
@@ -41,13 +42,11 @@ _SERVER_SRC		=	Server.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\
 					timeouts.cpp\
+					Topic.cpp\
 					utils.cpp
 SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
-_UTILS_SRC		=	Utils.cpp
-UTILS_SRC		=	$(addprefix utils/, $(_UTILS_SRC))
-
-_SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(UTILS_SRC) $(CHANNEL_SRC)
+_SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(CHANNEL_SRC)
 SRC				=	$(addprefix src/, $(_SRC))
 OBJ				=	$(SRC:src/%.cpp=bin/%.o)
 
