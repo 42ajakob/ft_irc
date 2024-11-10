@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:27:57 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 15:51:12 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,29 @@ void Channel::leave(const Client &client)
 	_operators.erase(&client);
 }
 
-void Channel::mode(Client &client)
+void Channel::mode(string mode,Client &client)
 {
-	(void)client;
+	if (_operators.find(&client) == _operators.end())
+		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
+
+	if (mode == "+i")
+		_mode.set(static_cast<size_t>(Mode::InviteOnly));
+	else if (mode == "-i")
+		_mode.reset(static_cast<size_t>(Mode::InviteOnly));
+	else if (mode == "+t")
+		_mode.set(static_cast<size_t>(Mode::ProtectedTopic));
+	else if (mode == "-t")
+		_mode.reset(static_cast<size_t>(Mode::ProtectedTopic));
+	else if (mode == "+k")
+		_mode.set(static_cast<size_t>(Mode::PasswordProtected));
+	else if (mode == "-k")
+		_mode.reset(static_cast<size_t>(Mode::PasswordProtected));
+	else if (mode == "+l")
+		_mode.set(static_cast<size_t>(Mode::UserLimit));
+	else if (mode == "-l")
+		_mode.reset(static_cast<size_t>(Mode::UserLimit));
+	else
+		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
 
 void Channel::clear()
