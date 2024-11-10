@@ -6,7 +6,7 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 15:29:52 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 16:16:21 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
 		reload();
 	else if (command == eCommand::TOPIC)
-		_topic(fd, line);
+		_topic(_clients[fd], line);
 	else if (command == eCommand::KICK)
 		_parse_kick(fd, line);
 	else if (command == eCommand::INVITE)

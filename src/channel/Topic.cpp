@@ -6,18 +6,18 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:58:23 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:09:00 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 16:23:03 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-void Channel::topic(const string &topic, const Client &client)
+void Channel::topic(string &topic, Client &client)
 {
 	try {
 		if (_members.find(&client) == _members.end())
 			throw std::invalid_argument("You're not on that channel");
-		if (_operators.find(&client) == _operators.end() && _mode.test(static_cast<size_t>(Mode::TopicProtected)))
+		if (_operators.find(&client) == _operators.end() && _mode.test(static_cast<size_t>(Mode::ProtectedTopic)))
 			throw std::invalid_argument("Cannot change topic");
 		if (topic.empty())
 		{

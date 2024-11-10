@@ -6,17 +6,26 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 15:29:00 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:07:26 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 16:21:11 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Channel.hpp"
+#include "numericReplies.hpp"
+#include <sstream>
 
-void Server::_topic(const int &fd, const string &line)
+void Server::_topic(Client &client, const string &line)
 {
 	size_t	pos = findNextParameter(line);
-	string	topic;
+	std::stringstream	ss(line);
+	// string	topic;
+	string	channelName;
 
+	ss >> channelName;
+	ss >> channelName;
+	string topic(ss.str());
+	std::cout << "Setting topic for " << channelName << " to " << topic << std::endl;
 	if (pos == string::npos)
 		return ;
 	topic = line.substr(pos);
