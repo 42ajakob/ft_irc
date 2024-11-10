@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:40:45 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 18:22:44 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void Channel::sendChannelInfo(Client & client)
 
 void Channel::kick(const string &nickname, const Client &client)
 {
+	if (_members.find(&client) == _members.end())
+		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
 	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 	
@@ -80,6 +82,8 @@ void Channel::kick(const string &nickname, const Client &client)
 	const auto itOperator = _operators.find(&Server::getInstance().getClientByNickname(nickname));
 	const auto itInvited = _invited.find(&Server::getInstance().getClientByNickname(nickname));
 
+	if (itMember == _members.end())
+		throw std::invalid_argument(ERR_USERNOTINCHANNEL(nickname, _name));
 	if (itMember != _members.end())
 		_members.erase(itMember);
 	if (itOperator != _operators.end())
@@ -96,8 +100,12 @@ void Channel::leave(const Client &client)
 
 void Channel::mode(string mode, Client &client, const Client &nick)
 {
-	if (_operators.find(&client) == _operators.end())
+	if (_members.find(&client) == _members.end())
+		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
+	else if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
+	else if (_members.find(&nick) == _members.end())
+		throw std::invalid_argument(ERR_USERNOTINCHANNEL(nick.getNickname(), _name));
 
 	if (mode == "+o" && client.getNickname() != nick.getNickname())
 		_operators.insert(&nick);
@@ -109,25 +117,29 @@ void Channel::mode(string mode, Client &client, const Client &nick)
 
 void Channel::mode(string mode, Client &client)
 {
+	if (_members.find(&client) == _members.end())
+		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
 	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 
-	if (mode == "+i")
-		_mode.set(static_cast<size_t>(Mode::InviteOnly));
-	else if (mode == "-i")
-		_mode.reset(static_cast<size_t>(Mode::InviteOnly));
-	else if (mode == "+t")
-		_mode.set(static_cast<size_t>(Mode::ProtectedTopic));
-	else if (mode == "-t")
-		_mode.reset(static_cast<size_t>(Mode::ProtectedTopic));
-	else if (mode == "+k")
-		_mode.set(static_cast<size_t>(Mode::PasswordProtected));
-	else if (mode == "-k")
-		_mode.reset(static_cast<size_t>(Mode::PasswordProtected));
-	else if (mode == "+l")
-		_mode.set(static_cast<size_t>(Mode::UserLimit));
-	else if (mode == "-l")
-		_mode.reset(static_cast<size_t>(Mode::UserLimit));
+	if (mode == "+i" && !_mode.test(0))
+		_mode.set(0);
+	else if (mode == "-i" && _mode.test(0))
+		throw std::invalid_argument(ERR_KEYSET(_name));
+	else if (mode == "-i" && _mode.test(0))
+		_mode.reset(0);
+	else if (mode == "+t" && !_mode.test(1))
+		_mode.set(1);
+	else if (mode == "-t" && _mode.test(1))
+		_mode.reset(1);
+	else if (mode == "+k" && !_mode.test(2))
+		_mode.set(2);
+	else if (mode == "-k" && _mode.test(2))
+		_mode.reset(2);
+	else if (mode == "+l" && !_mode.test(3))
+		_mode.set(3);
+	else if (mode == "-l" && _mode.test(3))
+		_mode.reset(3);
 	else
 		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
