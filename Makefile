@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+         #
+#    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/10 16:26:49 by apeposhi         ###   ########.fr        #
+#    Updated: 2024/11/10 18:24:50 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 _CHANNEL_SRC	=	Channel.cpp\
 					channelCreation.cpp\
 					invite.cpp\
+					broadcast.cpp
 					topic.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 

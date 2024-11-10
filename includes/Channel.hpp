@@ -51,7 +51,7 @@ class	Channel
 		void	mode(Client &client);
 		void	clear();
 		void	printMembers() const;
-		void	broadcastMsg(const string &msg, const string &origin);
+		void	broadcastMsg(const string &msg, const string &origin) const noexcept;
 
 		bool	operator==(const Channel &other) const;
 		bool	operator==(const string &name) const;
