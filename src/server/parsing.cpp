@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/10 15:43:35 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 16:44:43 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,24 @@ void	Server::_parse_mode(Client &client, std::string const &line)
 	std::string			command;
 	std::string			channelName;
 	std::string			mode;
+	std::string			nick;
 
-	ss >> command >> channelName >> mode;
+	ss >> command >> channelName >> mode >> nick;
 
 	toLower(channelName);
 	toLower(mode);
+	toLower(nick);
 
-	if (channelName.empty() || mode.empty())
+	if ((channelName.empty() || mode.empty()) || ((mode == "+o" || mode == "-o") && nick.empty()))
 		return client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
 
 	try {
-		Channel::getChannel(channelName).mode(mode, client);
+		if (!nick.empty()) {
+			Channel::getChannel(channelName).mode(mode, client, this->getClientByNickname(nick));
+		}
+		else {
+			Channel::getChannel(channelName).mode(mode, client);
+		}
 		client.addToSendBuffer(":FT_IRC MODE " + channelName + " " + mode + "\r\n");
 		std::cerr << "MODE " << channelName << " " << mode << std::endl;
 	}

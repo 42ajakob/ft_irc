@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 15:51:12 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 16:40:45 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,20 @@ void Channel::leave(const Client &client)
 	_operators.erase(&client);
 }
 
-void Channel::mode(string mode,Client &client)
+void Channel::mode(string mode, Client &client, const Client &nick)
+{
+	if (_operators.find(&client) == _operators.end())
+		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
+
+	if (mode == "+o" && client.getNickname() != nick.getNickname())
+		_operators.insert(&nick);
+	else if (mode == "-o" && client.getNickname() != nick.getNickname())
+		_operators.erase(&nick);
+	else
+		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
+}
+
+void Channel::mode(string mode, Client &client)
 {
 	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));

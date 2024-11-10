@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 14:41:57 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 16:10:40 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ class	Channel
 		void	kick(const string &nickname, const Client &client);
 		void	invite(const string &nickname, Client &client);
 		void	leave(const Client &client);
-		void	mode(string mode,Client &client);
+		void	mode(string mode, Client &client, const Client &nick);
+		void	mode(string mode, Client &client);
 		void	clear();
 		void	printMembers() const;
 
