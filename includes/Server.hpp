@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:17:02 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:39:08 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ class Server
 		void	_parse_kick(const int &fd, std::string const &line);
 	
 	public:
-		const Client	&getClientByNickname(const string &nickname) const;
+		Client			&getClientByNickname(const string &nickname);
 		static Server	&getInstance(const string & = "", const string && = "");
 		static void		sigAction(int sig);
 

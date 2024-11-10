@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelCreation.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:48:40 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 17:11:13 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:49:55 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_ChannelMap	Channel::_channels;
 
-Channel &Channel::getChannel(const std::string &name, const Client &client)
+Channel &Channel::getChannel(const std::string &name, Client &client)
 {
 	if (_channels.find(name) == _channels.end())
 	{
