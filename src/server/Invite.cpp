@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:38:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:02:56 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 17:09:20 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void Server::_invite(Client &client, const string &line)
 		channel.invite(nickname, client);
 	}
 	catch (const std::exception &e) {
-		client.addToSendBuffer(ERR_NOSUCHCHANNEL(channelName));
-		std::cerr << "Error inviting user: " << e.what() << std::endl;
+		client.addToSendBuffer(e.what());
+		std::cerr << "Error inviting user: No such Channel" << std::endl;
 	}
 }

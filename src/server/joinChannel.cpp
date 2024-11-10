@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 16:45:21 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:20:52 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,18 @@ void	Server::_joinChannel(const int &fd, string &line)
 		string	ChannelName = channelNames[i];
 		string	Password = passwords[i];
 		toLower(ChannelName);
-		Channel	&channel = Channel::getChannel(ChannelName, _clients[fd]);
-
-		channel.join(_clients[fd], Password);
-		std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl; // Topic
-		std::cout << "Password: <" << Password + '>' << std::endl;
-		channel.printMembers(); // Numeric?
+		try {
+			Channel	&channel = Channel::getChannel(ChannelName, _clients[fd]);
+			channel.join(_clients[fd], Password);
+			std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl; // Topic
+			std::cout << "Password: <" << Password + '>' << std::endl;
+			channel.printMembers(); // Numeric?
+		}
+		catch (const std::invalid_argument &e) {
+			_clients[fd].addToSendBuffer(e.what());
+			std::cerr << "Error joining channel: " << e.what() << std::endl;
+		}
+		
+		
 	}
 }
