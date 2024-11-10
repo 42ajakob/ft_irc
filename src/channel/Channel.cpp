@@ -92,6 +92,7 @@ void Channel::leave(Client &client)
 {
 	_members.erase(&client);
 	_operators.erase(&client);
+	_invited.erase(&client);
 }
 
 void Channel::mode(Client &client)
