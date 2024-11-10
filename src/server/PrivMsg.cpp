@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 19:54:55 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:54:36 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	parsePrivMsg(const string &line, vector<string> &targets,
 }
 
 static	void	sendMsgToTarget(const string &origin, const string &msg,
-	const string &target)
+	string &target)
 {
 	if (target[0] == '#')
 	{
@@ -65,7 +65,7 @@ void	Server::_privmsg(Client &client, const string &line) noexcept
 		_logError(client, e.what());
 		return ;
 	}
-	for (const string &target : targets)
+	for (string &target : targets)
 	{
 		try {
 			sendMsgToTarget(origin, msg, target);

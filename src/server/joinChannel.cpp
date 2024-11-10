@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 18:21:45 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:56:25 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,56 +15,61 @@
 #include "Utils.hpp"
 #include <stdexcept>
 #include <vector>
+#include <sstream>
 
 void	splitPasswordsAndChannels(const string &line,
-	std::vector<string> &channelNames,
-	std::vector<string> &passwords)
+	vector<string> &channelNames, vector<string> &passwords,
+	const string &clientNickname)
 {
+	std::stringstream	ss(line);
 	size_t	pos = findNextParameter(line);
 	string	rawChannelNames;
+	string	rawPasswords;
 
 	if (pos == string::npos)
-		throw std::runtime_error("Missing channel name");
-	rawChannelNames = line.substr(pos);
-	if ((pos = findNextParameter(rawChannelNames)) != string::npos)
-	{
-		passwords = split(rawChannelNames.substr(pos), ',');
-		rawChannelNames.erase(pos - 1);
-	}
-	channelNames = split(rawChannelNames, ',');
+		throw std::invalid_argument(ERR_NEEDMOREPARAMS(clientNickname, std::string("JOIN")));
+	ss.ignore(pos); // Ignore the command
+	ss >> rawChannelNames;
+	ss >> rawPasswords;
+	if (rawPasswords.empty() == false)
+		passwords = split(rawPasswords);
+	channelNames = split(rawChannelNames);
 	while (channelNames.size() > passwords.size())
 		passwords.emplace_back("");
 }
 
-void	Server::_joinChannel(const int &fd, string &line)
+static void	logJoiningChannel(const string &clientNickname,
+	const string &ChannelName, const string &Password, Channel &channel)
 {
-	std::vector<string>		channelNames;
-	std::vector<string>		passwords;
+	std::cout << "Client " << clientNickname << " joined channel " << ChannelName << std::endl;
+	std::cout << "Password: <" << Password + '>' << std::endl;
+	channel.printMembers();
+}
 
-	if (_clients[fd].IsRegistered() == false)
-	{
-		_clients[fd].addToSendBuffer(ERR_NOTREGISTERED(_clients[fd].getNickname()));
-		return;
+void	Server::_joinChannel(Client	&client, string &line)
+{
+	vector<string>	channelNames;
+	vector<string>	passwords;
+	string			clientNickname = client.getNickname();
+
+	try {
+		if (client.IsRegistered() == false)
+			throw std::runtime_error(ERR_NOTREGISTERED(clientNickname));
+		splitPasswordsAndChannels(line, channelNames, passwords, clientNickname);
 	}
-	try{
-		splitPasswordsAndChannels(line, channelNames, passwords);
-	}
-	catch (std::runtime_error &e)
-	{
-		_clients[fd].addToSendBuffer(ERR_NEEDMOREPARAMS(_clients[fd].getNickname(), line));
-		std::cerr << e.what() << std::endl;
-		return ;
+	catch (std::runtime_error &e) {
+		return (_logError(client, e.what()));
 	}
 	for (size_t i = 0; i < channelNames.size(); i++)
 	{
-		string	ChannelName = channelNames[i];
-		string	Password = passwords[i];
-		toLower(ChannelName);
-		Channel	&channel = Channel::getChannel(ChannelName, _clients[fd]);
+		try {
+			Channel	&channel = Channel::getChannel(channelNames[i], client);
 
-		channel.join(_clients[fd], Password);
-		std::cout << "Client " << _clients[fd].getNickname() << " joined channel " << ChannelName << std::endl; // Topic
-		std::cout << "Password: <" << Password + '>' << std::endl;
-		channel.printMembers(); // Numeric?
+			channel.join(client, passwords[i]);
+			logJoiningChannel(clientNickname, channelNames[i], passwords[i], channel);
+		}
+		catch (const std::exception &e) {
+			_logError(client, e.what());
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 18:49:59 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:49:54 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ class	Channel
 		bool	operator==(const Channel &other) const;
 		bool	operator==(const string &name) const;
 
-		static Channel	&getChannel(const string &name, Client &client);
-		static Channel	&getChannel(const string &name);
+		static Channel	&getChannel(string &name, Client &client);
+		static Channel	&getChannel(string &name);
 		static void		clientDisconnected(Client &client);
 
 	enum class Mode
