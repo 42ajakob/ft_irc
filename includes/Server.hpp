@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 15:26:11 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:48:06 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ class Server
 		void	_addOper(const int &fd, string &line);
 		void	_rmOper(const int &fd, string &line);
 
-		void	_parse_kick(Client &client, std::string const &line);
-		void	_parse_mode(Client &client, std::string const &line);
+		void	_parse_kick(Client &client, string const &line);
+		void	_parse_mode(Client &client, string const &line);
 
 	public:
 		const Client	&getClientByNickname(const string &nickname) const;

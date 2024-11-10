@@ -6,22 +6,22 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/10 16:44:43 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/10 18:22:03 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include "sstream"
 
-void	Server::_parse_kick(Client &client, std::string const &line)
+void	Server::_parse_kick(Client &client, string const &line)
 {
 	std::stringstream	ss(line);
-	std::string			command;
-	std::string			channelName;
-	std::string			nickname;
-	std::string			reason;
+	string				channelName;
+	string				nickname;
+	string				reason;
 
-	ss >> command >> channelName >> nickname >> reason;
+	ss >> channelName >> channelName >> nickname >> reason;
+
 	toLower(channelName);
 	toLower(nickname);
 	toLower(reason);
@@ -42,12 +42,11 @@ void	Server::_parse_kick(Client &client, std::string const &line)
 void	Server::_parse_mode(Client &client, std::string const &line)
 {
 	std::stringstream	ss(line);
-	std::string			command;
-	std::string			channelName;
-	std::string			mode;
-	std::string			nick;
+	string			channelName;
+	string			mode;
+	string			nick;
 
-	ss >> command >> channelName >> mode >> nick;
+	ss >> channelName >> channelName >> mode >> nick;
 
 	toLower(channelName);
 	toLower(mode);
