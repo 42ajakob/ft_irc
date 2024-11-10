@@ -6,7 +6,7 @@
 /*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:58:23 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:23:03 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:02:08 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void Channel::topic(string &topic, Client &client)
 		}
 		if (topic[0] == ':')
 			topic.erase(0, 1);
+		std::cout << "New topic for " << _name << ": " << topic << std::endl;
 		_topic = topic;
 	}
 	catch (const std::exception &e)
