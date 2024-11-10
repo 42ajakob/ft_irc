@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 20:53:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:58:16 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ class Server
 		void	_executeCommand(const eCommand &command, string &line,
 					const int &fd);
 		void	_debugBypass(string &line);
-		void	_Pong(const int &fd, const string &line);
+		void	_Pong(Client &client, const string &line);
 		void	_doCapNegotiation(const int &fd, string &line);
 		void	_checkConnectionTimeout(pollfd &pollFD);
 		void	_checkPassword(const int &fd, const string &line);

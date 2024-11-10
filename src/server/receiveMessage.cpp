@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 20:53:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:58:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	Server::_debugBypass(string &line)
 	}
 }
 
-void	Server::_Pong(const int &fd, const string &line)
+void	Server::_Pong(Client &client, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	pong = "PONG";
@@ -91,9 +91,9 @@ void	Server::_Pong(const int &fd, const string &line)
 	if (pos != string::npos)
 		pong += " " + line.substr(pos);
 	pong += "\r\n";
-	_clients[fd].addToSendBuffer(pong);
-	if (_clients[fd].IsRegistered() == true)
-		_clients[fd].setProgrammedDisconnection(TIMEOUT);
+	client.addToSendBuffer(pong);
+	if (client.IsRegistered() == true)
+		client.setProgrammedDisconnection(TIMEOUT);
 }
 
 void	Server::_doCapNegotiation(const int &fd, string &line)
@@ -125,7 +125,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	const int &fd)
 {
 	if (command == eCommand::PING)
-		_Pong(fd, line);
+		_Pong(_clients[fd], line);
 	else if (command == eCommand::PONG)
 		_clients[fd].resetPingTimerIfPongMatches(line);
 	else if (command == eCommand::PRIVMSG)
