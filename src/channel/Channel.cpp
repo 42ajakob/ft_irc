@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 18:22:44 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/11 23:55:47 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,21 @@ void	Channel::kick(const string &nickname, Client &client)
 	const auto	itOperator = _operators.find(&target);
 	const auto	itInvited = _invited.find(&target);
 
-    if (itMember == _members.end())
+	if (itMember == _members.end())
 		throw std::invalid_argument(ERR_USERNOTINCHANNEL(nickname, _name));
-    if (_operators.find(&client) == _operators.end())
+	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
-    _members.erase(itMember);
+	_members.erase(itMember);
 	if (itOperator != _operators.end())
 		_operators.erase(itOperator);
 	if (itInvited != _invited.end())
 		_invited.erase(itInvited);
 }
 
-void Channel::mode(string mode, Client &client, const Client &nick)
+void Channel::mode(string mode, Client &client, Client &nick)
 {
 	if (_members.find(&client) == _members.end())
-        throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
+		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
 	else if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 	else if (_members.find(&nick) == _members.end())
@@ -108,7 +108,7 @@ void Channel::mode(string mode, Client &client, const Client &nick)
 		_operators.insert(&nick);
 	else if (mode == "-o" && client.getNickname() != nick.getNickname())
 		_operators.erase(&nick);
-    else
+	else
 		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
 

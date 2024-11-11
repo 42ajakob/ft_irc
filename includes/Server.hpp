@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 22:32:56 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/12 00:00:42 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ class Server
 		void	_handlePrivMsg	(Client &client, const string &line) noexcept;
 		void	_handlePart		(Client &client, const string &line);
 		void	_handleWho		(Client &client, const string &line);
-        void	_parse_mode     (Client &client, string const &line);
+		void	_handleMode		(Client &client, string const &line);
 
 	// *** Debug and error methods ***
 		void	_OpBypass	(Client &client, const string &line);

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 22:32:06 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/12 00:01:40 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		{eCommand::LS_OPER,		&Server::_lsOper},
 		{eCommand::PART,		&Server::_handlePart},
 		{eCommand::WHO,			&Server::_handleWho},
-        {eCommand::MODE,        &Server::_parse_mode},
+		{eCommand::MODE,		&Server::_handleMode},
 		{eCommand::BYPASS,		&Server::_OpBypass}
 	};
 	if (_clients[fd].IsRegistered() == false

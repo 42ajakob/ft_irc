@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/10 18:22:03 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/12 00:00:49 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	Server::_handleKick(Client &client, const string &line)
 	}
 }
 
-void	Server::_parse_mode(Client &client, string const &line)
+void	Server::_handleMode(Client &client, string const &line)
 {
 	std::stringstream	ss(line);
 	string			channelName;
