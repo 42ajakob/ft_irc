@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/10 19:22:07 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 22:41:48 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 #define RPL_INVITING(channel, nick) (":FT_IRC 341 " + channel + " " + nick + "\r\n")
 #define RPL_INVITELIST(channel, invite_mask) (":FT_IRC 346 " + channel + " " + invite_mask + "\r\n")
 #define RPL_ENDOFINVITELIST(channel) (":FT_IRC 347 " + channel + " :End of channel invite list\r\n")
+
+#define RPL_WHOREPLY(nick, channel, user, host, status) (":FT_IRC 352 " + nick + " " + channel + " " + user + " " + host + " ft_irc " + nick + " " + status + ":0 " + user + "\r\n")
+#define RPL_ENDOFWHO(client, mask) (":FT_IRC 315 " + client + " " + mask + " :End of /WHO list\r\n")
 
 #define RPL_NAMREPLY(client, channel, member_list) (":FT_IRC 353 " + client + " = " + channel + " :" + member_list + "\r\n")
 #define RPL_ENDOFNAMES(client, channel) (":FT_IRC 366 " + client + " " + channel + " :End of /NAMES list\r\n")

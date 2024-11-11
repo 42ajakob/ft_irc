@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 21:50:55 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 22:31:38 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ enum class eCommand
 	INVITE,
 	MODE,
 	PART,
+	WHO,
 	BYPASS,
 	UNKNOWN
 };

@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/11 22:08:11 by JFikents         ###   ########.fr        #
+#    Updated: 2024/11/11 23:08:23 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ _CHANNEL_SRC	=	Channel.cpp\
 					broadcast.cpp\
 					channelCreation.cpp\
 					invite.cpp\
-					Topic.cpp
+					Topic.cpp\
+					whoReply.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
 _CLIENT_SRC		=	Client.cpp\
@@ -47,7 +48,8 @@ _SERVER_SRC		=	Server.cpp\
 					Topic.cpp\
 					utils.cpp\
 					registrationMethods.cpp\
-					handlePart.cpp
+					handlePart.cpp\
+					handleWho.cpp
 SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
 _SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(CHANNEL_SRC)
