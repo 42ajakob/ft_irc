@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:59:59 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 19:35:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:40:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ void	Server::_handleUser(Client &client, const string &line)
 	string				username;
 
 	ss >> command >> username;
-	(void)command;
 	try {
 		if (username.empty())
-			throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), "USER"));
+			throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), command));
 		client.setUsername(std::move(username));
 	}
 	catch (const std::invalid_argument &e) {
@@ -38,11 +37,10 @@ void	Server::_handleNick(Client &client, const string &line)
 	string				nickname;
 
 	ss >> command >> nickname;
-	(void)command;
 	try {
 		toLower(nickname);
 		if (nickname.empty())
-			throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getUsername(), "NICK"));
+			throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getUsername(), command));
 		client.setNickname(std::move(nickname));
 	}
 	catch (const std::invalid_argument &e) {
