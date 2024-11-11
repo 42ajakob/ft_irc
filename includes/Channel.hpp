@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 23:56:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/12 00:23:26 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ class	Channel
 		void			broadcastPrivMsg(const string &msg, const string &origin) const noexcept;
 		void			part(Client &client, const string &reason);
 		void			whoReply(Client &client) const;
-		void			mode(string mode, Client &client, Client &nick);
-		void			mode(string mode, Client &client);
+		void			mode(const string &mode, Client &client, Client &nick);
+		void			mode(const string &mode, Client &client);
 
 		bool			operator==(const Channel &other) const;
 		bool			operator==(const string &name) const;

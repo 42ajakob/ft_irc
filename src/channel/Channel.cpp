@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 23:55:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/12 00:27:28 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	Channel::kick(const string &nickname, Client &client)
 		_invited.erase(itInvited);
 }
 
-void Channel::mode(string mode, Client &client, Client &nick)
+void Channel::mode(const string &mode, Client &client, Client &nick)
 {
 	if (_members.find(&client) == _members.end())
 		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
@@ -112,10 +112,17 @@ void Channel::mode(string mode, Client &client, Client &nick)
 		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
 
-void Channel::mode(string mode, Client &client)
+static inline void	sendBanList(Client &client, string &channelName)
+{
+	client.addToSendBuffer("368 " + client.getNickname() + " " + channelName + " :End of Channel Ban List\r\n");
+}
+
+void Channel::mode(const string &mode, Client &client)
 {
 	if (_members.find(&client) == _members.end())
 		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
+	if (mode == "b")
+		return (sendBanList(client, _name));
 	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 
