@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Oper.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:08:50 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 14:05:46 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/11 16:37:49 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include <sstream>
 
-void	Server::_Oper(const int &fd, string &line)
+void	Server::_Oper(Client &client, string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	username;
@@ -25,10 +25,10 @@ void	Server::_Oper(const int &fd, string &line)
 	if ((pos = findNextParameter(line, pos)) == string::npos)
 		return ;
 	password = line.substr(pos);
-	_clients[fd].giveOperatorAccess(std::move(username), password);
+	client.giveOperatorAccess(std::move(username), password);
 }
 
-void	Server::_addOper(const int &fd, string &line)
+void	Server::_addOper(Client &client, string &line)
 {
 	std::stringstream	ss(line);
 	string				command;
@@ -37,12 +37,12 @@ void	Server::_addOper(const int &fd, string &line)
 
 	ss >> command >> username >> password;
 	if (username.empty() || password.empty())
-		_clients[fd].addToSendBuffer(ERR_NEEDMOREPARAMS(_clients[fd].getNickname(), "ADD_OPER"));
+		client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), "ADD_OPER"));
 	else
-		_clients[fd].addOperator(username, password);
+		client.addOperator(username, password);
 }
 
-void	Server::_rmOper(const int &fd, string &line)
+void	Server::_rmOper(Client &client, string &line)
 {
 	std::stringstream	ss(line);
 	string				command;
@@ -51,7 +51,7 @@ void	Server::_rmOper(const int &fd, string &line)
 	ss >> command >> username;
 	std::cout << "Removing operator " << username << std::endl;
 	if (username.empty())
-		_clients[fd].addToSendBuffer(ERR_NEEDMOREPARAMS(_clients[fd].getNickname(), "RM_OPER"));
+		client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), "RM_OPER"));
 	else
-		_clients[fd].removeOperator(username);
+		client.removeOperator(username);
 }

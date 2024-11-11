@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 16:28:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:42:26 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,19 @@ void	Server::_Pong(Client &client, const string &line)
 		client.setProgrammedDisconnection(TIMEOUT);
 }
 
-void	Server::_doCapNegotiation(const int &fd, string &line)
+void	Server::_doCapNegotiation(Client &client, string &line)
 {
 	if (line.find("LS") != string::npos)
-		_clients[fd].addToSendBuffer("CAP * LS :\r\n");
+		client.addToSendBuffer("CAP * LS :\r\n");
 	if (line.find("REQ") != string::npos)
 	{
 		size_t	pos = findNextParameter(line, line.find("REQ"));
 		pos = findNextParameter(line, pos);
-		_clients[fd].addToSendBuffer("CAP * NAK " + line.substr(pos) + "\r\n");
+		client.addToSendBuffer("CAP * NAK " + line.substr(pos) + "\r\n");
 	}
 }
 
-void	Server::_checkPassword(const int &fd, const string &line)
+void	Server::_checkPassword(Client &client, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	password;
@@ -118,7 +118,7 @@ void	Server::_checkPassword(const int &fd, const string &line)
 	if (line[pos] == ':')
 		pos++;
 	password = line.substr(pos);
-	_clients[fd].setPasswordCorrect(password == _password);
+	client.setPasswordCorrect(password == _password);
 }
 
 void	Server::_executeCommand(const eCommand &command, string &line,
@@ -139,15 +139,15 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::QUIT)
 		_quitClient(_clients[fd], line);
 	else if (command == eCommand::PASS)
-		_checkPassword(fd, line);
+		_checkPassword(_clients[fd], line);
 	else if (command == eCommand::CAP)
-		_doCapNegotiation(fd, line);
+		_doCapNegotiation(_clients[fd], line);
 	else if (command == eCommand::OPER)
-		_Oper(fd, line);
+		_Oper(_clients[fd], line);
 	else if (command == eCommand::RM_OPER)
-		_rmOper(fd, line);
+		_rmOper(_clients[fd], line);
 	else if (command == eCommand::ADD_OPER)
-		_addOper(fd, line);
+		_addOper(_clients[fd], line);
 	else if (command == eCommand::LS_OPER)	
 		_clients[fd].listOperators();
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
@@ -155,7 +155,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::TOPIC)
 		_topic(_clients[fd], line);
 	else if (command == eCommand::KICK)
-		_parse_kick(fd, line);
+		_parse_kick(_clients[fd], line);
 	else if (command == eCommand::INVITE)
 		_invite(_clients[fd], line);
 	else if (command == eCommand::MODE)

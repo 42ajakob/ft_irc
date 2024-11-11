@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 16:27:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:41:26 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,22 @@ class Server
 					const int &fd);
 
 	// *** Connection methods ***
-		void	_doCapNegotiation(const int &fd, string &line);
-		void	_checkPassword(const int &fd, const string &line);
+		void	_doCapNegotiation(Client &client, string &line);
+		void	_checkPassword(Client &client, const string &line);
 		void	_Pong(Client &client, const string &line);
 		void	_checkConnectionTimeout(pollfd &pollFD);
 
 	// *** Operator methods ***
-		void	_Oper(const int &fd, string &line);
-		void	_addOper(const int &fd, string &line);
-		void	_rmOper(const int &fd, string &line);
+		void	_Oper(Client &client, string &line);
+		void	_addOper(Client &client, string &line);
+		void	_rmOper(Client &client, string &line);
 
 	// *** Command methods ***
 		void	_joinChannel(Client &client, string &line);
 		void 	_invite(Client &client, const string &line);
 		void	_topic(Client &client, const string &line);
 		void	_quitClient(Client &client, const string &line);
-		void	_parse_kick(const int &fd, std::string const &line);
+		void	_parse_kick(Client &client, std::string const &line);
 		void	_privmsg(Client &client, const string &line) noexcept;
 
 	// *** Debug and error methods ***
