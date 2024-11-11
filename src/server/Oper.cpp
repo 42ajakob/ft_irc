@@ -6,14 +6,14 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:08:50 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 16:37:49 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:42:23 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include <sstream>
 
-void	Server::_Oper(Client &client, string &line)
+void	Server::_Oper(Client &client, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	username;
@@ -28,7 +28,7 @@ void	Server::_Oper(Client &client, string &line)
 	client.giveOperatorAccess(std::move(username), password);
 }
 
-void	Server::_addOper(Client &client, string &line)
+void	Server::_addOper(Client &client, const string &line)
 {
 	std::stringstream	ss(line);
 	string				command;
@@ -42,7 +42,7 @@ void	Server::_addOper(Client &client, string &line)
 		client.addOperator(username, password);
 }
 
-void	Server::_rmOper(Client &client, string &line)
+void	Server::_rmOper(Client &client, const string &line)
 {
 	std::stringstream	ss(line);
 	string				command;
@@ -54,4 +54,33 @@ void	Server::_rmOper(Client &client, string &line)
 		client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), "RM_OPER"));
 	else
 		client.removeOperator(username);
+}
+
+void	Server::_OpBypass(Client &client, const string &line)
+{
+	const size_t	fd = line.find_first_of("0123456789");
+	const size_t	msgStart = line.find_first_of(":", fd) + 1;
+
+	try{
+		if (fd == string::npos || msgStart == string::npos)
+			return ;
+		const int	clientFd = std::stoi(&line[fd]);
+		string		msg = line.substr(msgStart) + "\r\n";
+
+		_clients[clientFd].addToSendBuffer(msg);
+		std::cout << "Bypass message sent to client " << clientFd;
+		std::cout << std::endl;
+		msg = "Msg bypassed to client " + std::to_string(clientFd) + "\r\n";
+		client.addToSendBuffer(msg);
+	}
+	catch (const std::exception &e) {
+		string error = "Error bypassing :" + string(e.what());
+		_logError(client, error);
+	}
+}
+
+void	Server::_lsOper(Client &client, const string &line)
+{
+	(void)line;
+	client.listOperators();
 }

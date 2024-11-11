@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 15:29:00 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 18:02:15 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:44:36 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "numericReplies.hpp"
 #include <sstream>
 
-void Server::_topic(Client &client, const string &line)
+void Server::_handleTopic(Client &client, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	std::stringstream	ss(line);

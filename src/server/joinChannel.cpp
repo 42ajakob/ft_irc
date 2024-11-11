@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 20:56:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:42:42 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	logJoiningChannel(const string &clientNickname,
 	channel.printMembers();
 }
 
-void	Server::_joinChannel(Client	&client, string &line)
+void	Server::_handleJoin(Client	&client, const string &line)
 {
 	vector<string>	channelNames;
 	vector<string>	passwords;

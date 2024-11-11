@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 16:41:26 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:47:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ class Server
 
 		Server(const string &port, const string &&password);
 
+		typedef void (Server::*t_Command)(Client &, const std::string &);
+
 	// *** Initialization and Closing methods ***
 		void	_initSocket();
 		void	_initPollFDs();
@@ -69,27 +71,31 @@ class Server
 					const int &fd);
 
 	// *** Connection methods ***
-		void	_doCapNegotiation(Client &client, string &line);
-		void	_checkPassword(Client &client, const string &line);
-		void	_Pong(Client &client, const string &line);
+		void	_handleCap		(Client &client, const string &line);
+		void	_handlePass		(Client &client, const string &line);
+		void	_handlePing		(Client &client, const string &line);
+		void	_handlePong		(Client &client, const string &line);
+		void	_handleNick		(Client &client, const string &line);
+		void	_handleUser		(Client &client, const string &line);
 		void	_checkConnectionTimeout(pollfd &pollFD);
 
 	// *** Operator methods ***
-		void	_Oper(Client &client, string &line);
-		void	_addOper(Client &client, string &line);
-		void	_rmOper(Client &client, string &line);
+		void	_Oper			(Client &client, const string &line);
+		void	_addOper		(Client &client, const string &line);
+		void	_rmOper			(Client &client, const string &line);
+		void	_lsOper			(Client &client, const string &line);
 
 	// *** Command methods ***
-		void	_joinChannel(Client &client, string &line);
-		void 	_invite(Client &client, const string &line);
-		void	_topic(Client &client, const string &line);
-		void	_quitClient(Client &client, const string &line);
-		void	_parse_kick(Client &client, std::string const &line);
-		void	_privmsg(Client &client, const string &line) noexcept;
+		void	_handleJoin		(Client &client, const string &line);
+		void 	_handleInvite	(Client &client, const string &line);
+		void	_handleTopic	(Client &client, const string &line);
+		void	_handleQuit		(Client &client, const string &line);
+		void	_handleKick		(Client &client, const string &line);
+		void	_handlePrivMsg	(Client &client, const string &line) noexcept;
 
 	// *** Debug and error methods ***
-		void	_debugBypass(string &line);
-		void	_logError(Client &client, const string &error) const;
+		void	_OpBypass	(Client &client, const string &line);
+		void	_logError	(Client &client, const string &error) const;
 	
 	public:
 		Client			&getClientByNickname(const string &nickname);

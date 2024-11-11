@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 16:42:26 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:48:09 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,74 +16,40 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <unordered_map>
 
 static eCommand	checkForCommand(const string &line)
 {
-	string command = line.substr(0, line.find(' '));
-	std::transform(command.begin(), command.end(), command.begin(), ::toupper);
-	if (command == "PING")
-		return (eCommand::PING);
-	if (command == "PONG")
-		return (eCommand::PONG);
-	if (command == "PRIVMSG")
-		return (eCommand::PRIVMSG);
-	if (command == "JOIN")
-		return (eCommand::JOIN);
-	if (command == "NICK")
-		return (eCommand::NICK);
-	if (command == "USER")
-		return (eCommand::USER);
-	if (command == "QUIT")
-		return (eCommand::QUIT);
-	if (command == "PASS")
-		return (eCommand::PASS);
-	if (command == "CAP")
-		return (eCommand::CAP);
-	if (command == "OPER")
-		return (eCommand::OPER);
-	if (command == "RM_OPER")
-		return (eCommand::RM_OPER);
-	if (command == "ADD_OPER")
-		return (eCommand::ADD_OPER);
-	if (command == "LS_OPER")
-		return (eCommand::LS_OPER);
-	if (command == "RELOAD_SERVER")
-		return (eCommand::RELOAD_SERVER);
-	if (command == "TOPIC")
-		return (eCommand::TOPIC);
-	if (command == "KICK")
-		return (eCommand::KICK);
-	if (command == "INVITE")
-		return (eCommand::INVITE);
-	if (command == "MODE")
-		return (eCommand::MODE);
-	if (command == ":bypass")
-		return (eCommand::DEBUG_BYPASS);
+	string	command = line.substr(0, line.find(' '));
+	toLower(command);
+	const std::unordered_map<string, eCommand> commandMap = {
+		{"ping",		eCommand::PING},
+		{"pong",		eCommand::PONG},
+		{"privmsg",		eCommand::PRIVMSG},
+		{"join",		eCommand::JOIN},
+		{"nick",		eCommand::NICK},
+		{"user",		eCommand::USER},
+		{"quit",		eCommand::QUIT},
+		{"pass",		eCommand::PASS},
+		{"cap",			eCommand::CAP},
+		{"oper",		eCommand::OPER},
+		{"rm_oper",		eCommand::RM_OPER},
+		{"add_oper",	eCommand::ADD_OPER},
+		{"ls_oper",		eCommand::LS_OPER},
+		{"reload",		eCommand::RELOAD_SERVER},
+		{"topic",		eCommand::TOPIC},
+		{"kick",		eCommand::KICK},
+		{"invite",		eCommand::INVITE},
+		{"mode",		eCommand::MODE},
+		{"bypass",		eCommand::BYPASS}
+	};
+
+	if (commandMap.find(command) != commandMap.end())
+		return (commandMap.at(command));
 	return (eCommand::UNKNOWN);
 }
 
-void	Server::_debugBypass(string &line)
-{
-	const size_t	fd = line.find_first_of("0123456789");
-	const size_t	msgStart = line.find_first_of(":", fd) + 1;
-	int				clientFd;
-
-	try{
-		if (fd == string::npos)
-			return ;
-		line += "\r\n";
-		clientFd = std::stoi(&line[fd]);
-
-		_clients[clientFd].addToSendBuffer(&line[msgStart]);
-		std::cout << "Bypass message sent to client " << clientFd;
-		std::cout << std::endl;
-	}
-	catch (const std::exception &e) {
-		std::cerr << "Error bypassing :" << e.what() << std::endl;
-	}
-}
-
-void	Server::_Pong(Client &client, const string &line)
+void	Server::_handlePing(Client &client, const string &line)
 {
 	size_t	pos = findNextParameter(line);
 	string	pong = "PONG";
@@ -96,7 +62,7 @@ void	Server::_Pong(Client &client, const string &line)
 		client.setProgrammedDisconnection(TIMEOUT);
 }
 
-void	Server::_doCapNegotiation(Client &client, string &line)
+void	Server::_handleCap(Client &client, const string &line)
 {
 	if (line.find("LS") != string::npos)
 		client.addToSendBuffer("CAP * LS :\r\n");
@@ -108,60 +74,34 @@ void	Server::_doCapNegotiation(Client &client, string &line)
 	}
 }
 
-void	Server::_checkPassword(Client &client, const string &line)
-{
-	size_t	pos = findNextParameter(line);
-	string	password;
-
-	if (pos == string::npos)
-		return ;
-	if (line[pos] == ':')
-		pos++;
-	password = line.substr(pos);
-	client.setPasswordCorrect(password == _password);
-}
-
 void	Server::_executeCommand(const eCommand &command, string &line,
 	const int &fd)
 {
-	if (command == eCommand::PING)
-		_Pong(_clients[fd], line);
-	else if (command == eCommand::PONG)
-		_clients[fd].resetPingTimerIfPongMatches(line);
-	else if (command == eCommand::PRIVMSG)
-		_privmsg(_clients[fd], line);
-	else if (command == eCommand::JOIN)
-		_joinChannel(_clients[fd], line);
-	else if (command == eCommand::NICK)
-		_clients[fd].setNickname(std::move(line));
-	else if (command == eCommand::USER)
-		_clients[fd].setUsername(std::move(line));
-	else if (command == eCommand::QUIT)
-		_quitClient(_clients[fd], line);
-	else if (command == eCommand::PASS)
-		_checkPassword(_clients[fd], line);
-	else if (command == eCommand::CAP)
-		_doCapNegotiation(_clients[fd], line);
-	else if (command == eCommand::OPER)
-		_Oper(_clients[fd], line);
-	else if (command == eCommand::RM_OPER)
-		_rmOper(_clients[fd], line);
-	else if (command == eCommand::ADD_OPER)
-		_addOper(_clients[fd], line);
-	else if (command == eCommand::LS_OPER)	
-		_clients[fd].listOperators();
+	const std::unordered_map<eCommand, t_Command> commandMap = {
+		{eCommand::PING,		&Server::_handlePing},
+		{eCommand::PONG,		&Server::_handlePong},
+		{eCommand::PRIVMSG,		&Server::_handlePrivMsg},
+		{eCommand::JOIN,		&Server::_handleJoin},
+		{eCommand::NICK,		&Server::_handleNick},
+		{eCommand::USER,		&Server::_handleUser},
+		{eCommand::QUIT,		&Server::_handleQuit},
+		{eCommand::PASS,		&Server::_handlePass},
+		{eCommand::CAP,			&Server::_handleCap},
+		{eCommand::TOPIC,		&Server::_handleTopic},
+		{eCommand::KICK,		&Server::_handleKick},
+		{eCommand::INVITE,		&Server::_handleInvite},
+		{eCommand::OPER,		&Server::_Oper},
+		{eCommand::RM_OPER,		&Server::_rmOper},
+		{eCommand::ADD_OPER,	&Server::_addOper},
+		{eCommand::LS_OPER,		&Server::_lsOper},
+		{eCommand::BYPASS,		&Server::_OpBypass}
+	};
+	if (commandMap.find(command) != commandMap.end())
+		(this->*(commandMap.at(command)))(_clients[fd], line);
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
 		reload();
-	else if (command == eCommand::TOPIC)
-		_topic(_clients[fd], line);
-	else if (command == eCommand::KICK)
-		_parse_kick(_clients[fd], line);
-	else if (command == eCommand::INVITE)
-		_invite(_clients[fd], line);
 	else if (command == eCommand::MODE)
 		;
-	else if (command == eCommand::DEBUG_BYPASS)
-		_debugBypass(line);
 }
 
 void	Server::_parseMessage(const int &fd)
@@ -178,7 +118,7 @@ void	Server::_parseMessage(const int &fd)
 		if (line[line.size() - 1] == '\r')
 			line.erase(line.size() - 1, 1);
 		command = checkForCommand(line);
-		if (command != eCommand::DEBUG_BYPASS)
+		if (command != eCommand::BYPASS)
 			std::cout << "Received message from client " << fd << ": " << line << std::endl;
 		try {
 			_executeCommand(command, line, fd);

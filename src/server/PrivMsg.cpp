@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 20:54:36 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:47:00 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	parsePrivMsg(const string &line, vector<string> &targets,
 	if (targets.size() > 4)
 		throw std::invalid_argument(ERR_TOOMANYTARGETS(rawTargets));
 	msg = line.substr(ss.tellg());
+	if (!msg.empty() && msg[0] == ' ')
+		msg.erase(0, 1);
 	if (!msg.empty() && msg[0] == ':')
 		msg.erase(0, 1);
 	if (msg.empty())
@@ -52,7 +54,7 @@ static	void	sendMsgToTarget(const string &origin, const string &msg,
 	receiver.sendPrivMsg(msg, origin);
 }
 
-void	Server::_privmsg(Client &client, const string &line) noexcept
+void	Server::_handlePrivMsg(Client &client, const string &line) noexcept
 {
 	vector<string>		targets;
 	string				msg;

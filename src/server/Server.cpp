@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 16:21:07 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:45:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void Server::reload()
 	std::cout << "Server reloaded" << std::endl;
 }
 
-void Server::_quitClient(Client &client, const string &line)
+void Server::_handleQuit(Client &client, const string &line)
 {
 	(void)line;
 	client.addToSendBuffer("ERROR :/quit received by " + client.getNickname() + "\r\n");

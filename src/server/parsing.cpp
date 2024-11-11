@@ -6,20 +6,20 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/11 16:41:56 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:46:28 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-#include "sstream"
+#include <sstream>
 
-void	Server::_parse_kick(Client &client, std::string const &line)
+void	Server::_handleKick(Client &client, const string &line)
 {
 	std::stringstream	ss(line);
-	std::string			command;
-	std::string			channelName;
-	std::string			nickname;
-	std::string			reason;
+	string				command;
+	string				channelName;
+	string				nickname;
+	string				reason;
 
 	ss >> command >> channelName >> nickname >> reason;
 

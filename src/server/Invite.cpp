@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:38:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/09 18:02:56 by apeposhi         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:43:16 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sstream>
 
 
-void Server::_invite(Client &client, const string &line)
+void Server::_handleInvite(Client &client, const string &line)
 {
 	std::stringstream	ss(line);
 	string				nickname;

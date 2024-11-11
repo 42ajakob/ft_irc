@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   timeouts.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 12:39:45 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/11 17:53:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "Client.hpp"
 #include <iostream>
 #include <chrono>
+#include <sstream>
 
 void	Server::_checkConnectionTimeout(pollfd &pollFD)
 {
@@ -37,4 +38,16 @@ void	Server::_checkConnectionTimeout(pollfd &pollFD)
 		pollFD.revents |= POLLERR;
 		_disconnectClient(pollFD);
 	}
+}
+
+void	Server::_handlePong(Client &client, const string &line)
+{
+	std::stringstream	ss(line);
+	string				command;
+	string				response;
+
+	ss >> command >> response;
+	if (response[0] == ':')
+		response.erase(0, 1);
+	client.resetPingTimerIfPongMatches(response);
 }
