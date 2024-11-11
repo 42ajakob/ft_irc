@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   registrationMethods.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:24:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/09 13:20:17 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/11 19:33:20 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,13 @@ static bool	isNicknameValid(string &nickname)
 void	Client::setNickname(string &&nickname)
 {
 	if (_registered == true)
-		throw std::invalid_argument("Client already registered");
+		throw std::invalid_argument(ERR_ALREADYREGISTRED(_Nickname));
 	if (_isPasswordCorrect == false)
-		throw std::invalid_argument("missing password");
-	if (nickname.find(" ") == string::npos)
-		throw std::invalid_argument("Missing nickname");
-	nickname.erase(0, findNextParameter(nickname));
-	if (nickname.empty())
-		throw std::invalid_argument("Nickname cannot be empty");
-	toLower(nickname);
+		throw std::invalid_argument(ERR_NOTREGISTERED(_Nickname));
 	if (isNicknameValid(nickname) == false)
-		throw std::invalid_argument("Invalid nickname");
+		throw std::invalid_argument(ERR_ERRONEUSNICKNAME(_Username, nickname));
 	if (_isNicknameAvailable(nickname) == false)
-		throw std::invalid_argument("Nickname already in use");
+		throw std::invalid_argument(ERR_NICKNAMEINUSE(_Username, nickname));
 	_Nickname = std::move(nickname);
 	_usedNicknames.insert(_Nickname);
 	_markAsRegistered();
@@ -87,29 +81,18 @@ void	Client::setNickname(string &&nickname)
 void	Client::setPasswordCorrect(bool isPasswordCorrect)
 {
 	if (_registered == true)
-		throw std::invalid_argument("Client already registered");
+		throw std::invalid_argument(ERR_ALREADYREGISTRED(_Nickname));
 	_isPasswordCorrect = isPasswordCorrect;
 	if (_isPasswordCorrect == false)
-		this->addToSendBuffer(ERR_PASSWDMISMATCH(_Nickname));
+		throw std::invalid_argument(ERR_PASSWDMISMATCH(_Nickname));
 }
 
-void	Client::setUsername(string &&line)
+void	Client::setUsername(string &&username)
 {
-	size_t		start;
-	size_t		end;
-
 	if (_registered == true)
-		throw std::invalid_argument("Client already registered");
+		throw std::invalid_argument(ERR_ALREADYREGISTRED(_Nickname));
 	if (_isPasswordCorrect == false)
-		throw std::invalid_argument("missing password");
-	start = findNextParameter(line);
-	if (start == string::npos)
-		throw std::invalid_argument("Missing username");
-	end = findNextParameter(line, start);
-	if (end == string::npos)
-		end = line.length();
-	line.erase(end);
-	line.erase(0, start);
-	_Username = std::move(line);
+		throw std::invalid_argument(ERR_NOTREGISTERED(_Nickname));
+	_Username = std::move(username);
 	_markAsRegistered();
 }
