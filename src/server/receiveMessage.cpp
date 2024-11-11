@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 18:48:09 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:42:37 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
 		reload();
 	else if (command == eCommand::MODE)
-		;
+		return ;
 }
 
 void	Server::_parseMessage(const int &fd)
