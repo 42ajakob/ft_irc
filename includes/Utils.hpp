@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 18:24:25 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:06:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,15 @@ constexpr size_t MAX_STREAM_SIZE = std::numeric_limits<std::streamsize>::max();
 
 enum class eCommand
 {
-	UNKNOWN,
 	PING,
 	PONG,
-	PRIVMSG,
-	JOIN,
+	CAP,
+	PASS,
 	NICK,
 	USER,
 	QUIT,
-	PASS,
-	CAP,
+	PRIVMSG,
+	JOIN,
 	OPER,
 	RM_OPER,
 	ADD_OPER,
@@ -50,7 +49,8 @@ enum class eCommand
 	KICK,
 	INVITE,
 	MODE,
-	BYPASS
+	BYPASS,
+	UNKNOWN
 };
 
 size_t			findNextParameter(const string &line, size_t pos = 0);
