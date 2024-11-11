@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 21:29:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 22:11:06 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,9 @@ const string	&Channel::getName() const noexcept
 
 void	Channel::part(Client &client, const string &reason)
 {
-	_broadcastMsg(":" + client.getNickname() + " PART " + _name + " :" + reason + "\r\n", &client);
+	if (_members.find(&client) == _members.end())
+		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
+	_broadcastMsg(":" + client.getNickname() + " PART " + _name + " :" + reason + "\r\n", nullptr);
 	_members.erase(&client);
 	_operators.erase(&client);
 	_invited.erase(&client);

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 18:47:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 21:52:39 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ class Server
 		void	_handleQuit		(Client &client, const string &line);
 		void	_handleKick		(Client &client, const string &line);
 		void	_handlePrivMsg	(Client &client, const string &line) noexcept;
+		void	_handlePart		(Client &client, const string &line);
 
 	// *** Debug and error methods ***
 		void	_OpBypass	(Client &client, const string &line);

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 21:05:19 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 22:07:40 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static eCommand	checkForCommand(const string &line)
 		{"kick",		eCommand::KICK},
 		{"invite",		eCommand::INVITE},
 		{"mode",		eCommand::MODE},
+		{"part",		eCommand::PART},
 		{"bypass",		eCommand::BYPASS}
 	};
 
@@ -94,6 +95,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		{eCommand::RM_OPER,		&Server::_rmOper},
 		{eCommand::ADD_OPER,	&Server::_addOper},
 		{eCommand::LS_OPER,		&Server::_lsOper},
+		{eCommand::PART,		&Server::_handlePart},
 		{eCommand::BYPASS,		&Server::_OpBypass}
 	};
 	if (_clients[fd].IsRegistered() == false

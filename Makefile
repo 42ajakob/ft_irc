@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/11 18:03:24 by JFikents         ###   ########.fr        #
+#    Updated: 2024/11/11 22:08:11 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ _SERVER_SRC		=	Server.cpp\
 					timeouts.cpp\
 					Topic.cpp\
 					utils.cpp\
-					registrationMethods.cpp
+					registrationMethods.cpp\
+					handlePart.cpp
 SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
 _SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(CHANNEL_SRC)
