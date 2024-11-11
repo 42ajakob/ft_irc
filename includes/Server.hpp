@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 20:58:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:27:18 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ class Server
 
 		Server(const string &port, const string &&password);
 
+	// *** Initialization and Closing methods ***
 		void	_initSocket();
 		void	_initPollFDs();
 		void	_startMainLoop();
 		void	_closeFD();
 
+	// *** I/O loop Methods ***
 		void	_acceptClient();
 		void	_receiveMessage(pollfd &pollFD);
 		void	_disconnectClient(pollfd &pollFD);
@@ -65,22 +67,28 @@ class Server
 		void	_parseMessage(const int &fd);
 		void	_executeCommand(const eCommand &command, string &line,
 					const int &fd);
-		void	_debugBypass(string &line);
-		void	_Pong(Client &client, const string &line);
+
+	// *** Connection methods ***
 		void	_doCapNegotiation(const int &fd, string &line);
-		void	_checkConnectionTimeout(pollfd &pollFD);
 		void	_checkPassword(const int &fd, const string &line);
-		void	_joinChannel(Client &client, string &line);
-		void 	_invite(Client &client, const string &line);
-		void	_topic(Client &client, const string &line);
-		void	_quitClient(const int &fd);
+		void	_Pong(Client &client, const string &line);
+		void	_checkConnectionTimeout(pollfd &pollFD);
+
+	// *** Operator methods ***
 		void	_Oper(const int &fd, string &line);
 		void	_addOper(const int &fd, string &line);
 		void	_rmOper(const int &fd, string &line);
 
+	// *** Command methods ***
+		void	_joinChannel(Client &client, string &line);
+		void 	_invite(Client &client, const string &line);
+		void	_topic(Client &client, const string &line);
+		void	_quitClient(Client &client, const string &line);
 		void	_parse_kick(const int &fd, std::string const &line);
 		void	_privmsg(Client &client, const string &line) noexcept;
 
+	// *** Debug and error methods ***
+		void	_debugBypass(string &line);
 		void	_logError(Client &client, const string &error) const;
 	
 	public:
@@ -96,7 +104,7 @@ class Server
 		void	initServer();
 		void	reload();
 		void	setTimestamp();
-		std::string	getTimestamp();
+		string	getTimestamp();
 };
 
 #endif

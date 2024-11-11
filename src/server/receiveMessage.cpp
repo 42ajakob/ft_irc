@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 20:58:01 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:28:16 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 	else if (command == eCommand::USER)
 		_clients[fd].setUsername(std::move(line));
 	else if (command == eCommand::QUIT)
-		_quitClient(fd);
+		_quitClient(_clients[fd], line);
 	else if (command == eCommand::PASS)
 		_checkPassword(fd, line);
 	else if (command == eCommand::CAP)

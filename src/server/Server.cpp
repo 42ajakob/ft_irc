@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/06 17:19:39 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:21:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,9 @@ void Server::reload()
 	std::cout << "Server reloaded" << std::endl;
 }
 
-void Server::_quitClient(const int &fd)
+void Server::_quitClient(Client &client, const string &line)
 {
-	_clients[fd].addToSendBuffer("ERROR :/quit received by " + _clients[fd].getNickname() + "\r\n");
-	_clients[fd].setProgrammedDisconnection(1, true);
+	(void)line;
+	client.addToSendBuffer("ERROR :/quit received by " + client.getNickname() + "\r\n");
+	client.setProgrammedDisconnection(1, true);
 }
