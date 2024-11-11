@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 20:06:43 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:20:26 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,11 @@ void	Server::_parseMessage(const int &fd)
 	ss << _clients[fd].getRecvBuffer();
 	_clients[fd].clearRecvBuffer();
 	std::getline(ss, line, '\n');
-	while (line.size() > 0)
+	while (line.empty() == false)
 	{
 		if (line[line.size() - 1] == '\r')
 			line.erase(line.size() - 1, 1);
 		command = checkForCommand(line);
-		if (command != eCommand::BYPASS)
-			std::cout << "Received message from client " << fd << ": " << line << std::endl;
 		try {
 			_executeCommand(command, line, fd);
 		}
