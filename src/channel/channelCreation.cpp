@@ -19,6 +19,8 @@ Channel &Channel::getChannel(string &name, Client &client)
 	toLower(name);
 	if (_channels.find(name) == _channels.end())
 	{
+		if (name[0] != '#')
+			throw std::runtime_error(ERR_NOSUCHCHANNEL(name));
 		t_ChannelCreatorKey	Key;
 		_channels.emplace(std::piecewise_construct,
 			std::forward_as_tuple(name),

@@ -47,10 +47,11 @@ class	Channel
 		void			invite(const string &nickname, Client &client);
 		void			leave(Client &client);
 		void			topic(string &topic, Client &client);
-		void			mode(Client &client);
 		void			broadcastPrivMsg(const string &msg, const string &origin) const noexcept;
 		void			part(Client &client, const string &reason);
 		void			whoReply(Client &client) const;
+		void	mode(string mode, Client &client, const Client &nick);
+		void	mode(string mode, Client &client);
 
 		bool			operator==(const Channel &other) const;
 		bool			operator==(const string &name) const;

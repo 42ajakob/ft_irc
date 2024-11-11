@@ -79,6 +79,7 @@ class Server
 		void	_handleUser		(Client &client, const string &line);
 		void	_checkConnectionTimeout(pollfd &pollFD);
 
+
 	// *** Operator methods ***
 		void	_Oper			(Client &client, const string &line);
 		void	_addOper		(Client &client, const string &line);
@@ -94,6 +95,7 @@ class Server
 		void	_handlePrivMsg	(Client &client, const string &line) noexcept;
 		void	_handlePart		(Client &client, const string &line);
 		void	_handleWho		(Client &client, const string &line);
+        void	_parse_mode     (Client &client, string const &line);
 
 	// *** Debug and error methods ***
 		void	_OpBypass	(Client &client, const string &line);

@@ -37,7 +37,7 @@ void Server::_handleInvite(Client &client, const string &line)
 		channel.invite(nickname, client);
 	}
 	catch (const std::exception &e) {
-		client.addToSendBuffer(ERR_NOSUCHCHANNEL(channelName));
-		std::cerr << "Error inviting user: " << e.what() << std::endl;
+		client.addToSendBuffer(e.what());
+		std::cerr << "Error inviting user: No such Channel" << std::endl;
 	}
 }

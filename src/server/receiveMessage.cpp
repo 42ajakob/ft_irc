@@ -98,6 +98,7 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		{eCommand::LS_OPER,		&Server::_lsOper},
 		{eCommand::PART,		&Server::_handlePart},
 		{eCommand::WHO,			&Server::_handleWho},
+        {eCommand::MODE,        &Server::_parse_mode},
 		{eCommand::BYPASS,		&Server::_OpBypass}
 	};
 	if (_clients[fd].IsRegistered() == false
@@ -110,8 +111,6 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 		(this->*(commandMap.at(command)))(_clients[fd], line);
 	else if (command == eCommand::RELOAD_SERVER && _clients[fd].isOperator())
 		reload();
-	else if (command == eCommand::MODE)
-		return ;
 }
 
 void	Server::_parseMessage(const int &fd)
