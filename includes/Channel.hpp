@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 20:49:54 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 21:36:07 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,20 @@ class	Channel
 			Client &creator);
 		~Channel();
 
-		void	join(Client &client, const string &password);
-		void	sendChannelInfo(Client &client);
-		void	kick(const string &nickname, Client &client);
-		void	invite(const string &nickname, Client &client);
-		void	leave(Client &client);
-		void	topic(string &topic, Client &client);
-		void	mode(Client &client);
-		void	clear();
-		void	printMembers() const;
-		void	broadcastMsg(const string &msg, const string &origin) const noexcept;
+		void			join(Client &client, const string &password);
+		void			kick(const string &nickname, Client &client);
+		void			invite(const string &nickname, Client &client);
+		void			leave(Client &client);
+		void			topic(string &topic, Client &client);
+		void			mode(Client &client);
+		void			broadcastPrivMsg(const string &msg, const string &origin) const noexcept;
+		void			part(Client &client, const string &reason);
 
-		bool	operator==(const Channel &other) const;
-		bool	operator==(const string &name) const;
+		bool			operator==(const Channel &other) const;
+		bool			operator==(const string &name) const;
+		const string	&getName() const noexcept;
+
+		void			printMembers() const;
 
 		static Channel	&getChannel(string &name, Client &client);
 		static Channel	&getChannel(string &name);
@@ -73,8 +74,6 @@ class	Channel
 		static constexpr size_t	ModeCount = static_cast<size_t>(Mode::Count);
 		static t_ChannelMap		_channels;
 
-		Channel(const string &name, Client &creator);
-
 		bitset<ModeCount>	_mode;
 		string				_name;
 		t_ClientSet			_members;
@@ -83,6 +82,12 @@ class	Channel
 		string				_topic;
 		string				_password;
 		uint16_t			_userLimit;
+
+		Channel(const string &name, Client &creator);
+
+		void	_sendChannelInfo(Client &client);
+		string	_getMembersList() const noexcept;
+		void	_broadcastMsg(const string &msg, Client *client) const noexcept;
 };
 
 

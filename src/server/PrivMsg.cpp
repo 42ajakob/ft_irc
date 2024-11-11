@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 18:47:00 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:46:32 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static	void	sendMsgToTarget(const string &origin, const string &msg,
 	if (target[0] == '#')
 	{
 		Channel &channel = Channel::getChannel(target);
-		channel.broadcastMsg(msg, origin);
+		channel.broadcastPrivMsg(msg, origin);
 		return ;
 	}
 	Client &receiver = Server::getInstance().getClientByNickname(target);

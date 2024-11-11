@@ -27,6 +27,9 @@
 #define RPL_INVITELIST(channel, invite_mask) (":FT_IRC 346 " + channel + " " + invite_mask + "\r\n")
 #define RPL_ENDOFINVITELIST(channel) (":FT_IRC 347 " + channel + " :End of channel invite list\r\n")
 
+#define RPL_NAMREPLY(client, channel, member_list) (":FT_IRC 353 " + client + " = " + channel + " :" + member_list + "\r\n")
+#define RPL_ENDOFNAMES(client, channel) (":FT_IRC 366 " + client + " " + channel + " :End of /NAMES list\r\n")
+
 #define RPL_YOUREOPER(client) (":FT_IRC 381 " + client + " :You are now an IRC operator\r\n")
 
 #define ERR_NOSUCHNICK(nick) (":FT_IRC 401 " + nick + " :No such nick\r\n")
