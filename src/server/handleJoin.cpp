@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 17:20:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:15:55 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	logJoiningChannel(const string &clientNickname,
 {
 	std::cout << "Client " << clientNickname << " joined channel " << ChannelName << std::endl;
 	std::cout << "Password: <" << Password + '>' << std::endl;
-	channel.printMembers();
+	std::cout << channel << std::endl;
 }
 
 void	Server::_handleJoin(Client	&client, const string &line)

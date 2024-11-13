@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 18:38:32 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:14:10 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ class	Channel
 			Client &creator);
 		~Channel();
 
+		std::ostream	&insertInfoToOutstream(std::ostream &os) const;
+
 		void			join(Client &client, const string &password);
 		void			kick(const string &nickname, Client &client);
 		void			invite(const string &nickname, Client &client);
@@ -84,12 +86,12 @@ class	Channel
 		bool			operator==(const Channel &other) const;
 		bool			operator==(const string &name) const;
 
-		void			printMembers() const;
-
 		static Channel	&getChannel(string &name, Client &client);
 		static Channel	&getChannel(string &name);
 		static void		clientDisconnected(Client &client);
 };
+
+std::ostream	&operator<<(std::ostream &os, const Channel &channel);
 
 
 #endif

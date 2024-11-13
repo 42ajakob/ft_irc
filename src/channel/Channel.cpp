@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 18:45:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:16:04 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,6 @@ bool	Channel::operator==(const string &name) const
 	return (_name == name);
 }
 
-void	Channel::printMembers() const
-{
-	std::cout << "Channel " << _name << " members:" << _getMembersList();
-	std::cout << std::endl;
-}
-
 void	Channel::clientDisconnected(Client &client)
 {
 	auto	it = _channels.begin();
@@ -72,4 +66,16 @@ void	Channel::clientDisconnected(Client &client)
 			channel._promoteClientToOperator("FT_IRC", **channel._members.begin());
 		++it;
 	}
+}
+
+std::ostream	&Channel::insertInfoToOutstream(std::ostream &os) const
+{
+	os << "Channel " << _name << " members:" << _getMembersList();
+	return (os);
+}
+
+std::ostream	&operator<<(std::ostream &os, const Channel &channel)
+{
+	channel.insertInfoToOutstream(os);
+	return (os);
 }
