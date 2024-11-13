@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/13 15:03:18 by JFikents         ###   ########.fr        #
+#    Updated: 2024/11/13 18:03:21 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,13 @@ INCLUDE_FLAGS	=	$(addprefix -I, $(_INCLUDE_FLAGS))
 
 _CHANNEL_SRC	=	Channel.cpp\
 					broadcast.cpp\
-					channelCreation.cpp\
+					getChannel.cpp\
 					invite.cpp\
-					Topic.cpp\
+					join.cpp\
+					kick.cpp\
+					mode.cpp\
+					part.cpp\
+					topic.cpp\
 					whoReply.cpp
 CHANNEL_SRC		=	$(addprefix channel/, $(_CHANNEL_SRC))
 
@@ -37,19 +41,19 @@ CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
 _SERVER_SRC		=	Server.cpp\
 					handleInvite.cpp\
 					handleJoin.cpp\
+					handleKick.cpp\
+					handleMode.cpp\
 					handlePart.cpp\
+					handlePrivMsg.cpp\
 					handleTopic.cpp\
 					handleWho.cpp\
-					mainLoop.cpp\
-					Oper.cpp\
-					parsing.cpp\
-					PrivMsg.cpp\
+					IO_Loop.cpp\
 					receiveMessage.cpp\
+					registrationMethods.cpp\
 					sendMessage.cpp\
-					serverStaticMethods.cpp\
-					timeouts.cpp\
-					utils.cpp\
-					registrationMethods.cpp
+					servOpMethods.cpp\
+					timeoutMethods.cpp\
+					utils.cpp
 SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
 _SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(CHANNEL_SRC)

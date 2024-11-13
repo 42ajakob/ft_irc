@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 16:08:15 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:45:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Server
 	// *** Initialization and Closing methods ***
 		void	_initSocket();
 		void	_initPollFDs();
-		void	_startMainLoop();
+		void	_startLoop();
 		void	_closeFD();
 
 	// *** I/O loop Methods ***

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 16:23:46 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/13 18:38:32 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ class	Channel
 		void	_sendChannelInfo(Client &client);
 		string	_getMembersList() const noexcept;
 		void	_broadcastMsg(const string &msg, Client *client) const noexcept;
+		void	_promoteClientToOperator(const string &origin, Client &client);
+		void	_demoteClientFromOperator(const string &origin, Client &client);
 
 	public:
 		Channel()									= delete;
@@ -72,7 +74,6 @@ class	Channel
 		void			join(Client &client, const string &password);
 		void			kick(const string &nickname, Client &client);
 		void			invite(const string &nickname, Client &client);
-		void			leave(Client &client);
 		void			topic(string &topic, Client &client);
 		void			broadcastPrivMsg(const string &msg, const string &origin) const noexcept;
 		void			part(Client &client, const string &reason);
@@ -82,7 +83,6 @@ class	Channel
 
 		bool			operator==(const Channel &other) const;
 		bool			operator==(const string &name) const;
-		const string	&getName() const noexcept;
 
 		void			printMembers() const;
 

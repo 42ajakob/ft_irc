@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 21:52:40 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 14:20:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:44:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	Server::_handlePart(Client &client, const string &line)
 		_logError(client, ERR_NEEDMOREPARAMS(client.getNickname(), "PART"));
 		return ;
 	}
-	std::getline(ss, reason);
-	if (!reason.empty() && reason[0] == ' ' && reason.size() > 1)
-		reason = reason.erase(0, 2);
+	std::getline(ss >> std::ws, reason);
+	if (!reason.empty() && reason[0] == ':')
+		reason = reason.erase(0, 1);
 	for (string &ChannelName : split(rawChannelNames))
 	{
 		try {

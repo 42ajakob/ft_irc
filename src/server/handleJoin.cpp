@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 14:15:47 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:20:47 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,13 @@ void	splitPasswordsAndChannels(const string &line,
 	const string &clientNickname)
 {
 	stringstream	ss(line);
-	size_t			pos = findNextParameter(line);
+	string			command;
 	string			rawChannelNames;
 	string			rawPasswords;
 
-	if (pos == string::npos)
-		throw std::invalid_argument(ERR_NEEDMOREPARAMS(clientNickname, std::string("JOIN")));
-	ss.ignore(pos); // Ignore the command
-	ss >> rawChannelNames;
-	ss >> rawPasswords;
+	ss >> command >> rawChannelNames >> rawPasswords;
+	if (rawChannelNames.empty())
+		throw std::invalid_argument(ERR_NEEDMOREPARAMS(clientNickname, command));
 	if (rawPasswords.empty() == false)
 		passwords = split(rawPasswords);
 	channelNames = split(rawChannelNames);

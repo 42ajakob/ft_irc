@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mainLoop.cpp                                       :+:      :+:    :+:   */
+/*   IO_Loop.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 16:08:15 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:45:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	Server::sigAction(int sig)
 	}
 }
 
-void Server::_startMainLoop()
+void Server::_startLoop()
 {
 	while (!_sig)
 	{

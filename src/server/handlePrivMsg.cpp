@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PrivMsg.cpp                                        :+:      :+:    :+:   */
+/*   handlePrivMsg.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 14:14:41 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:40:41 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ static void	parsePrivMsg(const string &line, vector<string> &targets,
 	targets = split(rawTargets, ',');
 	if (targets.size() > 4)
 		throw std::invalid_argument(ERR_TOOMANYTARGETS(rawTargets));
-	msg = line.substr(ss.tellg());
-	if (!msg.empty() && msg[0] == ' ')
-		msg.erase(0, 1);
+	std::getline(ss >> std::ws, msg);
 	if (!msg.empty() && msg[0] == ':')
 		msg.erase(0, 1);
 	if (msg.empty())
