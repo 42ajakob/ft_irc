@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   numericReplies.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/11 22:41:48 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:13:35 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define RPL_WELCOME(client, nick, user, host) (":FT_IRC 001 " + client + " :Welcome to the Internet Relay Network "  + nick + "!" + user + "@" + host + "\r\n")
 #define RPL_YOURHOST(client) (":FT_IRC 002 " + client + " :Your host is ft_irc, running version 0.0.1\r\n")
 #define RPL_CREATED(client, date) (":FT_IRC 003 " + client + " :This server was created " + date + "\r\n")
-#define RPL_MYINFO(client, avail_user_modes, avail_channel_modes) (":FT_IRC 004 " + client + " ft_irc 0.0.1 " + avail_user_modes + " " + avail_channel_modes + "\r\n")
+#define RPL_MYINFO(client, user_modes, channel_modes) (":FT_IRC 004 " + client + " ft_irc 0.0.1 " + user_modes + " " + channel_modes + "\r\n")
 
 #define RPL_UMODEIS(user_mode) (":FT_IRC 221 " + user_mode + "\r\n")
 
+#define RPL_CHANNELMODEIS(nick, channel, mode, mode_params) (":FT_IRC 324 " + nick + " " + channel + " " + mode + "\r\n")
 #define RPL_UNIQOPIS(channel, nick) (":FT_IRC 325 " + channel + " " + nick + "\r\n")
 
 #define RPL_NOTOPIC(client, channel) (":FT_IRC 331 " + client + " " + channel + " :No topic is set\r\n")
@@ -31,6 +32,7 @@
 
 #define RPL_NAMREPLY(client, channel, member_list) (":FT_IRC 353 " + client + " = " + channel + " :" + member_list + "\r\n")
 #define RPL_ENDOFNAMES(client, channel) (":FT_IRC 366 " + client + " " + channel + " :End of /NAMES list\r\n")
+#define RPL_ENDOFBANLIST(channel) (":FT_IRC 368 " + channel + " :End of channel ban list\r\n")	
 
 #define RPL_YOUREOPER(client) (":FT_IRC 381 " + client + " :You are now an IRC operator\r\n")
 
