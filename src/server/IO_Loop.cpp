@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:24:18 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:08:15 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void Server::_acceptClient()
 	int			clientFd;
 	sockaddr_in	clientAddr;
 	socklen_t	clientAddrLen = sizeof(clientAddr);
-	const auto	clientPollFD = std::find_if(_pollFDs.begin(), _pollFDs.end(), [](const pollfd &pollFD) { return pollFD.fd == -1; });
+	const auto	clientPollFD =
+		std::find_if(_pollFDs.begin(), _pollFDs.end(),
+			[](const pollfd &pollFD) { return pollFD.fd == -1; });
 
 	clientFd = accept(_socketFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
 	if (clientFd == -1 && errno != EINTR)
@@ -99,7 +101,7 @@ void Server::_startMainLoop()
 			if (clientPollFD.revents & POLLHUP || clientPollFD.revents & POLLERR)
 				_disconnectClient(clientPollFD);
 			if (clientPollFD.revents & POLLOUT)
-				_sendMessage(clientPollFD.fd);
+				_sendClientBuffer(clientPollFD.fd);
 			clientPollFD.revents = 0;
 			_checkConnectionTimeout(clientPollFD);
 		}

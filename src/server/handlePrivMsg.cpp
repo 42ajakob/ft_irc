@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 20:46:32 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:14:41 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 static void	parsePrivMsg(const string &line, vector<string> &targets,
 	string &msg)
 {
-	std::stringstream	ss(line);
-	string				rawTargets;
+	stringstream	ss(line);
+	string			rawTargets;
 
 	ss.ignore(MAX_STREAM_SIZE, ' ');
 	ss >> rawTargets;

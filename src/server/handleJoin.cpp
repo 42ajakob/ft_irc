@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   joinChannel.cpp                                    :+:      :+:    :+:   */
+/*   handleJoin.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 18:42:42 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:15:47 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	splitPasswordsAndChannels(const string &line,
 	vector<string> &channelNames, vector<string> &passwords,
 	const string &clientNickname)
 {
-	std::stringstream	ss(line);
-	size_t	pos = findNextParameter(line);
-	string	rawChannelNames;
-	string	rawPasswords;
+	stringstream	ss(line);
+	size_t			pos = findNextParameter(line);
+	string			rawChannelNames;
+	string			rawPasswords;
 
 	if (pos == string::npos)
 		throw std::invalid_argument(ERR_NEEDMOREPARAMS(clientNickname, std::string("JOIN")));

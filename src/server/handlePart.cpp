@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 21:52:40 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 22:23:36 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:20:52 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 
 void	Server::_handlePart(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				rawChannelNames;
-	string				reason;
-	string				command;
+	stringstream	ss(line);
+	string			rawChannelNames;
+	string			reason;
+	string			command;
 
 	ss >> command >> rawChannelNames;
 	if (rawChannelNames.empty())

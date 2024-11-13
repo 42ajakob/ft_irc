@@ -6,7 +6,7 @@
 #    By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/12 17:19:16 by apeposhi          #+#    #+#              #
-#    Updated: 2024/11/11 23:08:23 by JFikents         ###   ########.fr        #
+#    Updated: 2024/11/13 15:03:18 by JFikents         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,11 @@ _CLIENT_SRC		=	Client.cpp\
 CLIENT_SRC		=	$(addprefix client/, $(_CLIENT_SRC))
 
 _SERVER_SRC		=	Server.cpp\
-					Invite.cpp\
-					joinChannel.cpp\
+					handleInvite.cpp\
+					handleJoin.cpp\
+					handlePart.cpp\
+					handleTopic.cpp\
+					handleWho.cpp\
 					mainLoop.cpp\
 					Oper.cpp\
 					parsing.cpp\
@@ -45,11 +48,8 @@ _SERVER_SRC		=	Server.cpp\
 					sendMessage.cpp\
 					serverStaticMethods.cpp\
 					timeouts.cpp\
-					Topic.cpp\
 					utils.cpp\
-					registrationMethods.cpp\
-					handlePart.cpp\
-					handleWho.cpp
+					registrationMethods.cpp
 SERVER_SRC		=	$(addprefix server/, $(_SERVER_SRC))
 
 _SRC			=	main.cpp $(CLIENT_SRC) $(SERVER_SRC) $(CHANNEL_SRC)

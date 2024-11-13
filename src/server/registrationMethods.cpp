@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:59:59 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 19:40:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:15:27 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 void	Server::_handleUser(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				command;
-	string				username;
+	stringstream	ss(line);
+	string			command;
+	string			username;
 
 	ss >> command >> username;
 	try {
@@ -32,9 +32,9 @@ void	Server::_handleUser(Client &client, const string &line)
 
 void	Server::_handleNick(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				command;
-	string				nickname;
+	stringstream	ss(line);
+	string			command;
+	string			nickname;
 
 	ss >> command >> nickname;
 	try {

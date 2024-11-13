@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Invite.cpp                                         :+:      :+:    :+:   */
+/*   handleInvite.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:38:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 18:43:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:15:52 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 void Server::_handleInvite(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				nickname;
-	string				channelName;
+	stringstream	ss(line);
+	string			nickname;
+	string			channelName;
 
 	ss >> nickname;
 	ss >> nickname;

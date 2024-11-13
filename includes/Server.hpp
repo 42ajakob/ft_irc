@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/12 00:00:42 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:08:15 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Server
 		void	_acceptClient();
 		void	_receiveMessage(pollfd &pollFD);
 		void	_disconnectClient(pollfd &pollFD);
-		void	_sendMessage(const int &fd);
+		void	_sendClientBuffer(const int &fd);
 		void	_parseMessage(const int &fd);
 		void	_executeCommand(const eCommand &command, string &line,
 					const int &fd);

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:08:50 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 18:42:23 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:14:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	Server::_Oper(Client &client, const string &line)
 
 void	Server::_addOper(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				command;
-	string				username;
-	string				password;
+	stringstream	ss(line);
+	string			command;
+	string			username;
+	string			password;
 
 	ss >> command >> username >> password;
 	if (username.empty() || password.empty())
@@ -44,9 +44,9 @@ void	Server::_addOper(Client &client, const string &line)
 
 void	Server::_rmOper(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				command;
-	string				username;
+	stringstream	ss(line);
+	string			command;
+	string			username;
 
 	ss >> command >> username;
 	std::cout << "Removing operator " << username << std::endl;

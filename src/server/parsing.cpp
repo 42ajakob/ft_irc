@@ -15,10 +15,10 @@
 
 void	Server::_handleKick(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				channelName;
-	string				nick;
-	string				reason;
+	stringstream	ss(line);
+	string			channelName;
+	string			nickname;
+	string			reason;
 
 	ss >> channelName >> channelName >> nick >> reason;
 
@@ -38,7 +38,7 @@ void	Server::_handleKick(Client &client, const string &line)
 
 void	Server::_handleMode(Client &client, string const &line)
 {
-	std::stringstream	ss(line);
+	stringstream	ss(line);
 	string			command;
 	string			channelName;
 	string			mode;
@@ -46,15 +46,19 @@ void	Server::_handleMode(Client &client, string const &line)
 
 	ss >> command >> channelName >> mode >> nick;
 
-	if ((mode == "+o" || mode == "-o") && nick.empty())
-		return client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
-
+	if (channelName.empty()
+		|| (nick.empty() && (mode == "+o" || mode == "-o")))
+	{
+		client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), command));
+		return ;
+	}
 	try {
+		Client	&target = this->getClientByNickname(nick);
+		Channel	&channel = Channel::getChannel(channelName);
 		if (!nick.empty())
-			Channel::getChannel(channelName).mode(mode, client, nick);
+			channel.mode(mode, client, target);
 		else
-			Channel::getChannel(channelName).mode(mode, client);
-
+			channel.mode(mode, client);
 		client.addToSendBuffer(":FT_IRC MODE " + channelName + " " + mode + "\r\n");
 	}
 	catch (const std::invalid_argument &e) {

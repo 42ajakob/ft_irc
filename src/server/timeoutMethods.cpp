@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 17:53:27 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:15:38 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	Server::_checkConnectionTimeout(pollfd &pollFD)
 
 void	Server::_handlePong(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				command;
-	string				response;
+	stringstream	ss(line);
+	string			command;
+	string			response;
 
 	ss >> command >> response;
 	if (response[0] == ':')

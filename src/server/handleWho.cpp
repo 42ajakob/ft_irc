@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 22:33:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 23:10:39 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:20:45 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ inline void	_channelWhoReply(Client &client, string &mask)
 
 void	Server::_handleWho(Client &client, const string &line)
 {
-	std::stringstream	ss(line);
-	string				mask;
-	string				command;
-	string				flags = "H";
+	stringstream	ss(line);
+	string			mask;
+	string			command;
+	string			flags = "H";
 
 	ss >> command >> mask;
 	if (mask.empty())

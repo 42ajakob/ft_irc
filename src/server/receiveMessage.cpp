@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/12 00:01:40 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:19:51 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,10 @@ void	Server::_executeCommand(const eCommand &command, string &line,
 
 void	Server::_parseMessage(const int &fd)
 {
-	eCommand			command;
-	std::stringstream	ss;
-	string				line;
+	stringstream	ss(_clients[fd].getRecvBuffer());
+	eCommand		command;
+	string			line;
 
-	ss << _clients[fd].getRecvBuffer();
 	_clients[fd].clearRecvBuffer();
 	std::getline(ss, line, '\n');
 	while (line.empty() == false)

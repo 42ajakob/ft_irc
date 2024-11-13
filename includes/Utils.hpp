@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:10 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/11 22:31:38 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:12:35 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 using std::string;
 using std::vector;
+using std::stringstream;
 
 typedef std::chrono::time_point<std::chrono::system_clock> t_TimeStamp;
 typedef std::unordered_set<string>	t_StringSet;
