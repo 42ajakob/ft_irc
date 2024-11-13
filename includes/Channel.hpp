@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 19:14:10 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:36:11 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ class	Channel
 
 		void	_sendChannelInfo(Client &client);
 		string	_getMembersList() const noexcept;
-		void	_broadcastMsg(const string &msg, Client *client) const noexcept;
+		void	_relayMsg(const string &msg, const Client *client) const noexcept;
 		void	_promoteClientToOperator(const string &origin, Client &client);
 		void	_demoteClientFromOperator(const string &origin, Client &client);
 
@@ -77,7 +77,7 @@ class	Channel
 		void			kick(const string &nickname, Client &client);
 		void			invite(const string &nickname, Client &client);
 		void			topic(string &topic, Client &client);
-		void			broadcastPrivMsg(const string &msg, const string &origin) const noexcept;
+		void			PrivMsg(const string &msg, const Client &origin) const noexcept;
 		void			part(Client &client, const string &reason);
 		void			whoReply(Client &client) const;
 		void			mode(const string &mode, Client &client, const string &mode_param);

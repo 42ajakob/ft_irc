@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:06:59 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 18:08:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:28:45 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	Channel::part(Client &client, const string &reason)
 		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
 	if (!reason.empty())
 		replyMsg +=" :" + reason;
-	_broadcastMsg(replyMsg + "\r\n", nullptr);
+	_relayMsg(replyMsg + "\r\n", nullptr);
 	_members.erase(&client);
 	_operators.erase(&client);
 	_invited.erase(&client);

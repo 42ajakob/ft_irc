@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:03:30 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 18:57:54 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:28:45 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	Channel::kick(const string &nickname, Client &client)
 	if (itOperator != _operators.end())
 		_demoteClientFromOperator(client.getNickname(), target);
 	// The reason is missing in the message
-	_broadcastMsg(":" + client.getNickname() + " KICK " + _name + " " + nickname + "\r\n", nullptr);
+	_relayMsg(":" + client.getNickname() + " KICK " + _name + " " + nickname + "\r\n", nullptr);
 	_members.erase(itMember);
 	if (itInvited != _invited.end())
 		_invited.erase(itInvited);

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:04:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 18:06:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:28:45 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	Channel::_sendChannelInfo(Client &client)
 		client.addToSendBuffer(RPL_TOPIC(client.getNickname(), _name, _topic));
 	client.addToSendBuffer(RPL_NAMREPLY(client.getNickname(), _name, _getMembersList()));
 	client.addToSendBuffer(RPL_ENDOFNAMES(client.getNickname(), _name));
-	_broadcastMsg(":" + client.getNickname() + " JOIN " + _name + "\r\n", nullptr);
+	_relayMsg(":" + client.getNickname() + " JOIN " + _name + "\r\n", nullptr);
 }
 
 void	Channel::join(Client &client, const string &password)

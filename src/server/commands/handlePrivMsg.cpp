@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 17:40:41 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:37:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ static void	parsePrivMsg(const string &line, vector<string> &targets,
 {
 	stringstream	ss(line);
 	string			rawTargets;
+	string			command;
 
-	ss.ignore(MAX_STREAM_SIZE, ' ');
-	ss >> rawTargets;
+	ss >> command >> rawTargets;
 	if (rawTargets.empty() || rawTargets[0] == ':')
-		throw std::invalid_argument(ERR_NORECIPIENT(string("PRIVMSG")));
+		throw std::invalid_argument(ERR_NORECIPIENT(command));
 	targets = split(rawTargets, ',');
 	if (targets.size() > 4)
 		throw std::invalid_argument(ERR_TOOMANYTARGETS(rawTargets));
@@ -39,24 +39,23 @@ static void	parsePrivMsg(const string &line, vector<string> &targets,
 		throw std::invalid_argument(ERR_NOTEXTTOSEND());
 }
 
-static	void	sendMsgToTarget(const string &origin, const string &msg,
+static	void	sendMsgToTarget(const Client &origin, const string &msg,
 	string &target)
 {
 	if (target[0] == '#')
 	{
 		Channel &channel = Channel::getChannel(target);
-		channel.broadcastPrivMsg(msg, origin);
+		channel.PrivMsg(msg, origin);
 		return ;
 	}
 	Client &receiver = Server::getInstance().getClientByNickname(target);
-	receiver.sendPrivMsg(msg, origin);
+	receiver.sendPrivMsg(msg, origin.getNickname());
 }
 
 void	Server::_handlePrivMsg(Client &client, const string &line) noexcept
 {
 	vector<string>		targets;
 	string				msg;
-	string				origin = client.getNickname();
 
 	try {
 		parsePrivMsg(line, targets, msg);
@@ -68,7 +67,7 @@ void	Server::_handlePrivMsg(Client &client, const string &line) noexcept
 	for (string &target : targets)
 	{
 		try {
-			sendMsgToTarget(origin, msg, target);
+			sendMsgToTarget(client, msg, target);
 		}
 		catch (const std::invalid_argument &e) {
 			_logError(client, e.what());
