@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:46:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 19:37:56 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 20:39:36 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ static	void	sendMsgToTarget(const Client &origin, const string &msg,
 		return ;
 	}
 	Client &receiver = Server::getInstance().getClientByNickname(target);
-	receiver.sendPrivMsg(msg, origin.getNickname());
+	string	originStr = origin.getNickname() + "!" + origin.getUsername()
+		+ "@" + origin.getHostname();
+	receiver.sendPrivMsg(msg, originStr);
 }
 
 void	Server::_handlePrivMsg(Client &client, const string &line) noexcept

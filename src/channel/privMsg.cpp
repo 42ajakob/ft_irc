@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:21:54 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 19:37:31 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 20:19:53 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	Channel::PrivMsg(const string &msg, const Client &origin) const noexcept
 {
-	string	PrivMsg;
+	string			PrivMsg;
+	const string	originStr
+		= origin.getNickname() + "!" + origin.getUsername() + "@"
+			+ origin.getHostname();
 
-	PrivMsg = ":" + origin.getNickname() + " PRIVMSG " + _name + " :" + msg + "\r\n";
+	PrivMsg = ":" + originStr + " PRIVMSG " + _name + " :" + msg + "\r\n";
 	_relayMsg(PrivMsg, &origin);
 }
 
