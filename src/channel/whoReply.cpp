@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 23:05:35 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 23:06:56 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 20:11:58 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	Channel::whoReply(Client &client) const
 			flags += "*";
 		if (_operators.find(member) != _operators.end())
 			flags += "@";
-		client.addToSendBuffer(RPL_WHOREPLY(member->getNickname(), "",
-			member->getUsername(), member->getHostname(), flags));
+		client.addToSendBuffer(RPL_WHOREPLY(client.getNickname(), _name,
+			member->getUsername(), member->getHostname(),
+			member->getNickname(), flags));
 		flags = "H";
 	}
 }

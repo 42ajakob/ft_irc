@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   numericReplies.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:16:12 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/13 15:13:35 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/13 20:11:01 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #define RPL_INVITELIST(channel, invite_mask) (":FT_IRC 346 " + channel + " " + invite_mask + "\r\n")
 #define RPL_ENDOFINVITELIST(channel) (":FT_IRC 347 " + channel + " :End of channel invite list\r\n")
 
-#define RPL_WHOREPLY(nick, channel, user, host, status) (":FT_IRC 352 " + nick + " " + channel + " " + user + " " + host + " ft_irc " + nick + " " + status + ":0 " + user + "\r\n")
+#define RPL_WHOREPLY(client, channel, target_user, target_host, target_nick, flags) (":FT_IRC 352 " + client + " " + channel + " " + target_user + " " + target_host + " ft_irc " + target_nick + " " + flags + ":0 " + target_user + "\r\n")
 #define RPL_ENDOFWHO(client, mask) (":FT_IRC 315 " + client + " " + mask + " :End of /WHO list\r\n")
 
 #define RPL_NAMREPLY(client, channel, member_list) (":FT_IRC 353 " + client + " = " + channel + " :" + member_list + "\r\n")

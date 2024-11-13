@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 22:33:13 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 14:20:45 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 20:13:56 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ inline void	_clientWhoReply(Client &client, const string &mask, t_ClientMap &cli
 		{
 			if (target.isOperator())
 				flags += "*";
-			client.addToSendBuffer(RPL_WHOREPLY(target.getNickname(), "",
-				target.getUsername(), target.getHostname(), flags));
+			client.addToSendBuffer(RPL_WHOREPLY(client.getNickname(), "*",
+				target.getUsername(), target.getHostname(),
+				target.getNickname(), flags));
 		}
 		flags = "H";
 	}
