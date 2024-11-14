@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:34:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 16:19:10 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/14 17:16:24 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,6 @@ void Server::_handleKick(Client &client, const string &line)
 			try
 			{
 				Channel::getChannel(channels[i]).kick(nicks[j], client, reason);
-				/*
-				It should be sent to the channel, not the client, and the origin should
-					be the client, not the server. I added a "fix" in the Channel::kick()
-					method, but it is missing the reason.
-
-				The reason is optional, so it should be checked if it is empty before
-					sending it.
-				See Channel::part() for an example.
-				*/
 			}
 			catch (const std::invalid_argument &e)
 			{
