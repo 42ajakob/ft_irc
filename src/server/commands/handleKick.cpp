@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleKick.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:34:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 17:16:24 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/14 18:12:29 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,47 @@
 #include "numericReplies.hpp"
 #include <sstream>
 
+static void	parseLine(const string &line, vector<string> &channels,
+	vector<string> &nicks, string &reason, const Client &client)
+{
+	stringstream	ss(line);
+	string			rawChannels;
+	string			rawNicks;
+	string			command;
+
+	ss >> command >> rawChannels >> rawNicks;
+	std::getline(ss >> std::ws, reason);
+	if (reason[0] == ':')
+		reason = reason.substr(1);
+	if (rawChannels.empty() || rawNicks.empty())
+		throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), command));
+	channels = split(rawChannels, ',');
+	nicks = split(rawNicks, ',');
+}
+
 void Server::_handleKick(Client &client, const string &line)
 {
-	stringstream ss(line);
-	string channel;
-	string command;
-	string nick;
-	string reason;
-	int i;
-	int j;
+	string			reason;
+	vector<string>	channels;
+	vector<string>	nicks;
 
-	ss >> command >> channel >> nick >> reason;
-	vector<string> channels = split(channel, ',');
-	vector<string> nicks = split(nick, ',');
-	i = 0;
-
-	while (i < channels.size())
+	try {
+		parseLine(line, channels, nicks, reason, client);
+	}
+	catch (const std::invalid_argument &e) {
+		_logError(client, e.what());
+		return ;
+	}
+	for (string &channel : channels)
 	{
-		j = 0;
-		while (j < nicks.size())
+		for (const string &nick : nicks)
 		{
-			if (channels.empty() || nicks.empty())
-			{
-				client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), command));
-				return ;
+			try {
+				Channel::getChannel(channel).kick(nick, client, reason);
 			}
-			try
-			{
-				Channel::getChannel(channels[i]).kick(nicks[j], client, reason);
-			}
-			catch (const std::invalid_argument &e)
-			{
+			catch (const std::invalid_argument &e) {
 				_logError(client, e.what());
 			}
-			j++;
 		}
-		i++;
 	}
 }
