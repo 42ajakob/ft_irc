@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:44:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/11 18:31:38 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:48:16 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,16 @@ void	Operator::addOperator(const string &username, const string &password)
 
 void	Operator::removeOperator(const string &username)
 {
+	if (_credentials.find(username) == _credentials.end())
+		throw std::runtime_error("Operator not found");
+	_credentials.erase(_credentials.find(username));
+
 	std::ofstream	file(CREDENTIALS_FILE);
-	auto			it = _credentials.find(username);
 
 	if (!file.is_open())
 		throw std::runtime_error("Error opening the operator credentials file");
-	if (it == _credentials.end())
-		throw std::runtime_error("Operator not found");
-	_credentials.erase(it);
-	for (it = _credentials.begin(); it != _credentials.end(); ++it)
-		file << it->first << ' ' << it->second << std::endl;
+	for (auto login : _credentials)
+		file << login.first << ' ' << login.second << std::endl;
 	file.close();
 }
 
