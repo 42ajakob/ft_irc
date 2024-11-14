@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:04:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 19:28:45 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:08:17 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	Channel::_sendChannelInfo(Client &client)
 	client.addToSendBuffer(RPL_NAMREPLY(client.getNickname(), _name, _getMembersList()));
 	client.addToSendBuffer(RPL_ENDOFNAMES(client.getNickname(), _name));
 	_relayMsg(":" + client.getNickname() + " JOIN " + _name + "\r\n", nullptr);
+	if (_members.size() == 1)
+		_promoteClientToOperator("FT_IRC", client);
 }
 
 void	Channel::join(Client &client, const string &password)

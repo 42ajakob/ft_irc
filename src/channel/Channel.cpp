@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 19:16:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:06:54 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ Channel::Channel(const string &name, Client &creator)
 	if (name.empty())
 		throw std::invalid_argument(ERR_NOSUCHCHANNEL(name));
 	_members.insert(&creator);
-	_promoteClientToOperator("FT_IRC", creator);
 }
 
 Channel::~Channel()
