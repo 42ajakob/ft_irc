@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/14 15:06:54 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:38:03 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	Channel::clientDisconnected(Client &client)
 
 	while (it != _channels.end())
 	{
+	try {
 		Channel &channel = it->second;
 
 		channel.part(client, "Client disconnected");
@@ -63,6 +64,10 @@ void	Channel::clientDisconnected(Client &client)
 		}
 		if (channel._operators.empty())
 			channel._promoteClientToOperator("FT_IRC", **channel._members.begin());
+	}
+	catch (const std::invalid_argument &e) {
+		(void)e;
+	}
 		++it;
 	}
 }
