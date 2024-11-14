@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 16:19:23 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:01:59 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <string>
 #include <algorithm>
 #include <stdexcept>
+#include <chrono>
 
 Client &Server::getClientByNickname(const string &nickname)
 {
@@ -76,8 +77,9 @@ void	Server::setTimestamp()
 	std::ostringstream oss;
 	oss << std::put_time(&tm, "on %d.%m.%Y at %H:%M:%S");
 
-	_timestamp = t;
+	_timestamp = oss.str();
 }
+
 
 string Server::getTimestamp()
 {
