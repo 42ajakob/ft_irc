@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:44:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 19:48:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:56:16 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ Operator::Operator(string &&username, const string &password):
 	if (_credentials.empty())
 		loadCredentials();
 	if (_credentials.empty())
-		throw std::runtime_error("No operator credentials found");
+		throw std::runtime_error(ERR_NOOPERHOST());
 	if (_loggedOperators.find(_username) != _loggedOperators.end())
-		throw std::runtime_error("Operator already logged in");
+		throw std::runtime_error(ERR_ALREADYREGISTRED(_username));
 	if (_credentials.find(_username) == _credentials.end())
-		throw std::runtime_error("Wrong operator credentials");
+		throw std::runtime_error(ERR_PASSWDMISMATCH(_username));
 	if (_credentials[_username] != password)
-		throw std::runtime_error("Wrong operator credentials");
+		throw std::runtime_error(ERR_PASSWDMISMATCH(_username));
 	_loggedOperators.insert(_username);
 	std::cout << "Operator " << _username << " logged in" << std::endl;
 }
