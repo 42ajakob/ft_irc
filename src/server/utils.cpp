@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:27:36 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 15:01:59 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:22:45 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,5 @@ vector<string>	split(const string &line, const char &delimiter)
 void	Server::_logError(Client &client, const string &error) const
 {
 	client.addToSendBuffer(error);
-	std::cerr << error << std::endl;
+	std::cerr << client.getNickname() << " generated error: " << error << std::flush;
 }
