@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 19:36:11 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:22:31 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ class	Channel
 		std::ostream	&insertInfoToOutstream(std::ostream &os) const;
 
 		void			join(Client &client, const string &password);
-		void			kick(const string &nickname, Client &client);
+		void			kick(const string &nick, Client &client, const string& reason);
 		void			invite(const string &nickname, Client &client);
 		void			topic(string &topic, Client &client);
 		void			PrivMsg(const string &msg, const Client &origin) const noexcept;

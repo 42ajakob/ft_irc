@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:04:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 15:08:17 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:06:27 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	Channel::_sendChannelInfo(Client &client)
 		client.addToSendBuffer(RPL_TOPIC(client.getNickname(), _name, _topic));
 	client.addToSendBuffer(RPL_NAMREPLY(client.getNickname(), _name, _getMembersList()));
 	client.addToSendBuffer(RPL_ENDOFNAMES(client.getNickname(), _name));
-	_relayMsg(":" + client.getNickname() + " JOIN " + _name + "\r\n", nullptr);
+	_relayMsg(":" + client.getFullname() + " JOIN :" + _name + "\r\n", nullptr); // Same applies here
 	if (_members.size() == 1)
 		_promoteClientToOperator("FT_IRC", client);
 }

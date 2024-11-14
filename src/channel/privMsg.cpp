@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:21:54 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 20:19:53 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:29:11 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,8 @@
 void	Channel::PrivMsg(const string &msg, const Client &origin) const noexcept
 {
 	string			PrivMsg;
-	const string	originStr
-		= origin.getNickname() + "!" + origin.getUsername() + "@"
-			+ origin.getHostname();
 
-	PrivMsg = ":" + originStr + " PRIVMSG " + _name + " :" + msg + "\r\n";
+	PrivMsg = ":" + origin.getFullname() + " PRIVMSG " + _name + " :" + msg + "\r\n";
 	_relayMsg(PrivMsg, &origin);
 }
 

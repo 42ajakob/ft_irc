@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleKick.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:34:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 18:57:08 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:19:10 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,50 @@
 #include "numericReplies.hpp"
 #include <sstream>
 
-
-void	Server::_handleKick(Client &client, const string &line)
+void Server::_handleKick(Client &client, const string &line)
 {
-	stringstream	ss(line);
-	string			channelName;
-	string			command;
-	string			nickname;
-	string			reason;
+	stringstream ss(line);
+	string channel;
+	string command;
+	string nick;
+	string reason;
+	int i;
+	int j;
 
-	/*
-	The reason is not properly extracted from the stringstream, for now it is
-		just a word, but it should be the rest of the line.
-	There is an example of how to extract the rest of the line in
-		_handlePart() or _handlePrivMsg().
-	The nickname can be multiple clients separated by commas.
-		See Server::_handleJoin() for an example on how to split a string.
-	*/
-	ss >> command >> channelName >> nickname >> reason;
+	ss >> command >> channel >> nick >> reason;
+	vector<string> channels = split(channel, ',');
+	vector<string> nicks = split(nick, ',');
+	i = 0;
 
-	toLower(nickname);
-
-	if (channelName.empty() || nickname.empty())
+	while (i < channels.size())
 	{
-		client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), command));
-		return ;
-	}
-	try {
-		Channel::getChannel(channelName).kick(nickname, client);
-		/*
-		It should be sent to the channel, not the client, and the origin should
-			be the client, not the server. I added a "fix" in the Channel::kick()
-			method, but it is missing the reason.
+		j = 0;
+		while (j < nicks.size())
+		{
+			if (channels.empty() || nicks.empty())
+			{
+				client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), command));
+				return ;
+			}
+			try
+			{
+				Channel::getChannel(channels[i]).kick(nicks[j], client, reason);
+				/*
+				It should be sent to the channel, not the client, and the origin should
+					be the client, not the server. I added a "fix" in the Channel::kick()
+					method, but it is missing the reason.
 
-		The reason is optional, so it should be checked if it is empty before
-			sending it.
-		See Channel::part() for an example.
-		*/
-		client.addToSendBuffer(":FT_IRC KICK " + channelName + " " + nickname + " :" + reason + "\r\n");
-	}
-	catch (const std::invalid_argument &e) {
-		_logError(client, e.what());
+				The reason is optional, so it should be checked if it is empty before
+					sending it.
+				See Channel::part() for an example.
+				*/
+			}
+			catch (const std::invalid_argument &e)
+			{
+				_logError(client, e.what());
+			}
+			j++;
+		}
+		i++;
 	}
 }
