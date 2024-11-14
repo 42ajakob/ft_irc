@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/14 16:27:58 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/14 17:39:13 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ const string	&Client::getHostname() const
 	return (_Hostname);
 }
 
-const string	&Client::getFullname() const
+const string	Client::getFullname() const
 {
 	return (_Nickname + "!" + _Username + "@" + _Hostname);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:03:30 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 16:30:57 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/14 17:42:55 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "numericReplies.hpp"
 #include <stdexcept>
 
-void	Channel::kick(const string &nick, Client &client, const string& reason)
+void	Channel::kick(const string &nick, Client &client, string& reason)
 {
 	Client		&target = Server::getInstance().getClientByNickname(nick);
 	const auto	itMember = _members.find(&target);
