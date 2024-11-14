@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 16:35:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:27:58 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ const string	&Client::getUsername() const
 const string	&Client::getHostname() const
 {
 	return (_Hostname);
+}
+
+const string	&Client::getFullname() const
+{
+	return (_Nickname + "!" + _Username + "@" + _Hostname);
 }
 
 bool	Client::operator==(const Client &other) const

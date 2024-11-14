@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/10 19:24:44 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:27:37 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class Client
 		const string		&getNickname() const;
 		const string		&getUsername() const;
 		const string		&getHostname() const;
+		const string		&getFullname() const;
 
 		bool				operator==(const Client &other) const;
 		bool				operator==(const string &nickname) const;
