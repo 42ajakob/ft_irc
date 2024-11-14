@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 17:45:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:42:53 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ class Server
 		void	_handlePrivMsg	(Client &client, const string &line) noexcept;
 		void	_handlePart		(Client &client, const string &line);
 		void	_handleWho		(Client &client, const string &line);
+		void	_modeLoop		(Client &client, Channel &channel, const string &mode, string &mode_params);
 		void	_handleMode		(Client &client, string const &line);
 
 	// *** Debug and error methods ***

@@ -99,8 +99,7 @@ void Channel::mode(const string &mode, Client &client)
 		for (size_t i = 0; i < ModeCount; i++)
 			if (_mode.test(i))
 				modes += "itkol"[i];
-		// Do you need to throw an exception here? or just add to client's send buffer?
-		throw std::invalid_argument(RPL_CHANNELMODEIS(client.getNickname(), _name, modes, mode_params));
+		client.addToSendBuffer(RPL_CHANNELMODEIS(client.getNickname(), _name, modes, mode_params));
 	}
 	else if (mode == "+i" && _mode.test(InviteOnly))
 		throw std::invalid_argument(ERR_KEYSET(_name));

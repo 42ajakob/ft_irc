@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleInvite.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:38:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/13 14:15:52 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:47:40 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
