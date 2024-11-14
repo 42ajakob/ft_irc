@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/14 17:43:16 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:37:43 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ class	Channel
 		void			whoReply(Client &client) const;
 		void			mode(const string &mode, Client &client, const string &mode_param);
 		void			mode(const string &mode, Client &client);
+		void			sendModes(Client &client) const;
 
 		bool			operator==(const Channel &other) const;
 		bool			operator==(const string &name) const;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleMode.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/14 19:06:16 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/14 20:56:04 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,29 @@
 #include <sstream>
 
 bool isCharInSet(char c) {
-    return string("okl").find(c) != string::npos;
+	return (string("okl").find(c) != string::npos);
 }
 
 
-void	Server::_modeLoop(Client &client, Channel &channel, const string &mode, string &mode_params)
+void	Server::_modeLoop(Client &client, Channel &channel, const string &modes, string &mode_params)
 {
-	string	plus_minus;
-	string	mode_parameter;
-	size_t	i;
+	const string		plus_minus(modes.substr(0, 1));
+	string				mode_parameter;
+	size_t				i;
 	std::stringstream	ss(mode_params);
 
-	plus_minus = mode.substr(0, 1);
 	i = 1;
 
-	while (i < mode.size())
+	while (i < modes.size())
 	{
 		try {
-			if (isCharInSet(mode[i]))
+			if (isCharInSet(modes[i]))
 			{
-				ss >> mode_parameter;	
-				channel.mode(plus_minus + mode[i], client, mode_parameter);
+				ss >> mode_parameter;
+				channel.mode(plus_minus + modes[i], client, mode_parameter);
 			}
 			else
-				channel.mode(plus_minus + mode[i], client);
+				channel.mode(plus_minus + modes[i], client);
 		}
 		catch (const std::invalid_argument &e) {
 			_logError(client, e.what());
@@ -49,47 +48,56 @@ void	Server::_modeLoop(Client &client, Channel &channel, const string &mode, str
 	std::getline(ss >> std::ws, mode_params);
 }
 
-void	Server::_handleMode(Client &client, string const &line)
+static void	parseLine(const string &line, Channel **channel, string &modes,
+	string &mode_params, Client &client)
 {
 	stringstream	ss(line);
-	Channel			*channel;
 	string			command;
 	string			channelName;
-	string			mode;
-	string			mode_params;
-	string			setMode;
-	string			unsetMode;
 
-	ss >> command >> channelName >> mode;
+	ss >> command >> channelName >> modes;
 	std::getline(ss >> std::ws, mode_params);
-
 	if (channelName.empty())
-	{
-		client.addToSendBuffer(ERR_NEEDMOREPARAMS(client.getNickname(), command));
-		return ;
-	}
-	try {
-		channel = &Channel::getChannel(channelName);
+		throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), command));
+	*channel = &Channel::getChannel(channelName);
+	if (modes == "b")
+		client.addToSendBuffer(RPL_ENDOFBANLIST(channelName));
+}
 
-		if (mode.empty())
-		{
-			channel->mode(mode, client);
-		}
+void	Server::_handleMode(Client &client, string const &line)
+{
+	Channel	*channel;
+	string	modes;
+	string	mode_params;
+	string	setMode;
+	string	unsetMode;
+
+	try {
+		parseLine(line, &channel, modes, mode_params, client);
 	}
 	catch (const std::invalid_argument &e) {
 		_logError(client, e.what());
 		return ;
 	}
-
-	if (mode[0] == '+')
+	if (modes.empty())
+		channel->sendModes(client);
+	if (modes == "b" || modes.empty())
+		return ;
+	if (modes[0] == '+')
 	{
-		setMode = mode.substr(0, mode.find('-'));
-		unsetMode = mode.substr(mode.find('-'));
+		setMode = modes.substr(0, modes.find('-'));
+		if (modes.find('-') != string::npos)
+			unsetMode = modes.substr(modes.find('-'));
 	}
-	else if (mode[0] == '-')
+	else if (modes[0] == '-')
 	{
-		setMode = mode.substr(mode.find('+'));
-		unsetMode = mode.substr(0, mode.find('+'));
+		if (modes.find('+') != string::npos)
+		{
+			setMode = modes.substr(modes.find('+'));
+			unsetMode = modes.substr(0, modes.find('+'));
+		}
+		else
+			unsetMode = modes;
 	}
 	_modeLoop(client, *channel, setMode, mode_params);
 	_modeLoop(client, *channel, unsetMode, mode_params);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Mode.cpp                                           :+:      :+:    :+:   */
+/*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:00:07 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 18:44:06 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 20:31:44 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,26 @@ void Channel::mode(const string &mode, Client &client, const string &mode_param)
 		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
 
-static inline void	sendBanList(Client &client, string &channelName)
+void	Channel::sendModes(Client &client) const
 {
-	client.addToSendBuffer(RPL_ENDOFBANLIST(channelName));
+	string modes = "+";
+	string mode_params = _password + " "; 
+
+	if (_mode.test(UserLimit))
+		mode_params += std::to_string(_userLimit) + " ";
+	for (size_t i = 0; i < ModeCount; i++)
+		if (_mode.test(i))
+			modes += "itkol"[i];
+	client.addToSendBuffer(RPL_CHANNELMODEIS(client.getNickname(), _name, modes, mode_params));
 }
 
 void Channel::mode(const string &mode, Client &client)
 {
 	if (_members.find(&client) == _members.end())
 		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
-	if (mode == "b")
-		return (sendBanList(client, _name));
 	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 
-	if (mode.empty()) {
-		string modes = "+";
-		string mode_params = _password + " "; 
-
-		if (_mode.test(UserLimit))
-			mode_params += std::to_string(_userLimit) + " ";
-		for (size_t i = 0; i < ModeCount; i++)
-			if (_mode.test(i))
-				modes += "itkol"[i];
-		client.addToSendBuffer(RPL_CHANNELMODEIS(client.getNickname(), _name, modes, mode_params));
-	}
 	else if (mode == "+i" && _mode.test(InviteOnly))
 		throw std::invalid_argument(ERR_KEYSET(_name));
 	else if (mode == "+i")
