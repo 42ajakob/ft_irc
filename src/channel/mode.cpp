@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:00:07 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/15 14:27:01 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:12:38 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ void Channel::mode(const string &mode, Client &client, const string &mode_param)
 			else if (_members.find(&target) == _members.end())
 		throw std::invalid_argument(ERR_USERNOTINCHANNEL(target.getNickname(), _name));
 
-		if (mode == "+o" && client.getNickname() != target.getNickname())
-			_promoteClientToOperator(client.getNickname(), target);
-		else if (mode == "-o" && client.getNickname() != target.getNickname())
-			_demoteClientFromOperator(client.getNickname(), target);
+		if (_operators.find(&target) == _operators.end()
+			&& mode == "+o" && client.getNickname() != target.getNickname())
+				_promoteClientToOperator(client.getNickname(), target);
+		else if (!(_operators.find(&target) == _operators.end())
+			&& mode == "-o" && client.getNickname() != target.getNickname())
+				_demoteClientFromOperator(client.getNickname(), target);
 	}
 	else if (mode == "+k")
 	{
