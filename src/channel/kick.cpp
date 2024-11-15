@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:03:30 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/15 13:49:26 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:34:03 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	Channel::kick(const string &nick, Client &client, string& reason)
 		_demoteClientFromOperator(client.getNickname(), target);
 	if (itInvited != _invited.end())
 		_invited.erase(itInvited);
-	_members.erase(itMember);
 	if (reason.empty())
 		reason = client.getNickname();
 	_relayMsg(":" + client.getFullname() + " KICK " + _name + " " + nick + " :" + reason + "\r\n", nullptr);
+	_members.erase(itMember);
 }
