@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleKick.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:34:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 18:12:29 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/15 13:41:13 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	parseLine(const string &line, vector<string> &channels,
 	vector<string> &nicks, string &reason, const Client &client)
 {
 	stringstream	ss(line);
+	string			command;
 	string			rawChannels;
 	string			rawNicks;
-	string			command;
 
 	ss >> command >> rawChannels >> rawNicks;
 	std::getline(ss >> std::ws, reason);
@@ -35,9 +35,9 @@ static void	parseLine(const string &line, vector<string> &channels,
 
 void Server::_handleKick(Client &client, const string &line)
 {
-	string			reason;
 	vector<string>	channels;
 	vector<string>	nicks;
+	string			reason;
 
 	try {
 		parseLine(line, channels, nicks, reason, client);
