@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleJoin.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 19:15:55 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:09:27 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	Server::_handleJoin(Client	&client, const string &line)
 	string			clientNickname = client.getNickname();
 
 	try {
-		if (client.IsRegistered() == false)
-			throw std::runtime_error(ERR_NOTREGISTERED(clientNickname));
 		splitPasswordsAndChannels(line, channelNames, passwords, clientNickname);
 	}
 	catch (std::runtime_error &e) {
