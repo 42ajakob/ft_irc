@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: apeposhi <apeposhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:06:59 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 19:28:45 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:24:13 by apeposhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	Channel::part(Client &client, const string &reason)
 		replyMsg +=" :" + reason;
 	_relayMsg(replyMsg + "\r\n", nullptr);
 	_members.erase(&client);
+	if (_members.empty())
+		return (_channels.erase(_name), void());
 	_operators.erase(&client);
+	if (_operators.empty())
+		_promoteClientToOperator("FT_IRC", **_members.begin());
 	_invited.erase(&client);
 }
