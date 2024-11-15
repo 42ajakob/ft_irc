@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 17:45:38 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/01 17:26:09 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/11 17:53:19 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,9 @@ void Client::pingClient()
 	_isPingSent = true;
 }
 
-void Client::resetPingTimerIfPongMatches(const string &line)
+void Client::resetPingTimerIfPongMatches(const string &response)
 {
-	std::size_t	pos = findNextParameter(line);
-	string		pong;
-
-	if (pos == string::npos)
-		return ;
-	if (line[pos] == ':')
-		pos++;
-	pong = line.substr(pos);
-	if (pong != _Nickname)
+	if (response != _Nickname)
 		return ;
 	setProgrammedDisconnection(TIMEOUT);
 	_isPingSent = false;

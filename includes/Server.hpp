@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:05:36 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 13:57:05 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:42:53 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <iostream>
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Operator.hpp"
 # include "Utils.hpp"
+# include <iostream>
 # include <vector>
 # include <unordered_map>
 # include <sys/socket.h>
@@ -30,14 +31,12 @@
 
 # define BACKLOG_SIZE 512
 
-using std::string;
-
-typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
-typedef std::unordered_map<int, Client>		t_ClientMap;
-typedef std::unique_ptr<Server>					t_ServerPtr;
-
 class Client;
 class Channel;
+
+typedef std::array<pollfd, BACKLOG_SIZE + 1>	t_PollFDs;
+typedef std::unordered_map<int, Client>			t_ClientMap;
+typedef std::unique_ptr<Server>					t_ServerPtr;
 
 class Server
 {
@@ -50,31 +49,61 @@ class Server
 		t_PollFDs			_pollFDs;
 		string				_password;
 		sockaddr_in			_serverAddr;
+		string				_timestamp;
 
 		Server(const string &port, const string &&password);
 
+		typedef void (Server::*t_Command)(Client &, const std::string &);
+
+	// *** Initialization and Closing methods ***
 		void	_initSocket();
 		void	_initPollFDs();
-		void	_startMainLoop();
+		void	_startLoop();
 		void	_closeFD();
 
-		void	acceptClient();
-		void	receiveMessage(pollfd &pollFD);
-		void	disconnectClient(pollfd &pollFD);
-		void	sendMessage(const int &fd);
-		void	parseMessage(const int &fd);
-		void	executeCommand(const eCommand &command, string &line,
+	// *** I/O loop Methods ***
+		void	_acceptClient();
+		void	_receiveMessage(pollfd &pollFD);
+		void	_disconnectClient(pollfd &pollFD);
+		void	_sendClientBuffer(const int &fd);
+		void	_parseMessage(const int &fd);
+		void	_executeCommand(const eCommand &command, string &line,
 					const int &fd);
-		void	debugBypass(string &line);
-		void	Pong(const int &fd, const string &line);
-		void	doCapNegotiation(const int &fd, string &line);
-		void	checkConnectionTimeout(pollfd &pollFD);
-		void	checkPassword(const int &fd, const string &line);
-		void	joinChannel(const int &fd, string &line);
-		void	quitClient(const int &fd);
+
+	// *** Connection methods ***
+		void	_handleCap		(Client &client, const string &line);
+		void	_handlePass		(Client &client, const string &line);
+		void	_handlePing		(Client &client, const string &line);
+		void	_handlePong		(Client &client, const string &line);
+		void	_handleNick		(Client &client, const string &line);
+		void	_handleUser		(Client &client, const string &line);
+		void	_checkConnectionTimeout(pollfd &pollFD);
+
+
+	// *** Operator methods ***
+		void	_Oper			(Client &client, const string &line);
+		void	_addOper		(Client &client, const string &line);
+		void	_rmOper			(Client &client, const string &line);
+		void	_lsOper			(Client &client, const string &line);
+
+	// *** Command methods ***
+		void	_handleJoin		(Client &client, const string &line);
+		void 	_handleInvite	(Client &client, const string &line);
+		void	_handleTopic	(Client &client, const string &line);
+		void	_handleQuit		(Client &client, const string &line);
+		void	_handleKick		(Client &client, const string &line);
+		void	_handlePrivMsg	(Client &client, const string &line) noexcept;
+		void	_handlePart		(Client &client, const string &line);
+		void	_handleWho		(Client &client, const string &line);
+		void	_modeLoop		(Client &client, Channel &channel, const string &mode, string &mode_params);
+		void	_handleMode		(Client &client, string const &line);
+
+	// *** Debug and error methods ***
+		void	_OpBypass	(Client &client, const string &line);
+		void	_logError	(Client &client, const string &error) const;
 	
 	public:
-		const Client	&getClientByNickname(const string &nickname) const;
+		Client			&getClientByNickname(const string &nickname);
 		static Server	&getInstance(const string & = "", const string && = "");
 		static void		sigAction(int sig);
 
@@ -85,6 +114,8 @@ class Server
 		
 		void	initServer();
 		void	reload();
+		void	setTimestamp();
+		string	getTimestamp();
 };
 
 #endif

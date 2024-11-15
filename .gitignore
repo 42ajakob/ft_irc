@@ -5,3 +5,4 @@ en.subject.pdf
 .normignore
 .DS_Store
 ircserv
+.operator_credentials

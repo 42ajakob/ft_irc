@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:12:41 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/05 14:00:37 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:45:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Server::Server(const string &port, const string &&password): _password(std::move
 		std::cerr << e.what() << std::endl;
 		exit(1);
 	}
+	this->setTimestamp();
 	std::cout << "Server created" << std::endl;
 }
 
@@ -70,8 +71,14 @@ void	Server::initServer()
 	signal(SIGQUIT, &Server::sigAction);	/* SIGQUIT = Ctrl+\	*/
 	_instance->_initPollFDs();
 	_instance->_initSocket();
+	try{
+		Operator::loadCredentials();
+	}
+	catch(const std::exception& e){
+		std::cerr << e.what() << '\n';
+	}
 	std::cout << "Starting server" << std::endl;
-	_instance->_startMainLoop();
+	_instance->_startLoop();
 }
 
 void Server::_initSocket()
@@ -105,15 +112,16 @@ void Server::reload()
 		if (pollfd.fd == -1 || pollfd.fd == _socketFd)
 			continue ;
 		std::cout << "Server disconnecting client " << pollfd.fd << std::endl;
-		disconnectClient(pollfd);
+		_disconnectClient(pollfd);
 	}
 	close(_socketFd);
 	_instance->initServer();
 	std::cout << "Server reloaded" << std::endl;
 }
 
-void Server::quitClient(const int &fd)
+void Server::_handleQuit(Client &client, const string &line)
 {
-	_clients[fd].addToSendBuffer("ERROR :/quit received by " + _clients[fd].getNickname() + "\r\n");
-	_clients[fd].setProgrammedDisconnection(1, true);
+	(void)line;
+	client.addToSendBuffer("ERROR :/quit received by " + client.getNickname() + "\r\n");
+	client.setProgrammedDisconnection(1, true);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mainLoop.cpp                                       :+:      :+:    :+:   */
+/*   IO_Loop.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:02:40 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:45:57 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ static void	debug_print_revents(short revents)
 	std::cout << std::endl;
 }
 
-void Server::acceptClient()
+void Server::_acceptClient()
 {
 	int			clientFd;
 	sockaddr_in	clientAddr;
 	socklen_t	clientAddrLen = sizeof(clientAddr);
-	const auto	clientPollFD = std::find_if(_pollFDs.begin(), _pollFDs.end(), [](const pollfd &pollFD) { return pollFD.fd == -1; });
+	const auto	clientPollFD =
+		std::find_if(_pollFDs.begin(), _pollFDs.end(),
+			[](const pollfd &pollFD) { return pollFD.fd == -1; });
 
 	clientFd = accept(_socketFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
 	if (clientFd == -1 && errno != EINTR)
@@ -48,7 +50,7 @@ void Server::acceptClient()
 	std::cout << "Client " << clientFd << " connected" << std::endl;
 }
 
-void Server::disconnectClient(pollfd &pollFD)
+void Server::_disconnectClient(pollfd &pollFD)
 {
 	if (pollFD.fd == -1)
 		return ;
@@ -82,26 +84,26 @@ void	Server::sigAction(int sig)
 	}
 }
 
-void Server::_startMainLoop()
+void Server::_startLoop()
 {
 	while (!_sig)
 	{
 		if (poll(_pollFDs.data(), _clients.size() + 1, 0) == -1 && errno != EINTR)
 			throw std::runtime_error(string("Poll Error: ") + strerror(errno));
 		if (_pollFDs[0].revents & POLLIN)
-			acceptClient();
+			_acceptClient();
 		for (auto &clientPollFD : _pollFDs)
 		{
 			if (clientPollFD.fd == -1 || clientPollFD.fd == _socketFd)
 				continue ;
 			if (clientPollFD.revents & POLLIN)
-				receiveMessage(clientPollFD);
+				_receiveMessage(clientPollFD);
 			if (clientPollFD.revents & POLLHUP || clientPollFD.revents & POLLERR)
-				disconnectClient(clientPollFD);
+				_disconnectClient(clientPollFD);
 			if (clientPollFD.revents & POLLOUT)
-				sendMessage(clientPollFD.fd);
+				_sendClientBuffer(clientPollFD.fd);
 			clientPollFD.revents = 0;
-			checkConnectionTimeout(clientPollFD);
+			_checkConnectionTimeout(clientPollFD);
 		}
 		_pollFDs[0].revents = 0;
 	}

@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/10/31 14:17:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:37:43 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,50 +27,24 @@ using	std::string;
 using	std::bitset;
 
 typedef	std::unordered_map<string, Channel>	t_ChannelMap;
-typedef	std::unordered_set<const Client*>	t_ClientSet;
+typedef	std::unordered_set<Client *>	t_ClientSet;
 
 class	Channel
 {
 	private:
+		enum Mode
+		{
+			InviteOnly,
+			ProtectedTopic,
+			PasswordProtected,
+			Operators,
+			UserLimit,
+			Count
+		};
+
 		typedef struct ChannelCreatorKey {} t_ChannelCreatorKey;
-
-	public:
-		Channel()									= delete;
-		Channel(const Channel &other)				= delete;
-		Channel	&operator=(const Channel &other)	= delete;
-		Channel(const t_ChannelCreatorKey &key, const string &name,
-			const Client &creator);
-		~Channel();
-
-		void	join(Client &client, const string &password);
-		void	sendChannelInfo(Client &client);
-		void	kick(const string &nickname);
-		void	invite(const string &nickname);
-		void	leave(const Client &client);
-		void	mode(Client &client);
-		void	clear();
-		void	printMembers() const;
-
-		bool	operator==(const Channel &other) const;
-		bool	operator==(const string &name) const;
-
-		static Channel	&getChannel(const string &name, const Client &client);
-		static void		clientDisconnected(const Client &client);
-
-	enum class Mode
-	{
-		InviteOnly,
-		ProtectedTopic,
-		PasswordProtected,
-		UserLimit,
-		Count
-	};
-
-	private:
 		static constexpr size_t	ModeCount = static_cast<size_t>(Mode::Count);
 		static t_ChannelMap		_channels;
-
-		Channel(const string &name, const Client &creator);
 
 		bitset<ModeCount>	_mode;
 		string				_name;
@@ -80,7 +54,45 @@ class	Channel
 		string				_topic;
 		string				_password;
 		uint16_t			_userLimit;
+
+		Channel(const string &name, Client &creator);
+
+		void	_sendChannelInfo(Client &client);
+		string	_getMembersList() const noexcept;
+		void	_relayMsg(const string &msg, const Client *client) const noexcept;
+		void	_promoteClientToOperator(const string &origin, Client &client);
+		void	_demoteClientFromOperator(const string &origin, Client &client);
+
+	public:
+		Channel()									= delete;
+		Channel(const Channel &other)				= delete;
+		Channel	&operator=(const Channel &other)	= delete;
+		Channel(const t_ChannelCreatorKey &key, const string &name,
+			Client &creator);
+		~Channel();
+
+		std::ostream	&insertInfoToOutstream(std::ostream &os) const;
+
+		void			join(Client &client, const string &password);
+		void			kick(const string &nick, Client &client, string& reason);
+		void			invite(const string &nickname, Client &client);
+		void			topic(string &topic, Client &client);
+		void			PrivMsg(const string &msg, const Client &origin) const noexcept;
+		void			part(Client &client, const string &reason);
+		void			whoReply(Client &client) const;
+		void			mode(const string &mode, Client &client, const string &mode_param);
+		void			mode(const string &mode, Client &client);
+		void			sendModes(Client &client) const;
+
+		bool			operator==(const Channel &other) const;
+		bool			operator==(const string &name) const;
+
+		static Channel	&getChannel(string &name, Client &client);
+		static Channel	&getChannel(string &name);
+		static void		clientDisconnected(Client &client);
 };
+
+std::ostream	&operator<<(std::ostream &os, const Channel &channel);
 
 
 #endif

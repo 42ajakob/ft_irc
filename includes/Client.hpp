@@ -6,22 +6,25 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:04:49 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/01 17:24:13 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:39:38 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
+# include "Utils.hpp"
+# include "Operator.hpp"
 # include <iostream>
 # include <unordered_set>
 # include <chrono>
-# include "Utils.hpp"
-#include <arpa/inet.h>
+# include <arpa/inet.h>
+# include <memory>
+# include "numericReplies.hpp"
 
-using std::string;
+class Operator;
 
-typedef std::unordered_set<string>	t_StringSet;
+typedef std::unique_ptr<Operator>	t_OperatorAccess;
 
 class Client
 {
@@ -40,6 +43,8 @@ class Client
 		bool				_isNicknameAvailable(string nickname);
 		void				_markAsRegistered();
 
+		t_OperatorAccess	_operatorAccess = nullptr;
+
 	public:
 		Client(const Client &other)				= delete;
 		Client &operator=(const Client &other)	= delete;
@@ -49,17 +54,19 @@ class Client
 		const string		&getNickname() const;
 		const string		&getUsername() const;
 		const string		&getHostname() const;
+		const string		getFullname() const;
 
 		bool				operator==(const Client &other) const;
 		bool				operator==(const string &nickname) const;
 
 	// *** Buffer methods ***
-		void				addToSendBuffer(string buffer);
-		void				addToRecvBuffer(string buffer);
+		void				addToSendBuffer(string buffer) noexcept;
+		void				addToRecvBuffer(string buffer) noexcept;
 		void				clearSendBuffer();
 		void				clearRecvBuffer();
 		const string		&getSendBuffer() const;
 		const string		&getRecvBuffer() const;
+		void				sendPrivMsg(const string &msg, const string &origin) noexcept;
 
 	// *** Registration methods ***
 		const bool			&IsPasswordCorrect() const;
@@ -74,6 +81,14 @@ class Client
 		void				pingClient();
 		void				resetPingTimerIfPongMatches(const string &line);
 		void				setProgrammedDisconnection(const int seconds, bool setByQuitCommand = false);
+
+	// *** Operator methods ***
+		void				giveOperatorAccess(string &&username, const string &password);
+		void				revokeOperatorAccess();
+		bool				isOperator() const;
+		void				addOperator(const string &username, const string &password);
+		void				removeOperator(const string &username);
+		void				listOperators() noexcept;
 };
 
 #endif

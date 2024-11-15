@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:19:28 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/05 14:05:36 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:15:38 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "Client.hpp"
 #include <iostream>
 #include <chrono>
+#include <sstream>
 
-void	Server::checkConnectionTimeout(pollfd &pollFD)
+void	Server::_checkConnectionTimeout(pollfd &pollFD)
 {
 	if (pollFD.fd == -1)
 		return ;
@@ -27,7 +28,7 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 		&& client.getProgrammedDisconnection() < now + std::chrono::seconds(10))
 	{
 		std::cout << "Client " << pollFD.fd << " timed out" << std::endl;
-		client.addToSendBuffer("ERROR :Closing Link: " + client.getNickname() + " (Failed to register in Time)\r\n");
+		client.addToSendBuffer(ERR_NOTREGISTERED(client.getNickname()));
 		client.setProgrammedDisconnection(3);
 	}
 	if (client.getProgrammedDisconnection() < now + std::chrono::seconds(10))
@@ -35,6 +36,18 @@ void	Server::checkConnectionTimeout(pollfd &pollFD)
 	if (client.getProgrammedDisconnection() < now)
 	{
 		pollFD.revents |= POLLERR;
-		disconnectClient(pollFD);
+		_disconnectClient(pollFD);
 	}
+}
+
+void	Server::_handlePong(Client &client, const string &line)
+{
+	stringstream	ss(line);
+	string			command;
+	string			response;
+
+	ss >> command >> response;
+	if (response[0] == ':')
+		response.erase(0, 1);
+	client.resetPingTimerIfPongMatches(response);
 }
