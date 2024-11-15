@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:00:07 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/15 20:50:53 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/15 19:33:05 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ void	Channel::_demoteClientFromOperator(const string &origin, Client &client)
 void Channel::mode(const string &mode, Client &client, const string &mode_param)
 {
 	if (_operators.find(&client) == _operators.end())
-		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
+			throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
+	if (mode == "-l")
+	{
+		_userLimit = BACKLOG_SIZE;
+		_mode.reset(UserLimit);
+	}
 	else if (mode == "-k")
 	{
 		_password.clear();
 		_mode.reset(PasswordProtected);
-	}
-	else if (mode == "-l")
-	{
-		_userLimit = BACKLOG_SIZE;
-		_mode.reset(UserLimit);
 	}
 	else if (mode_param.empty())
 		throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
