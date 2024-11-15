@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:00:07 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 20:31:44 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:27:01 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ void	Channel::_demoteClientFromOperator(const string &origin, Client &client)
 
 void Channel::mode(const string &mode, Client &client, const string &mode_param)
 {
+	std::cout << "Mode " << mode << " Client " << client.getNickname() << " modeparam " << mode_param << std::endl;
 	if (mode.size() >= 2 && mode[1] == 'o')
 	{
 		Client &target = Server::getInstance().getClientByNickname(mode_param);
 		
 		if (_members.find(&target) == _members.end())
 		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
-			else if (_operators.find(&target) == _operators.end())
+			else if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 			else if (_members.find(&target) == _members.end())
 		throw std::invalid_argument(ERR_USERNOTINCHANNEL(target.getNickname(), _name));
@@ -51,8 +52,7 @@ void Channel::mode(const string &mode, Client &client, const string &mode_param)
 		else if (mode == "-o" && client.getNickname() != target.getNickname())
 			_demoteClientFromOperator(client.getNickname(), target);
 	}
-	
-	if (mode == "+k")
+	else if (mode == "+k")
 	{
 		_password = mode_param;
 		_mode.set(PasswordProtected);
