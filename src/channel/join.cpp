@@ -6,7 +6,7 @@
 /*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:04:23 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 17:06:27 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/15 15:04:33 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	Channel::_sendChannelInfo(Client &client)
 
 void	Channel::join(Client &client, const string &password)
 {
+	if (_members.find(&client) != _members.end())
+		return ;
 	if (_mode.test(static_cast<size_t>(Mode::InviteOnly)) &&
 		_invited.find(&client) == _invited.end())
 		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), _name));
