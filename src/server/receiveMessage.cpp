@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:08:37 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 14:19:51 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:41:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	Server::_parseMessage(const int &fd)
 			_executeCommand(command, line, fd);
 		}
 		catch (const std::exception &e) {
-			std::cerr << "Error executing command: " << e.what() << std::endl;
+			std::cerr << "Error executing command: " << e.what() << std::flush;
 		}
 		std::getline(ss, line, '\n');
 	}

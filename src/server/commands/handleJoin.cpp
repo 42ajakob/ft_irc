@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleJoin.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:09:21 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/15 16:09:27 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/17 16:45:05 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	Server::_handleJoin(Client	&client, const string &line)
 	try {
 		splitPasswordsAndChannels(line, channelNames, passwords, clientNickname);
 	}
-	catch (std::runtime_error &e) {
+	catch (std::exception &e) {
 		return (_logError(client, e.what()));
 	}
 	for (size_t i = 0; i < channelNames.size(); i++)

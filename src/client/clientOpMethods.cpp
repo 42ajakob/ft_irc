@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:16:56 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/14 19:57:06 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:46:29 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	Client::giveOperatorAccess(string &&username, const string &password)
 {
 	try{
 		if (_operatorAccess != nullptr)
-			throw std::runtime_error(ERR_ALREADYREGISTRED(_operatorAccess->getUsername()));
+			throw std::invalid_argument(ERR_ALREADYREGISTRED(_operatorAccess->getUsername()));
 		_operatorAccess = std::make_unique<Operator>(std::move(username), password);
 		addToSendBuffer(RPL_YOUREOPER(_Nickname));
 	}
