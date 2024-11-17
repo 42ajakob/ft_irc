@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/17 17:29:09 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 18:22:21 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 #include "numericReplies.hpp"
 #include <sstream>
 
-static bool requiresModeParam(string mode)
+static bool	requiresModeParam(string mode)
 {
 	if (string("okl").find(mode[1]) == string::npos
 		|| mode == "-l" || mode == "-k")
 		return (false);
 	return (true);
 }
-
 
 void	Server::_modeLoop(Client &client, Channel &channel, const string &modes, string &mode_params)
 {
@@ -86,15 +85,15 @@ void	Server::_handleMode(Client &client, string const &line)
 		return ;
 	}
 
-	auto processModes = [&](char secondary) {
-		size_t separatorPos = modes.find(secondary);
-		string primaryMode = modes.substr(0, separatorPos);
-		string secondaryMode = (separatorPos != string::npos) ? modes.substr(separatorPos) : "";
+	auto processModes = [&](char modeSeparator) -> void {
+		size_t separatorPos = modes.find(modeSeparator);
+		string firstModeSet = modes.substr(0, separatorPos);
+		string secondModeSet = (separatorPos != string::npos) ? modes.substr(separatorPos) : "";
 
-		if (!primaryMode.empty())
-			_modeLoop(client, *channel, primaryMode, mode_params);
-		if (!secondaryMode.empty())
-			_modeLoop(client, *channel, secondaryMode, mode_params);
+		if (!firstModeSet.empty())
+			_modeLoop(client, *channel, firstModeSet, mode_params);
+		if (!secondModeSet.empty())
+			_modeLoop(client, *channel, secondModeSet, mode_params);
 	};
 
 	if (modes[0] == '+')
