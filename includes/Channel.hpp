@@ -90,6 +90,7 @@ class	Channel
 		static Channel	&getChannel(string &name, Client &client);
 		static Channel	&getChannel(string &name);
 		static void		clientDisconnected(Client &client);
+		static void		cleanUnusedChannels();
 };
 
 std::ostream	&operator<<(std::ostream &os, const Channel &channel);
