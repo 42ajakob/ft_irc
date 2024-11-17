@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:00:07 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/15 19:33:05 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/11/17 16:24:23 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,30 @@ void	Channel::_demoteClientFromOperator(const string &origin, Client &client)
 	_operators.erase(&client);
 }
 
+void	Channel::_handleOperatorMode(const string &targetNick, Client &client, bool isPromote)
+{
+	Client &target = Server::getInstance().getClientByNickname(targetNick);
+
+	if (_members.find(&target) == _members.end())
+		throw std::invalid_argument(ERR_USERNOTINCHANNEL(targetNick, _name));
+
+	if (_operators.find(&target) == _operators.end() && isPromote)
+		_promoteClientToOperator(client.getNickname(), target);
+	else if (_operators.find(&target) != _operators.end())
+		_demoteClientFromOperator(client.getNickname(), target);
+}
+
 void Channel::mode(const string &mode, Client &client, const string &mode_param)
 {
+	if (_members.find(&client) == _members.end())
+		throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
 	if (_operators.find(&client) == _operators.end())
-			throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
-	if (mode == "-l")
-	{
-		_userLimit = BACKLOG_SIZE;
-		_mode.reset(UserLimit);
-	}
-	else if (mode == "-k")
-	{
-		_password.clear();
-		_mode.reset(PasswordProtected);
-	}
-	else if (mode_param.empty())
-		throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
-	else if (mode.size() >= 2 && mode[1] == 'o')
-	{
-		Client &target = Server::getInstance().getClientByNickname(mode_param);
-		
-		if (_members.find(&client) == _members.end())
-			throw std::invalid_argument(ERR_NOTONCHANNEL(_name));
-		else if (_members.find(&target) == _members.end())
-			throw std::invalid_argument(ERR_USERNOTINCHANNEL(target.getNickname(), _name));
+		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 
-		if (_operators.find(&target) == _operators.end()
-			&& mode == "+o" && client.getNickname() != target.getNickname())
-				_promoteClientToOperator(client.getNickname(), target);
-		else if (!(_operators.find(&target) == _operators.end())
-			&& mode == "-o" && client.getNickname() != target.getNickname())
-				_demoteClientFromOperator(client.getNickname(), target);
-	}
+	if (mode_param.empty())
+		throw std::invalid_argument(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
+	else if (mode.find("o") != string::npos)
+		_handleOperatorMode(mode_param, client, mode[0] == '+');
 	else if (mode == "+k")
 	{
 		_password = mode_param;
@@ -79,8 +71,6 @@ void Channel::mode(const string &mode, Client &client, const string &mode_param)
 		_userLimit = newLimit;
 		_mode.set(UserLimit);
 	}
-	else
-		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
 
 void	Channel::sendModes(Client &client) const
@@ -103,7 +93,7 @@ void Channel::mode(const string &mode, Client &client)
 	if (_operators.find(&client) == _operators.end())
 		throw std::invalid_argument(ERR_CHANOPRIVSNEEDED(_name));
 
-	else if (mode == "+i" && _mode.test(InviteOnly))
+	if (mode == "+i" && _mode.test(InviteOnly))
 		throw std::invalid_argument(ERR_KEYSET(_name));
 	else if (mode == "+i")
 		_mode.set(InviteOnly);
@@ -113,6 +103,16 @@ void Channel::mode(const string &mode, Client &client)
 		_mode.set(ProtectedTopic);
 	else if (mode == "-t")
 		_mode.reset(ProtectedTopic);
+	else if (mode == "-l")
+	{
+		_userLimit = BACKLOG_SIZE;
+		_mode.reset(UserLimit);
+	}
+	else if (mode == "-k")
+	{
+		_password.clear();
+		_mode.reset(PasswordProtected);
+	}
 	else
 		throw std::invalid_argument(ERR_UNKNOWNMODE(mode, _name));
 }
