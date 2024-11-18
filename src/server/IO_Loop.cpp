@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:42:24 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/13 17:45:57 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:47:20 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void Server::_startLoop()
 				_sendClientBuffer(clientPollFD.fd);
 			clientPollFD.revents = 0;
 			_checkConnectionTimeout(clientPollFD);
+			Channel::cleanUnusedChannels();
 		}
 		_pollFDs[0].revents = 0;
 	}

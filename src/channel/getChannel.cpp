@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   channelCreation.cpp                                :+:      :+:    :+:   */
+/*   getChannel.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:48:40 by JFikents          #+#    #+#             */
-/*   Updated: 2024/11/10 20:50:02 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:42:06 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Channel &Channel::getChannel(string &name, Client &client)
 	if (_channels.find(name) == _channels.end())
 	{
 		if (name[0] != '#')
-			throw std::runtime_error(ERR_NOSUCHCHANNEL(name));
+			throw std::invalid_argument(ERR_NOSUCHCHANNEL(name));
 		t_ChannelCreatorKey	Key;
 		_channels.emplace(std::piecewise_construct,
 			std::forward_as_tuple(name),
@@ -33,6 +33,6 @@ Channel &Channel::getChannel(string &name)
 {
 	toLower(name);
 	if (_channels.find(name) == _channels.end())
-		throw std::runtime_error(ERR_NOSUCHCHANNEL(name));
+		throw std::invalid_argument(ERR_NOSUCHCHANNEL(name));
 	return (_channels.at(name));
 }

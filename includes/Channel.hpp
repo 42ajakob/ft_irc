@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:45:05 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/14 19:37:43 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:32:02 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class	Channel
 		void	_relayMsg(const string &msg, const Client *client) const noexcept;
 		void	_promoteClientToOperator(const string &origin, Client &client);
 		void	_demoteClientFromOperator(const string &origin, Client &client);
+		void	_handleOperatorMode(const string &targetNick, Client &client, bool isPromote);
 
 	public:
 		Channel()									= delete;
@@ -90,6 +91,7 @@ class	Channel
 		static Channel	&getChannel(string &name, Client &client);
 		static Channel	&getChannel(string &name);
 		static void		clientDisconnected(Client &client);
+		static void		cleanUnusedChannels();
 };
 
 std::ostream	&operator<<(std::ostream &os, const Channel &channel);

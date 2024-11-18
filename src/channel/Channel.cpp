@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 21:43:59 by apeposhi          #+#    #+#             */
-/*   Updated: 2024/11/14 15:38:03 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:49:41 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,15 @@ std::ostream	&operator<<(std::ostream &os, const Channel &channel)
 {
 	channel.insertInfoToOutstream(os);
 	return (os);
+}
+
+void		Channel::cleanUnusedChannels()
+{
+	for (auto it = _channels.begin(); it != _channels.end();)
+	{
+		if (it->second._members.empty())
+			it = _channels.erase(it);
+		else
+			++it;
+	}
 }

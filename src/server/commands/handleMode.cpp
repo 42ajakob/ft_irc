@@ -6,7 +6,7 @@
 /*   By: JFikents <Jfikents@student.42Heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:11:10 by ajakob            #+#    #+#             */
-/*   Updated: 2024/11/14 20:56:04 by JFikents         ###   ########.fr       */
+/*   Updated: 2024/11/17 18:22:21 by JFikents         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 #include "numericReplies.hpp"
 #include <sstream>
 
-bool isCharInSet(char c) {
-	return (string("okl").find(c) != string::npos);
+static bool	requiresModeParam(string mode)
+{
+	if (string("okl").find(mode[1]) == string::npos
+		|| mode == "-l" || mode == "-k")
+		return (false);
+	return (true);
 }
-
 
 void	Server::_modeLoop(Client &client, Channel &channel, const string &modes, string &mode_params)
 {
@@ -32,7 +35,7 @@ void	Server::_modeLoop(Client &client, Channel &channel, const string &modes, st
 	while (i < modes.size())
 	{
 		try {
-			if (isCharInSet(modes[i]))
+			if (requiresModeParam(plus_minus + modes[i]))
 			{
 				ss >> mode_parameter;
 				channel.mode(plus_minus + modes[i], client, mode_parameter);
@@ -69,36 +72,32 @@ void	Server::_handleMode(Client &client, string const &line)
 	Channel	*channel;
 	string	modes;
 	string	mode_params;
-	string	setMode;
-	string	unsetMode;
 
 	try {
 		parseLine(line, &channel, modes, mode_params, client);
+		if (modes.empty())
+			channel->sendModes(client);
+		if (modes == "b" || modes.empty())
+			return ;
 	}
 	catch (const std::invalid_argument &e) {
 		_logError(client, e.what());
 		return ;
 	}
-	if (modes.empty())
-		channel->sendModes(client);
-	if (modes == "b" || modes.empty())
-		return ;
+
+	auto processModes = [&](char modeSeparator) -> void {
+		size_t separatorPos = modes.find(modeSeparator);
+		string firstModeSet = modes.substr(0, separatorPos);
+		string secondModeSet = (separatorPos != string::npos) ? modes.substr(separatorPos) : "";
+
+		if (!firstModeSet.empty())
+			_modeLoop(client, *channel, firstModeSet, mode_params);
+		if (!secondModeSet.empty())
+			_modeLoop(client, *channel, secondModeSet, mode_params);
+	};
+
 	if (modes[0] == '+')
-	{
-		setMode = modes.substr(0, modes.find('-'));
-		if (modes.find('-') != string::npos)
-			unsetMode = modes.substr(modes.find('-'));
-	}
+		processModes('-');
 	else if (modes[0] == '-')
-	{
-		if (modes.find('+') != string::npos)
-		{
-			setMode = modes.substr(modes.find('+'));
-			unsetMode = modes.substr(0, modes.find('+'));
-		}
-		else
-			unsetMode = modes;
-	}
-	_modeLoop(client, *channel, setMode, mode_params);
-	_modeLoop(client, *channel, unsetMode, mode_params);
+		processModes('+');
 }
